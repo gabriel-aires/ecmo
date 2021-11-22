@@ -1,8 +1,7 @@
 require "action-controller/logger"
-require "secrets-env"
 
 module App
-  NAME    = "Spider-Gazelle"
+  NAME    = "OS-Probe"
   VERSION = {{ `shards version "#{__DIR__}"`.chomp.stringify.downcase }}
 
   Log         = ::Log.for(NAME)
@@ -16,7 +15,7 @@ module App
 
   STATIC_FILE_PATH = ENV["PUBLIC_WWW_PATH"]? || "./www"
 
-  COOKIE_SESSION_KEY    = ENV["COOKIE_SESSION_KEY"]? || "_spider_gazelle_"
+  COOKIE_SESSION_KEY    = ENV["COOKIE_SESSION_KEY"]? || "_os_probe_"
   COOKIE_SESSION_SECRET = ENV["COOKIE_SESSION_SECRET"]? || "4f74c0b358d5bab4000dd3c75465dc2c"
 
   def self.running_in_production?
