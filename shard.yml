@@ -20,15 +20,18 @@ dependencies:
   future:
     github: crystal-community/future.cr
     version: ~> 1.0
-  kilt:
-    github: jeromegn/kilt
-    version: ~> 0.6
-  totem:
-    github: icyleaf/totem
-    version: ~> 0.7
   hardware:
     github: crystal-community/hardware
     version: ~> 0.5
+  kilt:
+    github: jeromegn/kilt
+    version: ~> 0.6
+  slang:
+    github: jeromegn/slang
+    version: ~> 1.7
+  totem:
+    github: icyleaf/totem
+    version: ~> 0.7
 
 development_dependencies:
   ameba:

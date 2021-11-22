@@ -1,0 +1,60 @@
+{
+    "folders":
+    [
+        {
+            "path": "spec",
+            "name": "Tests"
+        },
+        {
+            "path": "src",
+            "name": "Source Code"
+        },
+        {
+            "path": "assets",
+            "name": "Static Files"
+        }        
+    ],
+    "settings":
+    {
+        "tab_size": 2
+    },
+    "build_systems":
+    [
+        {
+            "name": "Spider-Gazelle (dev)",
+            "shell_cmd": "crystal build --error-trace ./src/app.cr",
+            "working_dir": "$project_path",
+            "quiet": false            
+        },
+        {
+            "name": "Spider-Gazelle (release)",
+            "shell_cmd": "crystal build --release ./src/app.cr",
+            "working_dir": "$project_path",
+            "quiet": false            
+        },
+        {
+            "name": "Spider-Gazelle (static)",
+            "shell_cmd": "crystal build --release --static ./src/app.cr",
+            "working_dir": "$project_path",
+            "quiet": false
+        },
+        {
+            "name": "Spider-Gazelle (start)",
+            "shell_cmd": "nohup ./app &",
+            "working_dir": "$project_path",
+            "quiet": false            
+        },
+        {
+            "name": "Spider-Gazelle (stop)",
+            "shell_cmd": "pkill -f app",
+            "working_dir": "$project_path",
+            "quiet": false            
+        },
+        {
+            "name": "Spider-Gazelle (test)",
+            "shell_cmd": "curl 127.0.0.1:3000",
+            "working_dir": "$project_path",
+            "quiet": false
+        }        
+    ]
+}

@@ -1,5 +1,6 @@
-class Dashboard < Application
+require "kilt/slang"
 
+class Dashboard < Application
   def index
     welcome_text = "You're being trampled by Spider-Gazelle!"
     Log.warn { "logs can be collated using the request ID" }
@@ -10,11 +11,9 @@ class Dashboard < Application
     Log.debug { "use signals to change log levels at runtime" }
 
     respond_with do
-      html template("welcome.ecr")
+      html template("welcome.slang")
       text "Welcome, #{welcome_text}"
       json({welcome: welcome_text})
     end
-
   end
-
 end
