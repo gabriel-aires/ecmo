@@ -2,7 +2,11 @@ require "kilt/slang"
 
 class Dashboard < Application
   def index
-    welcome_text = "You're being trampled by Spider-Gazelle!"
+    hostname = `hostname 2> /dev/null`
+    disk_info = `df -h 2> /dev/null`
+    process_info = `top -b -n 1 2> /dev/null`
+    service_info = `systemctl status --all --no-page 2> /dev/null`
+
     Log.warn { "logs can be collated using the request ID" }
 
     # You can use signals to change log levels at runtime
@@ -12,8 +16,7 @@ class Dashboard < Application
 
     respond_with do
       html template("welcome.slang")
-      text "Welcome, #{welcome_text}"
-      json({welcome: welcome_text})
+      json({hostname: hostname, disk_info: disk_info, process_info: process_info, service_info: service_info})
     end
   end
 end
