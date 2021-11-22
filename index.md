@@ -1,37 +1,42 @@
-## Welcome to GitHub Pages
+# os-probe
 
-You can use the [editor on GitHub](https://github.com/gabriel-aires/os-probe/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+Dead simple dashboard for machine metrics and jobs
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+## Testing
 
-### Markdown
+`crystal spec`
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+* to run in development mode `crystal ./src/app.cr`
 
-```markdown
-Syntax highlighted code block
+## Compiling
 
-# Header 1
-## Header 2
-### Header 3
+`crystal build ./src/app.cr`
 
-- Bulleted
-- List
+## Deploying
 
-1. Numbered
-2. List
+Once compiled you are left with a binary `./app`
 
-**Bold** and _Italic_ and `Code` text
+* for help `./app --help`
+* viewing routes `./app --routes`
+* run on a different port or host `./app -b 0.0.0.0 -p 80`
 
-[Link](url) and ![Image](src)
-```
+## Changelog
 
-For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
+### **v0.2.0**
 
-### Jekyll Themes
+**Current Features**
+- Completely self-contained
+- Displays basic info about processes, disk usage and services
+- Static binary compiled with libressl under Alpine Linux 3.15
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/gabriel-aires/os-probe/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+**TODO**
+- Get system metrics using hardware shard instead of running command-line utilities
+- Integrate [mitamae](https://github.com/itamae-kitchen/mitamae) utility for configuration management
+- Log system metrics in the background (details below)
+- Implement SpiderGazelle::ActiveModel#save using Totem Yaml serialization
+- Implement specific endpoints for each metric, return json for easy integration
+- Constantly update info on the frontend using ajax calls
+- Integrate charting library using javascript
+- Logrotate functionality for stored system metrics
 
-### Support or Contact
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
