@@ -1,7 +1,4 @@
-require "xml"
-
-class Welcome < Application
-  base "/"
+class Dashboard < Application
 
   def index
     welcome_text = "You're being trampled by Spider-Gazelle!"
@@ -16,11 +13,8 @@ class Welcome < Application
       html template("welcome.ecr")
       text "Welcome, #{welcome_text}"
       json({welcome: welcome_text})
-      xml do
-        XML.build(indent: "  ") do |xml|
-          xml.element("welcome") { xml.text welcome_text }
-        end
-      end
     end
+
   end
+
 end
