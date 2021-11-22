@@ -20,6 +20,12 @@ Once compiled you are left with a binary `./app`
 * viewing routes `./app --routes`
 * run on a different port or host `./app -b 0.0.0.0 -p 80`
 
+Static builds for the following architectures are also available inside the dist/ folder:
+
+* amd64
+
+Copy the binary to the main project folder, mark it as executable and your good to go!
+
 ## Changelog
 
 ### **v0.2.0**
