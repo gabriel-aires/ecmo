@@ -1,0 +1,62 @@
+version: 2.0
+shards:
+  action-controller:
+    git: https://github.com/spider-gazelle/action-controller.git
+    version: 4.5.1
+
+  active-model:
+    git: https://github.com/spider-gazelle/active-model.git
+    version: 3.1.1
+
+  ameba:
+    git: https://github.com/veelenga/ameba.git
+    version: 0.14.3
+
+  cron_parser:
+    git: https://github.com/kostya/cron_parser.git
+    version: 0.4.0
+
+  future:
+    git: https://github.com/crystal-community/future.cr.git
+    version: 1.0.0
+
+  habitat:
+    git: https://github.com/luckyframework/habitat.git
+    version: 0.4.7
+
+  hardware:
+    git: https://github.com/crystal-community/hardware.git
+    version: 0.5.2
+
+  http-params-serializable:
+    git: https://github.com/place-labs/http-params-serializable.git
+    version: 0.5.0
+
+  json_mapping:
+    git: https://github.com/crystal-lang/json_mapping.cr.git
+    version: 0.1.1
+
+  kilt:
+    git: https://github.com/jeromegn/kilt.git
+    version: 0.6.1
+
+  lucky_router:
+    git: https://github.com/luckyframework/lucky_router.git
+    version: 0.5.1
+
+  popcorn:
+    git: https://github.com/icyleaf/popcorn.git
+    version: 0.3.0
+
+  tasker:
+    git: https://github.com/spider-gazelle/tasker.git
+    version: 2.0.5
+
+  totem:
+    git: https://github.com/icyleaf/totem.git
+    version: 0.7.0
+
+  yaml_mapping:
+    git: https://github.com/crystal-lang/yaml_mapping.cr.git
+    version: 0.1.1
+

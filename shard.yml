@@ -1,0 +1,41 @@
+name: os-probe
+version: 0.1.0
+
+authors:
+  - name airesgabriel@gmail.com
+
+description: |
+  Dead simple dashboard for machine metrics and jobs
+
+dependencies:
+  action-controller:
+    github: spider-gazelle/action-controller
+    version: ~> 4.0
+  active-model:
+    github: spider-gazelle/active-model
+    version: ~> 3.0
+  tasker:
+    github: spider-gazelle/tasker
+    version: ~> 2.0
+  future:
+    github: crystal-community/future.cr
+    version: ~> 1.0
+  kilt:
+    github: jeromegn/kilt
+    version: ~> 0.6
+  totem:
+    github: icyleaf/totem
+    version: ~> 0.7
+  hardware:
+    github: crystal-community/hardware
+    version: ~> 0.5
+
+development_dependencies:
+  ameba:
+    github: veelenga/ameba
+
+targets:
+  app:
+    main: src/app.cr  
+
+license: MPL v2
