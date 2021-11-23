@@ -25,40 +25,34 @@
     "build_systems":
     [
         {
-            "name": "Spider-Gazelle (dev)",
+            "name": "install",
+            "shell_cmd": "shards install",
+            "working_dir": "$project_path",
+            "quiet": false            
+        },        
+        {
+            "name": "build",
             "shell_cmd": "crystal build --error-trace ./src/app.cr",
             "working_dir": "$project_path",
             "quiet": false            
         },
         {
-            "name": "Spider-Gazelle (release)",
-            "shell_cmd": "crystal build --release ./src/app.cr",
-            "working_dir": "$project_path",
-            "quiet": false            
-        },
-        {
-            "name": "Spider-Gazelle (static)",
-            "shell_cmd": "crystal build --release --static ./src/app.cr",
+            "name": "release",
+            "shell_cmd": "crystal build --release --static ./src/app.cr -o ./dist/os-probe-$(uname -o | tr [:upper:] [:lower:])-$(uname -m | tr '_' '-')",
             "working_dir": "$project_path",
             "quiet": false
         },
         {
-            "name": "Spider-Gazelle (start)",
-            "shell_cmd": "nohup ./app &",
-            "working_dir": "$project_path",
-            "quiet": false            
+            "name": "start",
+            "shell_cmd": "nohup ./app &"
         },
         {
-            "name": "Spider-Gazelle (stop)",
-            "shell_cmd": "pkill -f app",
-            "working_dir": "$project_path",
-            "quiet": false            
+            "name": "stop",
+            "shell_cmd": "pkill -f app"
         },
         {
-            "name": "Spider-Gazelle (test)",
-            "shell_cmd": "curl 127.0.0.1:3000/dashboard",
-            "working_dir": "$project_path",
-            "quiet": false
+            "name": "status",
+            "shell_cmd": "curl 127.0.0.1:3000/dashboard &> /dev/null && echo running || echo dead"
         }        
     ]
 }
