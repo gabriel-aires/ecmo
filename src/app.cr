@@ -1,6 +1,9 @@
 require "option_parser"
 require "./constants"
 
+# test sqlite static linking under alpine
+require "sqlite3"
+
 # Server defaults
 port = App::DEFAULT_PORT
 host = App::DEFAULT_HOST
