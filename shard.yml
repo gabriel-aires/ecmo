@@ -11,9 +11,6 @@ dependencies:
   action-controller:
     github: spider-gazelle/action-controller
     version: ~> 4.0
-  active-model:
-    github: spider-gazelle/active-model
-    version: ~> 3.0
   tasker:
     github: spider-gazelle/tasker
     version: ~> 2.0
@@ -23,15 +20,18 @@ dependencies:
   hardware:
     github: crystal-community/hardware
     version: ~> 0.5
+  sqlite3:
+    github: crystal-lang/crystal-sqlite3
+    version: ~> 0.18
+  granite:
+    github: amberframework/granite
+    version: ~> 0.23
   kilt:
     github: jeromegn/kilt
     version: ~> 0.6
   slang:
     github: jeromegn/slang
     version: ~> 1.7
-  totem:
-    github: icyleaf/totem
-    version: ~> 0.7
 
 development_dependencies:
   ameba:

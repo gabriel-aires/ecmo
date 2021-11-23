@@ -12,7 +12,11 @@
         {
             "path": "assets",
             "name": "Static Files"
-        }        
+        },
+        {
+            "path": "/",
+            "name": "Root"
+        } 
     ],
     "settings":
     {
