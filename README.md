@@ -2,6 +2,8 @@
 
 Dead simple dashboard for machine metrics and jobs
 
+More details at [gabriel-aires.github.io/os-probe](https://gabriel-aires.github.io/os-probe/)
+
 ## Testing
 
 `crystal spec`
