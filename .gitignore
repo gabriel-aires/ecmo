@@ -3,4 +3,4 @@ app
 bin
 *.sublime-workspace
 *.out
-
+.vagrant
