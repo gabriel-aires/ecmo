@@ -28,7 +28,7 @@ Vagrant.configure("2") do |config|
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine and only allow access
   # via 127.0.0.1 to disable public access
-  config.vm.network "forwarded_port", guest: 3000, host: 3000, host_ip: "127.0.0.1"
+  # config.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
@@ -43,7 +43,7 @@ Vagrant.configure("2") do |config|
   # the path on the host to the actual folder. The second argument is
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
-  # config.vm.synced_folder "../data", "/vagrant_data"
+  config.vm.synced_folder ".", "/os-probe"
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
@@ -64,10 +64,13 @@ Vagrant.configure("2") do |config|
   # Ansible, Chef, Docker, Puppet and Salt are also available. Please see the
   # documentation for more information about their specific syntax and use.
   config.vm.provision "shell", inline: <<-SHELL
+    echo "* Using edge repositories"
     sed -i -r s/v3\.14/edge/ /etc/apk/repositories
-    apk add -U git llvm12-static yaml-static sqlite-static openssl3-libs-static crystal shards
-    export SG_ENV="production"
-    git clone https://github.com/gabriel-aires/os-probe
-    cd os-probe; shards install --production; crystal build --release --static ./src/app.cr -o ./dist/os-probe-linux-x86-64.bin
+    echo "* Installig toolchain..."
+    apk add -U git llvm12-static yaml-static sqlite-static zlib-static libretls-static openssl-libs-static openssl-dev crystal shards
+    echo "* Installing dependencies..."
+    cd /os-probe ; shards install --production
+    echo "* Building release..."
+    crystal build --release --static /os-probe/src/app.cr -o /os-probe/dist/os-probe-linux-x86-64.bin
   SHELL
 end
