@@ -68,6 +68,6 @@ Vagrant.configure("2") do |config|
     apk add -U git llvm12-static yaml-static sqlite-static openssl3-libs-static crystal shards
     export SG_ENV="production"
     git clone https://github.com/gabriel-aires/os-probe
-    cd os-probe; shards install; crystal build --release --static ./src/app.cr -o ./dist/os-probe-linux-x86-64.bin
+    cd os-probe; shards install --production; crystal build --release --static ./src/app.cr -o ./dist/os-probe-linux-x86-64.bin
   SHELL
 end
