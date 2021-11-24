@@ -1,5 +1,3 @@
-require "kilt/slang"
-
 class Dashboard < Application
   def index
     hostname = `hostname 2> /dev/null`

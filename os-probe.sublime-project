@@ -28,13 +28,11 @@
             "name": "install",
             "shell_cmd": "shards install",
             "working_dir": "$project_path",
-            "quiet": false            
         },        
         {
             "name": "build",
-            "shell_cmd": "crystal build --error-trace ./src/app.cr",
-            "working_dir": "$project_path",
-            "quiet": false            
+            "shell_cmd": "crystal build ./src/app.cr",
+            "working_dir": "$project_path",    
         },
         {
             "name": "release",

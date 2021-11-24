@@ -1,12 +1,16 @@
 # Application dependencies
 require "action-controller"
-require "kilt"
+require "kilt/slang"
 require "./constants"
 
 # Application code
 require "./controllers/application"
 require "./controllers/*"
 require "./models/*"
+
+# Start jobs
+require "./tasks/schedule"
+require "./tasks/*"
 
 # Server required after application controllers
 require "action-controller/server"

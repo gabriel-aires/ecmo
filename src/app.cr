@@ -62,7 +62,10 @@ server.cluster(process_count, "-w", "--workers") if process_count != 1
 
 terminate = Proc(Signal, Nil).new do |signal|
   puts " > terminating gracefully"
-  spawn { server.close }
+  spawn do
+    server.close
+    Schedule.finish
+  end
   signal.ignore
 end
 
