@@ -1,6 +1,9 @@
 # Application dependencies
 require "action-controller"
 require "kilt/slang"
+require "hardware"
+require "psutil"
+require "sqlite3"
 require "./constants"
 
 # Application code

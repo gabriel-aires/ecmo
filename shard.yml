@@ -34,7 +34,10 @@ dependencies:
     version: ~> 1.0
   hardware:
     github: crystal-community/hardware
-    version: ~> 0.5    
+    version: ~> 0.5
+  psutil:
+    github: gabriel-aires/psutil.cr
+    version: ~> 0.2
 
 development_dependencies:
   ameba:

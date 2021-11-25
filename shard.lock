@@ -2,7 +2,7 @@ version: 2.0
 shards:
   action-controller:
     git: https://github.com/spider-gazelle/action-controller.git
-    version: 4.5.1
+    version: 4.6.0
 
   ameba:
     git: https://github.com/veelenga/ameba.git
@@ -43,6 +43,10 @@ shards:
   micrate:
     git: https://github.com/amberframework/micrate.git
     version: 0.12.0
+
+  psutil:
+    git: https://github.com/gabriel-aires/psutil.cr.git
+    version: 0.2.0
 
   slang:
     git: https://github.com/jeromegn/slang.git
