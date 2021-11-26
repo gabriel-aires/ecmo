@@ -30,7 +30,7 @@ shards:
 
   hardware:
     git: https://github.com/gabriel-aires/hardware.git
-    version: 0.5.2+git.commit.092c568362b0958289a761c1bbf97e0a58c1861a
+    version: 0.5.3
 
   kilt:
     git: https://github.com/jeromegn/kilt.git
