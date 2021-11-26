@@ -1,81 +1,75 @@
 doctype html
-html lang="en"
+html lang="en" data-theme="light"
 
   head
     title Welcome
     link rel="shortcut icon" href="/favicon.ico"
     link rel="stylesheet" href="/pico.min.css"
 
-  body.dark
+  body
     main.container
 
-      header
-        details
-          summary
-            h1 System Information for #{host[:name]}
-          ul
-            li
-              OS
-              = host[:os]
-            li
-              Architecture
-              = host[:arch]
-            li
-              Uptime
-              = host[:uptime]
+      h3 onclick="change_theme();" OS Probe
 
       details
-        summary
-          h3 Hardware Resources
-        ul
-          li
-            CPU (%)
-            = cpu
-          li
-            Total Memory (Mb)
-            = memory[:total_mb]
-          li
-            Used Memory (Mb)
-            = memory[:used_mb]
-          li
-            Free Memory (Mb)
-            = memory[:free_mb]
-          li
-            Memory (%)
-            = memory[:usage]
-          li
-            Load (1m)
-            = load[1]
-          li
-            Load (5m)
-            = load[5]
-          li
-            Load (15m)
-            = load[15]
+        summary System Information for #{host[:name]}
+        table role="grid"
+          tr
+            th OS
+            td= host[:os]
+          tr
+            th Architecture
+            td= host[:arch]
+          tr
+            th Uptime
+            td= host[:uptime]
 
       details
-        summary
-          h3 Net I/O
-        ul
-          li
-            Upload (Mb)
-            = net[:sent_mb]
-          li
-            Download (Mb)
-            = net[:received_mb]
-          li
-            Packets Received
-            = net[:packets_in]
-          li
-            Packets Sent
-            = net[:packets_out]
+        summary Hardware Resources
+        table role="grid"
+          tr
+            th CPU (%)
+            td= cpu
+          tr
+            th Total Memory (Mb)
+            td= memory[:total_mb]
+          tr
+            th Used Memory (Mb)
+            td= memory[:used_mb]
+          tr
+            th Free Memory (Mb)
+            td= memory[:free_mb]
+          tr
+            th Load (1m)
+            td= load[1]
+          tr
+            th Load (5m)
+            td= load[5]
+          tr
+            th Load (15m)
+            td= load[15]
+
+      details
+        summary Net I/O
+        table role="grid"
+          tr
+            th Upload (Mb)
+            td= net[:sent_mb]
+          tr
+            th Download (Mb)
+            td= net[:received_mb]
+          tr
+            th Packets Received
+            td= net[:packets_in]
+          tr
+            th Packets Sent
+            td= net[:packets_out]
 
       h3 Disk Details
       - disks.each do |disk|
         details
-          summary
-            h5 Mountpoint #{disk[:mount]}
-          table role=grid
+          summary Mountpoint #{disk[:mount]}
+          table role="grid"
             tr
               th Filesystem type
               td= disk[:fstype]
@@ -98,9 +92,8 @@ html lang="en"
       h3 Process Details
       - pids.each do |pid|
         details
-          summary
-            h5 #{pid[:number} - #{pid[:name]}
-          table role=grid
+          summary #{pid[:number]} - #{pid[:name]}
+          table role="grid"
             tr
               th Command
               td= pid[:command]
@@ -127,3 +120,13 @@ html lang="en"
         h6 
           | Check the 
           a href="https://github.com/gabriel-aires/os-probe" Github Repo
+
+  javascript:
+    function change_theme() {
+      const html = document.documentElement;
+      if (html.dataset.theme === 'light') {
+        html.dataset.theme = 'dark';
+      } else {
+        html.dataset.theme = 'light';
+      }
+    }

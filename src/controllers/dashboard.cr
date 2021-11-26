@@ -10,24 +10,14 @@ class Dashboard < Application
     
     mem = Hardware::Memory.new
     memory = {
-      :total_mb => mem.total / 1024
-      :used_mb => mem.used / 1024
+      :total_mb => mem.total / 1024,
+      :used_mb => mem.used / 1024,
       :free_mb => mem.available / 1024
     }
     
     cpu = Hardware::CPU.new.usage!.to_i
     
-    pids = Array({
-      :number => Int64,
-      :name => String,
-      :command => String,
-      :cpu_usage => Float,
-      :memory => String,
-      :threads => String,
-      :state => String,
-      :parent => String
-    }).new
-    
+    pids = Array(Hash(Symbol, Float64 | Int64 | String)).new
     Hardware::PID.each do |pid|
       next unless pid.name.size > 0
       pids << {
@@ -42,16 +32,7 @@ class Dashboard < Application
       }
     end
 
-    disks = Array({
-      :mount => String,
-      :fstype => String,
-      :device => String,
-      :size_mb => Float,
-      :used_mb => Float,
-      :free_mb => Float,
-      :usage => Float
-    }).new
-    
+    disks = Array(Hash(Symbol, Float64 | String)).new
     Psutil.disk_partitions.each do |partition|
       du = Psutil.disk_usage partition.mountpoint
       disks << {
