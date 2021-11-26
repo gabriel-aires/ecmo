@@ -1,9 +1,84 @@
 class Dashboard < Application
   def index
-    hostname = `hostname 2> /dev/null`
-    disk_info = `df -h 2> /dev/null`
-    process_info = `top -b -n 1 2> /dev/null`
-    service_info = `systemctl status --all --no-page 2> /dev/null`
+    info = Psutil.host_info
+    host = {
+      :name => info.hostname,
+      :os => info.os,
+      :uptime => info.uptime,
+      :arch => info.arch
+    }
+    
+    mem = Hardware::Memory.new
+    memory = {
+      :total_mb => mem.total / 1024
+      :used_mb => mem.used / 1024
+      :free_mb => mem.available / 1024
+    }
+    
+    cpu = Hardware::CPU.new.usage!.to_i
+    
+    pids = Array({
+      :number => Int64,
+      :name => String,
+      :command => String,
+      :cpu_usage => Float,
+      :memory => String,
+      :threads => String,
+      :state => String,
+      :parent => String
+    }).new
+    
+    Hardware::PID.each do |pid|
+      next unless pid.name.size > 0
+      pids << {
+        :number => pid.number,
+        :name => pid.name,
+        :command => pid.command,
+        :cpu_usage => pid.stat.cpu_usage!,
+        :memory => pid.status.vmrss,
+        :threads => pid.status.threads,
+        :state => pid.status.state,
+        :parent => pid.status.ppid
+      }
+    end
+
+    disks = Array({
+      :mount => String,
+      :fstype => String,
+      :device => String,
+      :size_mb => Float,
+      :used_mb => Float,
+      :free_mb => Float,
+      :usage => Float
+    }).new
+    
+    Psutil.disk_partitions.each do |partition|
+      du = Psutil.disk_usage partition.mountpoint
+      disks << {
+        :mount => du.path,
+        :fstype => partition.fstype,
+        :device => partition.device,
+        :size_mb => du.total / 1024 ** 2,
+        :used_mb => du.used / 1024 ** 2,
+        :free_mb => du.free / 1024 ** 2,
+        :usage => du.used_percent
+      }
+    end
+
+    l_avg = Psutil.load_avg
+    load = {
+      1 => l_avg.load1,
+      5 => l_avg.load5,
+      15 => l_avg.load15
+    }
+
+    netio = Psutil.net_io_counters.select { |counter| counter.name == "all" }.first
+    net = {
+      :received_mb => netio.bytes_recv / 1024 ** 2,
+      :sent_mb => netio.bytes_sent / 1024 ** 2,
+      :packets_in => netio.packets_recv,
+      :packets_out => netio.packets_sent
+    }   
 
     Log.warn { "logs can be collated using the request ID" }
 
@@ -14,7 +89,7 @@ class Dashboard < Application
 
     respond_with do
       html template("welcome.slang")
-      json({hostname: hostname, disk_info: disk_info, process_info: process_info, service_info: service_info})
+      json({host: host, memory: memory, cpu: cpu, pids: pids, disks: disks, load: load, net: net})
     end
   end
 end
