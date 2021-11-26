@@ -33,8 +33,8 @@ dependencies:
     github: crystal-community/future.cr
     version: ~> 1.0
   hardware:
-    github: crystal-community/hardware
-    version: ~> 0.5
+    github: gabriel-aires/hardware
+    commit: 092c568
   psutil:
     github: gabriel-aires/psutil.cr
     version: ~> 0.2
