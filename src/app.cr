@@ -1,5 +1,6 @@
 require "option_parser"
 require "./constants"
+require "sqlite"
 
 # Server defaults
 port = App::DEFAULT_PORT
@@ -25,6 +26,17 @@ OptionParser.parse(ARGV.dup) do |parser|
   parser.on("-v", "--version", "Display the application version") do
     puts "#{App::NAME} v#{App::VERSION}"
     exit 0
+  end
+
+  parser.on("-i", "--install", "Create database, install assets and binaries") do
+  	if Dir.exists?
+  		puts "#{App::NAME} is already installed"
+  	else
+  	 	puts "Installing #{App::NAME} to #{App::ROOT}"
+  		File.mkdir App::ROOT
+		sql = File.read "./install.sql"
+		DB.open "sqlite3://#{App::ROOT}/data.db" { |db| db.exec sql }  		
+  	end
   end
 
   parser.on("-c URL", "--curl=URL", "Perform a basic health check by requesting the URL") do |url|

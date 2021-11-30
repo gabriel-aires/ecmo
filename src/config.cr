@@ -3,8 +3,13 @@ require "action-controller"
 require "kilt/slang"
 require "hardware"
 require "psutil"
+require "granite"
+require "granite/adapter/sqlite"
 require "sqlite3"
 require "./constants"
+
+# Connect to database
+Granite::Connections << Granite::Adapter::Sqlite.new(name: "embedded", url: "sqlite3://#{App:ROOT}/data.db")
 
 # Application code
 require "./controllers/application"

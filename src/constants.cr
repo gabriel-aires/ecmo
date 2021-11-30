@@ -2,6 +2,7 @@ require "action-controller/logger"
 
 module App
   NAME    = "OS-Probe"
+  ROOT    = "/opt/os-probe"
   VERSION = {{ `shards version "#{__DIR__}"`.chomp.stringify.downcase }}
 
   Log         = ::Log.for(NAME)

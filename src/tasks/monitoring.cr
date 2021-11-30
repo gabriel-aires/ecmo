@@ -1,60 +1,56 @@
 Schedule.job :monitoring, :every, 5.second do
+  
+  seconds = Time.local.to_unix
+
   mem = Hardware::Memory.new
-  puts "* Memory"
-  puts ""
-  puts "** total   (MB) : #{mem.total / 1024}"
-  puts "** used    (MB) : #{mem.used / 1024}"
-  puts "** free    (MB) : #{mem.available / 1024}"
-  puts ""
+  Memory.create! seconds: seconds,
+    total_mb: mem.total / 1024,
+    used_mb: mem.used / 1024
+    free_mb: mem.available / 1024
 
   cpu = Hardware::CPU.new
-  puts "* CPU"
-  puts ""
-  puts "** usage    (%) : #{cpu.usage!.to_i}"
-  puts ""
+  CPU.create! seconds: seconds, usage: cpu.usage!.to_i
 
-  puts "* Processes"
-  puts ""
   Hardware::PID.each do |pid|
     next unless pid.name.size > 0
-    puts "** pid (number) : #{pid.number}"
-    puts "** pid   (name) : #{pid.name}"
-    puts "** pid    (cmd) : #{pid.command}"
-    puts "** pid  (cpu %) : #{pid.stat.cpu_usage!}"
-    puts "** pid    (mem) : #{pid.status.vmrss}"
-    puts "** pid(threads) : #{pid.status.threads}"
-    puts "** pid  (state) : #{pid.status.state}"
-    puts "** pid (parent) : #{pid.status.ppid}"
-    puts ""
+    Process.create! seconds: seconds,
+      pid: pid.number,
+      name: pid.name,
+      cmd: pid.command,
+      cpu: pid.stat.cpu_usage!,
+      memory: pid.status.vmrss,
+      threads: pid.status.threads,
+      state: pid.status.state,
+      parent: pid.status.ppid
   end
 
-  puts "* Disk Usage"
-  puts ""
   Psutil.disk_partitions.each do |partition|
     du = Psutil.disk_usage partition.mountpoint
-    puts "** mountpoint   : #{du.path}"
-    puts "** fs_type      : #{partition.fstype}"
-    puts "** device       : #{partition.device}"
-    puts "** size    (Mb) : #{du.total / 1024 ** 2}"
-    puts "** used    (Mb) : #{du.used / 1024 ** 2}"
-    puts "** free    (Mb) : #{du.free / 1024 ** 2}"
-    puts "** usage    (%) : #{du.used_percent}"
-    puts ""
+    disk = Disk.create! seconds: seconds,
+      size_mb: du.total / 1024 ** 2,
+      used_mb: du.used / 1024 ** 2,
+      free_mb: du.free / 1024 ** 2,
+      usage: du.used_percent
+
+    part = Partition.find_by mountpoint: partition.mountpoint
+    part = Partition.create! mountpoint: partition.mountpoint,
+      fs_type: partition.fstype,
+      device: partition.device unless part
+
+    Mount.create! disk_id: disk.id, partition_id: part.id     
   end
 
   l_avg = Psutil.load_avg
-  puts "* Load Averages"
-  puts ""
-  puts "** 1 minute     : #{l_avg.load1}"
-  puts "** 5 minutes    : #{l_avg.load5}"
-  puts "** 15 minutes   : #{l_avg.load15}"
-  puts ""
+  Load.create! seconds: seconds,
+    load1: l_avg.load1,
+    load5: l_avg.load5,
+    load15: l_avg.load15
 
   net = Psutil.net_io_counters.select { |counter| counter.name == "all" }.first
-  puts "* Net I/O"
-  puts ""
-  puts "** received (Mb): #{net.bytes_recv / 1024 ** 2}"
-  puts "** sent     (Mb): #{net.bytes_sent / 1024 ** 2}"
-  puts "** packets  (In): #{net.packets_recv}"
-  puts "** packets (Out): #{net.packets_sent}"
+  Net.create! seconds: seconds,
+    received_mb: net.bytes_recv / 1024 ** 2,
+    sent_mb: net.bytes_sent / 1024 ** 2,
+    received_packets: net.packets_recv,
+    sent_packets: net.packets_sent
+
 end
