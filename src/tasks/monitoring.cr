@@ -5,7 +5,7 @@ Schedule.job :monitoring, :every, 5.second do
   mem = Hardware::Memory.new
   Memory.create! seconds: seconds,
     total_mb: mem.total / 1024,
-    used_mb: mem.used / 1024
+    used_mb: mem.used / 1024,
     free_mb: mem.available / 1024
 
   cpu = Hardware::CPU.new
@@ -13,7 +13,7 @@ Schedule.job :monitoring, :every, 5.second do
 
   Hardware::PID.each do |pid|
     next unless pid.name.size > 0
-    Process.create! seconds: seconds,
+    SystemProcess.create! seconds: seconds,
       pid: pid.number,
       name: pid.name,
       cmd: pid.command,

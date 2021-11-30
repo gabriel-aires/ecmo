@@ -1,4 +1,4 @@
-class Process < Granite::Base
+class SystemProcess < Granite::Base
 	connection embedded
 	table process
 

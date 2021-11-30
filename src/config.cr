@@ -9,7 +9,7 @@ require "sqlite3"
 require "./constants"
 
 # Connect to database
-Granite::Connections << Granite::Adapter::Sqlite.new(name: "embedded", url: "sqlite3://#{App:ROOT}/data.db")
+Granite::Connections << Granite::Adapter::Sqlite.new(name: "embedded", url: "sqlite3://#{App::ROOT}/data.db")
 
 # Application code
 require "./controllers/application"
