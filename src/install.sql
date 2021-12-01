@@ -1,3 +1,5 @@
+PRAGMA journal_mode=WAL;
+
 create table memory (
 	id INTEGER PRIMARY KEY AUTOINCREMENT,
        	seconds integer,
@@ -42,16 +44,16 @@ create table disk (
        	size_mb real,
 	used_mb real,
        	free_mb real,
-	usage real,
+	usage real
 );
 
-create table mount {
+create table mount (
 	id INTEGER PRIMARY KEY AUTOINCREMENT,
 	disk_id integer,
 	partition_id integer,
 	FOREIGN KEY(disk_id) references disk(id),
 	FOREIGN KEY(partition_id) references partition(id)
-};
+);
 
 create index disk_id_idx ON mount (disk_id);
 create index partition_id_idx ON mount (partition_id);
@@ -67,5 +69,5 @@ create table process (
 	threads text,
 	state text,
 	parent text
-);
+)
 

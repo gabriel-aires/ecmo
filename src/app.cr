@@ -34,8 +34,11 @@ OptionParser.parse(ARGV.dup) do |parser|
   	else
   	 	puts "Installing #{App::NAME} to #{App::ROOT}"
   		Dir.mkdir App::ROOT
-		sql = File.read "./install.sql"
-		DB.open "sqlite3://#{App::ROOT}/data.db" { |db| db.exec sql }  		
+		sql = File.read "src/install.sql"
+		statements = sql.split ";"
+		DB.open "sqlite3://#{App::ROOT}/data.db" do |db|
+			statements.each {|stmt| db.exec stmt ; puts stmt}
+		end  		
   	end
   end
 
