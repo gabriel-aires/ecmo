@@ -16,54 +16,61 @@ html lang="en" data-theme="light"
         table role="grid"
           tr
             th OS
-            td= host[:os]
+            td= host[:os] || host.os
           tr
             th Architecture
-            td= host[:arch]
+            td= host[:arch] || host.arch
           tr
             th Uptime
-            td= host[:uptime]
+            td= host[:uptime] || host.uptime
+          tr
+            th Boot Time
+            - if boot[:seconds]
+              td= Time.new seconds: boot[:seconds], nanoseconds: 0, location: Time.local.location
+            - else
+              td= Time.new seconds: boot.seconds, nanoseconds: 0, location: Time.local.location
+
 
       details
         summary Hardware Resources
         table role="grid"
           tr
             th CPU (%)
-            td= cpu
+            td= cpu[:usage] || cpu.usage
           tr
             th Total Memory (Mb)
-            td= memory[:total_mb]
+            td= memory[:total_mb] || memory.total_mb
           tr
             th Used Memory (Mb)
-            td= memory[:used_mb]
+            td= memory[:used_mb] || memory.used_mb
           tr
             th Free Memory (Mb)
-            td= memory[:free_mb]
+            td= memory[:free_mb] || memory.free_mb
           tr
             th Load (1m)
-            td= load[1]
+            td= load[:load1] || load.load1
           tr
             th Load (5m)
-            td= load[5]
+            td= load[:load5] || load.load5
           tr
             th Load (15m)
-            td= load[15]
+            td= load[:load15] || load.load15
 
       details
         summary Net I/O
         table role="grid"
           tr
             th Upload (Mb)
-            td= net[:sent_mb]
+            td= net[:sent_mb] || net.sent_mb
           tr
             th Download (Mb)
-            td= net[:received_mb]
+            td= net[:received_mb] || net.received_mb
           tr
             th Packets Received
-            td= net[:packets_in]
+            td= net[:packets_in] || net.packets_in
           tr
             th Packets Sent
-            td= net[:packets_out]
+            td= net[:packets_out] || net.packets_out
 
       h3 Disk Details
       - disks.each do |disk|
@@ -92,14 +99,14 @@ html lang="en" data-theme="light"
       h3 Process Details
       - pids.each do |pid|
         details
-          summary #{pid[:number]} - #{pid[:name]}
+          summary #{pid[:pid]} - #{pid[:name]}
           table role="grid"
             tr
               th Command
-              td= pid[:command]
+              td= pid[:cmd]
             tr
               th Cpu Usage
-              td= pid[:cpu_usage]
+              td= pid[:cpu]
             tr
               th Memory
               td= pid[:memory]
