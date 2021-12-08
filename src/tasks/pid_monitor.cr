@@ -1,4 +1,4 @@
-Schedule.job :pid_monitor, :cron, "5 * * * * *" do
+Schedule.job :pid_monitor, :cron, "20 * * * * *" do
   seconds = Time.local.to_unix
   pids = Array(SystemProcess).new
 

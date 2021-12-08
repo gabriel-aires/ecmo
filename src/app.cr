@@ -29,17 +29,17 @@ OptionParser.parse(ARGV.dup) do |parser|
   end
 
   parser.on("-i", "--install", "Create database, install assets and binaries") do
-  	if Dir.exists? App::ROOT
-  		puts "#{App::NAME} is already installed"
-  	else
-  	 	puts "Installing #{App::NAME} to #{App::ROOT}"
-  		Dir.mkdir App::ROOT
-		sql = File.read "src/install.sql"
-		statements = sql.split ";"
-		DB.open "sqlite3://#{App::ROOT}/data.db" do |db|
-			statements.each {|stmt| db.exec stmt ; puts stmt}
-		end  		
-  	end
+    if Dir.exists? App::ROOT
+      puts "#{App::NAME} is already installed"
+    else
+      puts "Installing #{App::NAME} to #{App::ROOT}"
+      Dir.mkdir App::ROOT
+      sql = File.read "src/install.sql"
+      statements = sql.split ";"
+      DB.open "sqlite3://#{App::ROOT}/data.db" do |db|
+        statements.each { |stmt| db.exec stmt; puts stmt }
+      end
+    end
   end
 
   parser.on("-c URL", "--curl=URL", "Perform a basic health check by requesting the URL") do |url|

@@ -1,4 +1,4 @@
-Schedule.job :disk_monitor, :cron, "16 * * * * *" do
+Schedule.job :load_monitor, :cron, "10 * * * * *" do
   seconds = Time.local.to_unix
   l_avg = Psutil.load_avg
 

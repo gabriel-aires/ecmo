@@ -13,6 +13,7 @@ module App
   DEFAULT_PORT          = (ENV["SG_SERVER_PORT"]? || 3000).to_i
   DEFAULT_HOST          = ENV["SG_SERVER_HOST"]? || "127.0.0.1"
   DEFAULT_PROCESS_COUNT = (ENV["SG_PROCESS_COUNT"]? || 1).to_i
+  DEFAULT_DB_RETENTION  = (ENV["DB_RETENTION"]? || 30).to_i
 
   STATIC_FILE_PATH = ENV["PUBLIC_WWW_PATH"]? || "./assets"
 
