@@ -8,6 +8,10 @@ shards:
     git: https://github.com/veelenga/ameba.git
     version: 0.14.3
 
+  baked_file_system:
+    git: https://github.com/schovi/baked_file_system.git
+    version: 0.10.0
+
   cron_parser:
     git: https://github.com/kostya/cron_parser.git
     version: 0.4.0

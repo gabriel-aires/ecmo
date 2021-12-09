@@ -1,4 +1,16 @@
 class Dashboard < Application
+  rescue_from DB::ConnectionRefused, :db_error
+  rescue_from NilAssertionError, :null_error
+
+  def db_error(e)
+    render :internal_server_error, text: "500 Internal Server Error: Unable to open database"
+  end
+
+  def null_error(e)
+    # Redirect to realtime dashboard if metrics are not in database yet
+    redirect_to Dashboard.realtime
+  end
+
   def index
     last = {
       boot:   Sequence.find_by(name: "boot"),

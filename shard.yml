@@ -29,6 +29,9 @@ dependencies:
   future:
     github: crystal-community/future.cr
     version: ~> 1.0
+  baked_file_system:
+    github: schovi/baked_file_system
+    version: ~> 0.10
   hardware:
     github: gabriel-aires/hardware
     version: ~> 0.5

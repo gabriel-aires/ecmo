@@ -1,6 +1,8 @@
+require "baked_file_system"
 require "option_parser"
-require "./constants"
 require "sqlite3"
+require "./constants"
+require "./lib/*"
 
 # Server defaults
 port = App::DEFAULT_PORT
@@ -34,7 +36,8 @@ OptionParser.parse(ARGV.dup) do |parser|
     else
       puts "Installing #{App::NAME} to #{App::ROOT}"
       Dir.mkdir App::ROOT
-      sql = File.read "src/install.sql"
+      schema = Storage.get "setup/install.sql"
+      sql = schema.gets_to_end
       statements = sql.split ";"
       DB.open "sqlite3://#{App::ROOT}/data.db" do |db|
         statements.each { |stmt| db.exec stmt }

@@ -2,9 +2,10 @@ doctype html
 html lang="en" data-theme="light"
 
   head
-    title Welcome
-    link rel="shortcut icon" href="/favicon.ico"
-    link rel="stylesheet" href="/pico.min.css"
+    title Dashboard
+    meta charset="UTF-8"
+    link rel="shortcut icon" href=Assets.show(id:"favicon.ico")
+    link rel="stylesheet" href=Assets.show(id:"pico.min.css")
 
   body
     main.container

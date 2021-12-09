@@ -3,15 +3,15 @@
     [
         {
             "path": "spec",
-            "name": "Tests"
+            "name": "Test"
         },
         {
             "path": "src",
-            "name": "Source Code"
+            "name": "Main"
         },
         {
-            "path": "assets",
-            "name": "Static Files"
+            "path": "vfs",
+            "name": "VFS"
         },
         {
             "path": "/",

@@ -5,7 +5,6 @@ require "hardware"
 require "psutil"
 require "granite"
 require "granite/adapter/sqlite"
-require "sqlite3"
 require "./constants"
 
 # Connect to database
@@ -45,16 +44,18 @@ ActionController::Server.before(
   HTTP::CompressHandler.new
 )
 
+# Static file serving disabled, files are stored in embedded vfs
+#
 # Optional support for serving of static assests
-if File.directory?(App::STATIC_FILE_PATH)
-  # Optionally add additional mime types
-  ::MIME.register(".yaml", "text/yaml")
+# if File.directory?(App::STATIC_FILE_PATH)
+#   # Optionally add additional mime types
+#   ::MIME.register(".yaml", "text/yaml")
 
-  # Check for files if no paths matched in your application
-  ActionController::Server.before(
-    ::HTTP::StaticFileHandler.new(App::STATIC_FILE_PATH, directory_listing: false)
-  )
-end
+#   # Check for files if no paths matched in your application
+#   ActionController::Server.before(
+#     ::HTTP::StaticFileHandler.new(App::STATIC_FILE_PATH, directory_listing: false)
+#   )
+# end
 
 # Configure session cookies
 # NOTE:: Change these from defaults
