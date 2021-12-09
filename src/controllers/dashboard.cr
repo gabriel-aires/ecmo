@@ -1,7 +1,5 @@
 class Dashboard < Application
   def index
-    host = Host.first.not_nil!
-
     last = {
       boot:   Sequence.find_by(name: "boot"),
       cpu:    Sequence.find_by(name: "cpu"),
@@ -12,20 +10,76 @@ class Dashboard < Application
       pid:    Sequence.find_by(name: "process"),
     }
 
-    boot = Boot.find last[:boot].not_nil!.seq
-    cpu = CPU.find last[:cpu].not_nil!.seq
-    load = Load.find last[:load].not_nil!.seq
-    memory = Memory.find last[:memory].not_nil!.seq
-    net = Net.find last[:net].not_nil!.seq
-    latest_disk = Disk.find last[:disk].not_nil!.seq
-    latest_pid = SystemProcess.find last[:pid].not_nil!.seq
+    info = Host.first.not_nil!
+    host = {
+      :name   => info.name,
+      :os     => info.os,
+      :uptime => info.uptime,
+      :arch   => info.arch,
+    }
 
-    disks = Disk.all("JOIN mount m ON m.disk_id = disk.id \
-                      JOIN partition p on p.id = m.partition_id \
+    bt = Boot.find last[:boot].not_nil!.seq
+    boot = {:seconds => bt.not_nil!.seconds}
+
+    mem = Memory.find last[:memory].not_nil!.seq
+    memory = {
+      :total_mb => mem.not_nil!.total_mb,
+      :used_mb  => mem.not_nil!.used_mb,
+      :free_mb  => mem.not_nil!.free_mb,
+    }
+
+    processor = CPU.find last[:cpu].not_nil!.seq
+    cpu = {:usage => processor.not_nil!.usage}
+
+    l_avg = Load.find last[:load].not_nil!.seq
+    load = {
+      :load1  => l_avg.not_nil!.load1,
+      :load5  => l_avg.not_nil!.load5,
+      :load15 => l_avg.not_nil!.load15,
+    }
+
+    netio = Net.find last[:net].not_nil!.seq
+    net = {
+      :received_mb => netio.not_nil!.received_mb,
+      :sent_mb     => netio.not_nil!.sent_mb,
+      :packets_in  => netio.not_nil!.received_packets,
+      :packets_out => netio.not_nil!.sent_packets,
+    }
+
+    disks = Array(Hash(Symbol, Float64 | String)).new
+    latest_disk = Disk.find last[:disk].not_nil!.seq
+    storage = Disk.all("JOIN partition p on p.id = disk.partition_id \
                       WHERE seconds = ? \
                       ORDER BY p.mountpoint ASC", [latest_disk.not_nil!.seconds])
 
-    pids = SystemProcess.all("WHERE seconds = ? ORDER BY name ASC", [latest_pid.not_nil!.seconds])
+    storage.each do |disk|
+      disks << {
+        :mount   => disk.partition.not_nil!.mountpoint,
+        :fstype  => disk.partition.not_nil!.fs_type,
+        :device  => disk.partition.not_nil!.device,
+        :size_mb => disk.size_mb,
+        :used_mb => disk.used_mb,
+        :free_mb => disk.free_mb,
+        :usage   => disk.usage,
+      }
+    end
+
+    pids = Array(Hash(Symbol, Float64 | Int64 | String)).new
+    latest_pid = SystemProcess.find last[:pid].not_nil!.seq
+    processes = SystemProcess.all("WHERE seconds = ? ORDER BY name ASC", [latest_pid.not_nil!.seconds])
+
+    processes.each do |pid|
+      pids << {
+        :pid     => pid.pid,
+        :name    => pid.name,
+        :cmd     => pid.cmd,
+        :cpu     => pid.cpu,
+        :memory  => pid.memory,
+        :threads => pid.threads,
+        :state   => pid.state,
+        :parent  => pid.parent,
+      }
+    end
 
     respond_with do
       html template("dashboard.slang")
@@ -52,6 +106,21 @@ class Dashboard < Application
     }
 
     cpu = {:usage => Hardware::CPU.new.usage!.to_i}
+
+    l_avg = Psutil.load_avg
+    load = {
+      :load1  => l_avg.load1,
+      :load5  => l_avg.load5,
+      :load15 => l_avg.load15,
+    }
+
+    netio = Psutil.net_io_counters.select { |counter| counter.name == "all" }.first
+    net = {
+      :received_mb => netio.bytes_recv / 1024 ** 2,
+      :sent_mb     => netio.bytes_sent / 1024 ** 2,
+      :packets_in  => netio.packets_recv,
+      :packets_out => netio.packets_sent,
+    }
 
     pids = Array(Hash(Symbol, Float64 | Int64 | String)).new
     Hardware::PID.each do |pid|
@@ -81,21 +150,6 @@ class Dashboard < Application
         :usage   => du.used_percent,
       }
     end
-
-    l_avg = Psutil.load_avg
-    load = {
-      :load1  => l_avg.load1,
-      :load5  => l_avg.load5,
-      :load15 => l_avg.load15,
-    }
-
-    netio = Psutil.net_io_counters.select { |counter| counter.name == "all" }.first
-    net = {
-      :received_mb => netio.bytes_recv / 1024 ** 2,
-      :sent_mb     => netio.bytes_sent / 1024 ** 2,
-      :packets_in  => netio.packets_recv,
-      :packets_out => netio.packets_sent,
-    }
 
     respond_with do
       html template("dashboard.slang")

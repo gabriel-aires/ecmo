@@ -2,21 +2,21 @@ PRAGMA journal_mode=WAL;
 
 create table host (
 	id INTEGER PRIMARY KEY AUTOINCREMENT,
-   	name text,
-   	os text,
-   	uptime integer,
-   	arch text
+ 	name text,
+ 	os text,
+ 	uptime integer,
+ 	arch text
 );
 
 create table boot (
 	id INTEGER PRIMARY KEY AUTOINCREMENT,
-   	seconds integer
+  seconds integer
 );
 
 create table cpu (
 	id INTEGER PRIMARY KEY AUTOINCREMENT,
-   	seconds integer,
-   	usage real
+ 	seconds integer,
+ 	usage real
 );
 
 create table load (
@@ -29,10 +29,10 @@ create table load (
 
 create table memory (
 	id INTEGER PRIMARY KEY AUTOINCREMENT,
-   	seconds integer,
-   	total_mb real,
-   	used_mb real,
-   	free_mb real
+ 	seconds integer,
+ 	total_mb real,
+ 	used_mb real,
+ 	free_mb real
 );
 
 create table net (
@@ -57,29 +57,22 @@ create table process (
 	parent text
 );
 
+create table partition (
+	id INTEGER PRIMARY KEY AUTOINCREMENT,
+ 	mountpoint text,
+ 	fs_type text,
+ 	device text
+);
+
 create table disk (
 	id INTEGER PRIMARY KEY AUTOINCREMENT,
 	seconds integer,
 	size_mb real,
 	used_mb real,
 	free_mb real,
-	usage real
+	usage real,
+	partition_id integer,	
+	FOREIGN KEY(partition_id) references partition(id)	
 );
 
-create table partition (
-	id INTEGER PRIMARY KEY AUTOINCREMENT,
-   	mountpoint text,
-   	fs_type text,
-   	device text
-);
-
-create table mount (
-	id INTEGER PRIMARY KEY AUTOINCREMENT,
-	disk_id integer,
-	partition_id integer,
-	FOREIGN KEY(disk_id) references disk(id),
-	FOREIGN KEY(partition_id) references partition(id)
-);
-
-create index disk_id_idx ON mount (disk_id);
-create index partition_id_idx ON mount (partition_id)
+create index partition_id_idx ON disk (partition_id)
