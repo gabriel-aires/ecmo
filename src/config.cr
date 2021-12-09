@@ -1,14 +1,12 @@
 # Application dependencies
 require "action-controller"
 require "kilt/slang"
-require "hardware"
-require "psutil"
 require "granite"
 require "granite/adapter/sqlite"
 require "./constants"
 
 # Connect to database
-Granite::Connections << Granite::Adapter::Sqlite.new(name: "embedded", url: "sqlite3://#{App::ROOT}/data.db")
+Granite::Connections << Granite::Adapter::Sqlite.new(name: "embedded", url: "sqlite3://#{App::ROOT}/db/data.db")
 
 # Application code
 require "./models/*"

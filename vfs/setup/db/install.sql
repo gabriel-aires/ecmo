@@ -75,4 +75,25 @@ create table disk (
 	FOREIGN KEY(partition_id) references partition(id)	
 );
 
-create index partition_id_idx ON disk (partition_id)
+create table job (
+	id INTEGER PRIMARY KEY AUTOINCREMENT,
+ 	path text,
+ 	name text,
+ 	cron text,
+ 	rev integer,
+ 	log integer
+);
+
+create table run (
+	id INTEGER PRIMARY KEY AUTOINCREMENT,
+	seconds integer,
+	duration integer,
+	output text,
+	error text,
+	success integer,
+	job_id integer,	
+	FOREIGN KEY(job_id) references job(id)	
+);
+
+create index partition_id_idx ON disk (partition_id);
+create index job_id_idx ON run (job_id)

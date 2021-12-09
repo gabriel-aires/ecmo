@@ -1,7 +1,7 @@
 require "tasker"
 
 class Schedule
-  def self.job(id : Symbol, dispatch : Symbol, time : Time, &callback : -> _)
+  def self.job(id : Symbol | String, dispatch : Symbol, time : Time, &callback : -> _)
     if dispatch == :at
       self.store[id] = Tasker.at(time, &callback)
     else
@@ -9,7 +9,7 @@ class Schedule
     end
   end
 
-  def self.job(id : Symbol, dispatch : Symbol, time : Time::Span | String, &callback : -> _)
+  def self.job(id : Symbol | String, dispatch : Symbol, time : Time::Span | String, &callback : -> _)
     case dispatch
     when :in
       self.store[id] = Tasker.in(time, &callback)
@@ -20,7 +20,7 @@ class Schedule
     end
   end
 
-  def self.job(id : Symbol, dispatch : Symbol, time : String, &callback : -> _)
+  def self.job(id : Symbol | String, dispatch : Symbol, time : String, &callback : -> _)
     if dispatch == :cron
       self.store[id] = Tasker.cron(time, &callback)
     else
@@ -44,6 +44,6 @@ class Schedule
   end
 
   def self.store
-    @@jobs ||= Hash(Symbol, Tasker::Task).new
+    @@jobs ||= Hash(Symbol | String, Tasker::Task).new
   end
 end

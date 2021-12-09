@@ -1,6 +1,8 @@
 require "baked_file_system"
 require "option_parser"
 require "sqlite3"
+require "hardware"
+require "psutil"
 require "./constants"
 require "./lib/*"
 
@@ -30,19 +32,50 @@ OptionParser.parse(ARGV.dup) do |parser|
     exit 0
   end
 
-  parser.on("-i", "--install", "Create database, install assets and binaries") do
+  parser.on("-i", "--install", "Install database, binaries and job definitions") do
     if Dir.exists? App::ROOT
       puts "#{App::NAME} is already installed"
     else
+      # create folder structure
       puts "Installing #{App::NAME} to #{App::ROOT}"
-      Dir.mkdir App::ROOT
-      schema = Storage.get "setup/install.sql"
+
+      app = App::NAME
+      install_path = App::ROOT
+      db_path = App::ROOT + "/db"
+      binary_path = App::ROOT + "/bin"
+      job_path = App::ROOT + "/jobs"
+
+      [install_path, db_path, binary_path, job_path].each { |folder| Dir.mkdir folder }
+
+      # create db schema
+      schema = Storage.get "setup/db/install.sql"
       sql = schema.gets_to_end
       statements = sql.split ";"
-      DB.open "sqlite3://#{App::ROOT}/data.db" do |db|
+      DB.open "sqlite3://#{db_path}/data.db" do |db|
         statements.each { |stmt| db.exec stmt }
       end
+
+      # install mitamae binary
+      machine = Psutil.host_info
+      file = Storage.get "setup/bin/#{machine.arch.downcase}/#{machine.os.downcase}/mitamae"
+      mitamae = file.gets_to_end
+      mitamae_path = binary_path + "/mitamae"
+      File.write mitamae_path, mitamae
+      File.chmod mitamae_path, 0o755
+
+      # instal main binary
+      program_path = binary_path + "/" + app.downcase
+      File.copy Process.executable_path.not_nil!, program_path
+
+      # install sample job
+      job_sample = "host_inventory.rb"
+      script = Storage.get "setup/jobs/" + job_sample
+      script_path = job_path + "/" + job_sample
+      File.write script_path, script.gets_to_end
+      File.chmod script_path, 0o644
     end
+
+    exit 0
   end
 
   parser.on("-c URL", "--curl=URL", "Perform a basic health check by requesting the URL") do |url|
