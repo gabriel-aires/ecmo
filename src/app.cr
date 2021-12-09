@@ -37,7 +37,7 @@ OptionParser.parse(ARGV.dup) do |parser|
       sql = File.read "src/install.sql"
       statements = sql.split ";"
       DB.open "sqlite3://#{App::ROOT}/data.db" do |db|
-        statements.each { |stmt| db.exec stmt; puts stmt }
+        statements.each { |stmt| db.exec stmt }
       end
     end
   end
@@ -105,4 +105,4 @@ server.run do
 end
 
 # Shutdown message
-puts "#{App::NAME} leaps through the veldt\n"
+puts "#{App::NAME} stopped.\n"

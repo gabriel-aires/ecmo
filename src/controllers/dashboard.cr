@@ -65,8 +65,8 @@ class Dashboard < Application
     end
 
     pids = Array(Hash(Symbol, Float64 | Int64 | String)).new
-    latest_pid = SystemProcess.find last[:pid].not_nil!.seq
-    processes = SystemProcess.all("WHERE seconds = ? ORDER BY name ASC", [latest_pid.not_nil!.seconds])
+    latest_pid = Pid.find last[:pid].not_nil!.seq
+    processes = Pid.all("WHERE seconds = ? ORDER BY name ASC", [latest_pid.not_nil!.seconds])
 
     processes.each do |pid|
       pids << {

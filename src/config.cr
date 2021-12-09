@@ -12,9 +12,9 @@ require "./constants"
 Granite::Connections << Granite::Adapter::Sqlite.new(name: "embedded", url: "sqlite3://#{App::ROOT}/data.db")
 
 # Application code
+require "./models/*"
 require "./controllers/application"
 require "./controllers/*"
-require "./models/*"
 
 # Start jobs
 require "./tasks/schedule"

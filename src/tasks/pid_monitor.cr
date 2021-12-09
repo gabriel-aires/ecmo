@@ -1,10 +1,10 @@
 Schedule.job :pid_monitor, :cron, "20 * * * * *" do
   seconds = Time.local.to_unix
-  pids = Array(SystemProcess).new
+  pids = Array(Pid).new
 
   Hardware::PID.each do |pid|
     next unless pid.name.size > 0
-    pids << SystemProcess.new seconds: seconds,
+    pids << Pid.new seconds: seconds,
       pid: pid.number,
       name: pid.name,
       cmd: pid.command,
@@ -15,5 +15,5 @@ Schedule.job :pid_monitor, :cron, "20 * * * * *" do
       parent: pid.status.ppid
   end
 
-  SystemProcess.import pids
+  Pid.import pids
 end
