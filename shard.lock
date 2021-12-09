@@ -2,7 +2,7 @@ version: 2.0
 shards:
   action-controller:
     git: https://github.com/spider-gazelle/action-controller.git
-    version: 4.6.0
+    version: 4.7.0
 
   ameba:
     git: https://github.com/veelenga/ameba.git
@@ -39,10 +39,6 @@ shards:
   lucky_router:
     git: https://github.com/luckyframework/lucky_router.git
     version: 0.5.1
-
-  micrate:
-    git: https://github.com/amberframework/micrate.git
-    version: 0.12.0
 
   psutil:
     git: https://github.com/gabriel-aires/psutil.cr.git
