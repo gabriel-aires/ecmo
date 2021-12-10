@@ -1,3 +1,11 @@
+enum Level
+  Debug
+  Info
+  Warn
+  Error
+  Fatal
+end
+
 class Job < Granite::Base
   connection embedded
   table job
@@ -8,5 +16,5 @@ class Job < Granite::Base
   column name : String
   column cron : String
   column rev : Int64
-  column log : Bool
+  column log : Level, column_type: "TEXT", converter: Granite::Converters::Enum(Level, String)
 end

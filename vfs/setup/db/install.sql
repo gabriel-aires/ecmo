@@ -81,7 +81,7 @@ create table job (
  	name text,
  	cron text,
  	rev integer,
- 	log integer
+ 	log text
 );
 
 create table run (

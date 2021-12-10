@@ -1,6 +1,6 @@
 # name:			Host Inventory 
 # schedule:	* * * * * 
-# log:			true 
+# log:			error 
 # revision:	1 
 
 keys = [

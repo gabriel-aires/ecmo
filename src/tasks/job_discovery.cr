@@ -1,5 +1,4 @@
 Schedule.job :job_discovery, :in, 5.seconds do
-  jobs = Array(Job).new
   script_dir = App::ROOT + "/jobs"
   scripts = Dir.glob script_dir + "/*.rb"
 
@@ -7,8 +6,8 @@ Schedule.job :job_discovery, :in, 5.seconds do
     i = 0
     name = nil
     cron = "on-demand"
-    log = true
-    rev = 1
+    log = Level::Info
+    rev = 1_i64
 
     File.each_line script do |header|
       case header
@@ -22,12 +21,17 @@ Schedule.job :job_discovery, :in, 5.seconds do
           cron = "on-demand"
         end
       when .starts_with? "# log:"
-        log = header.sub("# log:", "").strip == "true" ? true : false
+        level = header.sub("# log:", "").strip
+        begin
+          log = Level.parse(level)
+        rescue
+          log = Level::Info
+        end
       when .starts_with? "# revision:"
         begin
           rev = header.sub("# revision:", "").strip.to_i64
         rescue
-          rev = 1
+          rev = 1_i64
         end
       end
 
@@ -37,11 +41,23 @@ Schedule.job :job_discovery, :in, 5.seconds do
 
     if job = Job.find_by name: name
       updated = (job.path != script) || (job.cron != cron) || (job.log != log) || (job.rev != rev)
-      job.update path: script, cron: cron, log: log, rev: rev if updated
+
+      job.path = script
+      job.cron = cron
+      job.log = log
+      job.rev = rev
+
+      job.save if updated
     else
-      jobs << Job.new name: name, path: script, cron: cron, log: log, rev: rev
+      job = Job.new
+
+      job.name = !!name ? name : script.sub(script_dir, "").sub(".rb", "").tr("/", "_")
+      job.path = script
+      job.cron = cron
+      job.log = log
+      job.rev = rev
+
+      job.save
     end
   end
-
-  Job.import jobs
 end

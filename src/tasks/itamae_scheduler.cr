@@ -17,7 +17,7 @@ Schedule.job :itamae_scheduler, :in, 10.seconds do
         io = {:error => "", :output => ""}
 
         begin
-          Process.run mitamae, args: ["local", job.path] do |process|
+          Process.run mitamae, args: ["local", "-l", job.log.to_s, job.path] do |process|
             io[:output] = process.output.gets_to_end
             io[:error] = process.error.gets_to_end
           end
@@ -33,7 +33,7 @@ Schedule.job :itamae_scheduler, :in, 10.seconds do
 
         Run.create seconds: run_at,
           duration: duration,
-          output: job.log ? io[:output] : nil,
+          output: io[:output],
           error: io[:error],
           success: success,
           job_id: job.id
