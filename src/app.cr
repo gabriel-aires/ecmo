@@ -52,6 +52,7 @@ OptionParser.parse(ARGV.dup) do |parser|
       schema = Storage.get "setup/db/install.sql"
       sql = schema.gets_to_end
       statements = sql.split ";"
+
       DB.open "sqlite3://#{db_path}/data.db" do |db|
         statements.each { |stmt| db.exec stmt }
       end
@@ -68,24 +69,34 @@ OptionParser.parse(ARGV.dup) do |parser|
       program_path = binary_path + "/" + app.downcase
       File.copy Process.executable_path.not_nil!, program_path
 
-      # install sample jobs
-      job_sample = "host_inventory.rb"
-      script = Storage.get "setup/jobs/" + job_sample
-      script_path = job_path + "/" + job_sample
-      File.write script_path, script.gets_to_end
-      File.chmod script_path, 0o644
+      # install sample jobs / lib
+      job_samples = ["host_inventory.rb", "host_report.rb", "probe_restart.rb", "probe_shutdown.rb"]
 
-      job_sample = "host_report.rb"
-      script = Storage.get "setup/jobs/" + job_sample
-      script_path = job_path + "/" + job_sample
-      File.write script_path, script.gets_to_end
-      File.chmod script_path, 0o644
+      job_samples.each do |job_sample|
+        script = Storage.get "setup/jobs/" + job_sample
+        script_path = job_path + "/" + job_sample
+        File.write script_path, script.gets_to_end
+        File.chmod script_path, 0o644
+      end
 
       job_lib = "host.rb"
       script = Storage.get "setup/jobs/lib/" + job_lib
       script_path = lib_path + "/" + job_lib
       File.write script_path, script.gets_to_end
       File.chmod script_path, 0o644
+
+      # install service / configuration
+      service_unit = "/etc/systemd/system/os-probe.service"
+      service_conf = install_path + "/os-probe.conf"
+
+      unit_file = Storage.get "setup/service/os-probe.service"
+      conf_file = Storage.get "setup/service/os-probe.conf"
+
+      File.write service_unit, unit_file.gets_to_end
+      File.write service_conf, conf_file.gets_to_end
+
+      File.chmod service_unit, 0o664
+      File.chmod service_conf, 0o664
     end
 
     exit 0

@@ -1,6 +1,8 @@
 require "uuid"
 
 abstract class Application < ActionController::Base
+  layout "layout.slang"
+
   # Configure your log source name
   # NOTE:: this is chaining from App::Log
   Log = ::App::Log.for("controller")

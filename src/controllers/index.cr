@@ -2,6 +2,8 @@ class Index < Application
   base "/"
 
   def index
-    redirect_to Dashboard.index
+    respond_with do
+      html template("index.slang")
+    end
   end
 end

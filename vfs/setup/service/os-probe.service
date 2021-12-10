@@ -1,0 +1,13 @@
+[Unit]
+Description=OS-Probe dashboard for system metrics and configuration management
+After=network.target remote-fs.target
+
+[Service]
+EnvironmentFile=/opt/os-probe/os-probe.conf
+PassEnvironment=MODE SERVER_PORT SERVER_HOST DB_RETENTION COOKIE_SESSION_KEY COOKIE_SESSION_SECRET
+ExecStart=/opt/os-probe/bin/os-probe
+ExecStop=/bin/kill -s TERM $MAINPID
+User=root
+
+[Install]
+WantedBy=multi-user.target
