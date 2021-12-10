@@ -44,8 +44,9 @@ OptionParser.parse(ARGV.dup) do |parser|
       db_path = App::ROOT + "/db"
       binary_path = App::ROOT + "/bin"
       job_path = App::ROOT + "/jobs"
+      lib_path = App::ROOT + "/jobs/lib"
 
-      [install_path, db_path, binary_path, job_path].each { |folder| Dir.mkdir folder }
+      [install_path, db_path, binary_path, job_path, lib_path].each { |folder| Dir.mkdir folder }
 
       # create db schema
       schema = Storage.get "setup/db/install.sql"
@@ -67,10 +68,22 @@ OptionParser.parse(ARGV.dup) do |parser|
       program_path = binary_path + "/" + app.downcase
       File.copy Process.executable_path.not_nil!, program_path
 
-      # install sample job
+      # install sample jobs
       job_sample = "host_inventory.rb"
       script = Storage.get "setup/jobs/" + job_sample
       script_path = job_path + "/" + job_sample
+      File.write script_path, script.gets_to_end
+      File.chmod script_path, 0o644
+
+      job_sample = "host_report.rb"
+      script = Storage.get "setup/jobs/" + job_sample
+      script_path = job_path + "/" + job_sample
+      File.write script_path, script.gets_to_end
+      File.chmod script_path, 0o644
+
+      job_lib = "host.rb"
+      script = Storage.get "setup/jobs/lib/" + job_lib
+      script_path = lib_path + "/" + job_lib
       File.write script_path, script.gets_to_end
       File.chmod script_path, 0o644
     end
