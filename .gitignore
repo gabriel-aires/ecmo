@@ -1,6 +1,8 @@
 lib
 app
 bin
+!src/lib
+!vfs/setup/bin
 *.sublime-workspace
 *.out
 .vagrant
