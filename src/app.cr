@@ -117,26 +117,33 @@ OptionParser.parse(ARGV.dup) do |parser|
 
   parser.on("-c INIT", "--config=INIT", "Configure init service: openrc|systemd") do |init|
     case init.downcase
+
     when "openrc"
+      unit_mode = 0o755
+      conf_mode = 0o644
       unit_file = Storage.get "setup/service/os-probe.sh"
+      conf_file = Storage.get "setup/service/os-probe.conf"
       service_unit = "/etc/init.d/os-probe"
       service_conf = "/etc/conf.d/os-probe"
+
     when "systemd"
+      unit_mode = 0o644
+      conf_mode = 0o644
       unit_file = Storage.get "setup/service/os-probe.service"
+      conf_file = Storage.get "setup/service/os-probe.conf"
       service_unit = "/etc/systemd/system/os-probe.service"
       service_conf = install_path + "/os-probe.conf"
+
     else
       puts "Unknown init type. Options are: OpenRC|systemd"
       exit 1
     end
 
-    conf_file = Storage.get "setup/service/os-probe.conf"
-
     begin
       File.write service_unit, unit_file.gets_to_end
       File.write service_conf, conf_file.gets_to_end
-      File.chmod service_unit, 0o664
-      File.chmod service_conf, 0o664
+      File.chmod service_unit, unit_mode
+      File.chmod service_conf, conf_mode
     rescue ex : File::AccessDeniedError
       puts "Must run as root."
       exit 1
