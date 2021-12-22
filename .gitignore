@@ -4,7 +4,7 @@ bin
 !src/lib
 !vfs/setup/bin
 !vfs/setup/jobs/lib
-*.sublime-workspace
+*.sublime*
 *.out
 .vagrant
 .prj

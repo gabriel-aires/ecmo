@@ -3,37 +3,43 @@ require "tasker"
 class Schedule
   def self.job(id : Symbol | String, dispatch : Symbol, time : Time, &callback : -> _)
     if dispatch == :at
-      self.store[id] = Tasker.at(time, &callback)
+      store[id] = Tasker.at(time, &callback)
     else
-      self.usage
+      usage
     end
+
+    call_msg id, dispatch, time
   end
 
   def self.job(id : Symbol | String, dispatch : Symbol, time : Time::Span | String, &callback : -> _)
     case dispatch
     when :in
-      self.store[id] = Tasker.in(time, &callback)
+      store[id] = Tasker.in(time, &callback)
     when :every
-      self.store[id] = Tasker.every(time, &callback)
+      store[id] = Tasker.every(time, &callback)
     else
-      self.usage
+      usage
     end
+
+    call_msg id, dispatch, time
   end
 
   def self.job(id : Symbol | String, dispatch : Symbol, time : String, &callback : -> _)
     if dispatch == :cron
-      self.store[id] = Tasker.cron(time, &callback)
+      store[id] = Tasker.cron(time, &callback)
     else
-      self.usage
+      usage
     end
+
+    call_msg id, dispatch, time
   end
 
   def self.finish
-    self.store.each do |id, job|
-      puts "Finishing job '#{id}'..."
+    store.each do |id, job|
+      puts "Finishing job \"#{id}\""
       job.cancel
     end
-    self.store.clear
+    store.clear
     puts "Schedule finished."
   rescue error
     puts "Failed to cancel running jobs\n#{error.inspect_with_backtrace}"
@@ -45,5 +51,9 @@ class Schedule
 
   def self.store
     @@jobs ||= Hash(Symbol | String, Tasker::Task).new
+  end
+
+  def self.call_msg(id, dispatch, time)
+    puts "Calling job \"#{id}\" (#{dispatch} #{time})"
   end
 end

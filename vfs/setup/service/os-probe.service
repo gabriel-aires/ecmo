@@ -4,7 +4,7 @@ After=network.target remote-fs.target
 
 [Service]
 EnvironmentFile=/opt/os-probe/os-probe.conf
-PassEnvironment=MODE SERVER_PORT SERVER_HOST DB_RETENTION COOKIE_SESSION_KEY COOKIE_SESSION_SECRET
+PassEnvironment=MODE SERVER_PORT SERVER_HOST DB_RETENTION SESSION_KEY SESSION_SECRET
 ExecStart=/opt/os-probe/bin/os-probe
 ExecStop=/bin/kill -s TERM $MAINPID
 User=root

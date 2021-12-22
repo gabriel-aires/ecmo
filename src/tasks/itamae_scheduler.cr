@@ -39,9 +39,8 @@ Schedule.job :itamae_scheduler, :in, 10.seconds do
           job_id: job.id
       end
 
-      puts "Found job '#{job.name}' r#{job.rev} at #{job.path}. Trigger: cron #{job.cron}. Log: #{job.log}"
     rescue
-      puts "Found job '#{job.name}' r#{job.rev} at #{job.path}. Trigger: on-demand. Log: #{job.log}"
+      Schedule.call_msg job_id, "on", "demand"
     end
   end
 end
