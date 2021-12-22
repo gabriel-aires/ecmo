@@ -5,8 +5,18 @@ require "granite"
 require "granite/adapter/sqlite"
 require "./constants"
 
-# Connect to database
-Granite::Connections << Granite::Adapter::Sqlite.new(name: "embedded", url: "sqlite3://#{App::ROOT}/db/data.db")
+# Configure and test connection
+db_url = "sqlite3://#{App::ROOT}/db/data.db"
+
+begin
+  Granite::Connections << Granite::Adapter::Sqlite.new(name: "embedded", url: db_url)
+  DB.open db_url do |db|
+    db.scalar "select 1"
+  end
+rescue ex: DB::ConnectionRefused
+  puts "Unable to access database. Exiting..."
+  exit 1
+end
 
 # Application code
 require "./models/*"

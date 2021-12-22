@@ -6,24 +6,23 @@ require "psutil"
 require "./constants"
 require "./lib/*"
 
-# Server defaults
+# App defaults
 port = App::DEFAULT_PORT
 host = App::DEFAULT_HOST
 process_count = App::DEFAULT_PROCESS_COUNT
+app = App::NAME
+install_path = App::ROOT
+db_path = App::ROOT + "/db"
+binary_path = App::ROOT + "/bin"
+job_path = App::ROOT + "/jobs"
+lib_path = App::ROOT + "/jobs/lib"
 
 # Command line options
 OptionParser.parse(ARGV.dup) do |parser|
   parser.banner = "Usage: #{PROGRAM_NAME} [arguments]"
 
-  parser.on("-b HOST", "--bind=HOST", "Specifies the server host") { |h| host = h }
-  parser.on("-p PORT", "--port=PORT", "Specifies the server port") { |p| port = p.to_i }
-
-  parser.on("-w COUNT", "--workers=COUNT", "Specifies the number of processes to handle requests") do |w|
-    process_count = w.to_i
-  end
-
-  parser.on("-r", "--routes", "List the application routes") do
-    ActionController::Server.print_routes
+  parser.on("-h", "--help", "Show this help") do
+    puts parser
     exit 0
   end
 
@@ -35,18 +34,20 @@ OptionParser.parse(ARGV.dup) do |parser|
   parser.on("-i", "--install", "Install database, binaries and job definitions") do
     if Dir.exists? App::ROOT
       puts "#{App::NAME} is already installed"
+      exit 1
+
     else
+
       # create folder structure
-      puts "Installing #{App::NAME} to #{App::ROOT}"
-
-      app = App::NAME
-      install_path = App::ROOT
-      db_path = App::ROOT + "/db"
-      binary_path = App::ROOT + "/bin"
-      job_path = App::ROOT + "/jobs"
-      lib_path = App::ROOT + "/jobs/lib"
-
-      [install_path, db_path, binary_path, job_path, lib_path].each { |folder| Dir.mkdir folder }
+      begin
+        [install_path, db_path, binary_path, job_path, lib_path].each do |folder|
+          Dir.mkdir folder
+          puts "Created '#{folder}'."
+        end
+      rescue ex : File::AccessDeniedError
+        puts "Must run as root."
+        exit 1
+      end
 
       # create db schema
       schema = Storage.get "setup/db/install.sql"
@@ -84,25 +85,17 @@ OptionParser.parse(ARGV.dup) do |parser|
       script_path = lib_path + "/" + job_lib
       File.write script_path, script.gets_to_end
       File.chmod script_path, 0o644
-
-      # install service / configuration
-      service_unit = "/etc/systemd/system/os-probe.service"
-      service_conf = install_path + "/os-probe.conf"
-
-      unit_file = Storage.get "setup/service/os-probe.service"
-      conf_file = Storage.get "setup/service/os-probe.conf"
-
-      File.write service_unit, unit_file.gets_to_end
-      File.write service_conf, conf_file.gets_to_end
-
-      File.chmod service_unit, 0o664
-      File.chmod service_conf, 0o664
     end
 
     exit 0
   end
 
-  parser.on("-c URL", "--curl=URL", "Perform a basic health check by requesting the URL") do |url|
+  parser.on("-r", "--routes", "List the application routes") do
+    ActionController::Server.print_routes
+    exit 0
+  end
+
+  parser.on("-g URL", "--get=URL", "Perform a basic health check by requesting the URL") do |url|
     begin
       response = HTTP::Client.get url
       exit 0 if (200..499).includes? response.status_code
@@ -114,10 +107,54 @@ OptionParser.parse(ARGV.dup) do |parser|
     end
   end
 
-  parser.on("-h", "--help", "Show this help") do
-    puts parser
+  parser.on("-b HOST", "--bind=HOST", "Specifies the server host") { |h| host = h }
+
+  parser.on("-p PORT", "--port=PORT", "Specifies the server port") { |p| port = p.to_i }
+
+  parser.on("-w COUNT", "--workers=COUNT", "Specifies the number of processes to handle requests") do |w|
+    process_count = w.to_i
+  end
+
+  parser.on("-c INIT", "--config=INIT", "Configure init service: openrc|systemd") do |init|
+    case init.downcase
+    when "openrc"
+      unit_file = Storage.get "setup/service/os-probe.sh"
+      service_unit = "/etc/init.d/os-probe"
+      service_conf = "/etc/conf.d/os-probe"
+    when "systemd"
+      unit_file = Storage.get "setup/service/os-probe.service"
+      service_unit = "/etc/systemd/system/os-probe.service"
+      service_conf = install_path + "/os-probe.conf"
+    else
+      puts "Unknown init type. Options are: OpenRC|systemd"
+      exit 1
+    end
+
+    conf_file = Storage.get "setup/service/os-probe.conf"
+
+    begin
+      File.write service_unit, unit_file.gets_to_end
+      File.write service_conf, conf_file.gets_to_end
+      File.chmod service_unit, 0o664
+      File.chmod service_conf, 0o664
+    rescue ex : File::AccessDeniedError
+      puts "Must run as root."
+      exit 1
+    end
+
     exit 0
   end
+
+  parser.missing_option do |_|
+    puts parser
+    exit 1
+  end
+
+  parser.invalid_option do |_|
+    puts parser
+    exit 1
+  end
+
 end
 
 # Load the routes
