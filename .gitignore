@@ -7,3 +7,4 @@ bin
 *.sublime-workspace
 *.out
 .vagrant
+.prj
