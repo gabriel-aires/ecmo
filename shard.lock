@@ -34,7 +34,7 @@ shards:
 
   hardware:
     git: https://github.com/gabriel-aires/hardware.git
-    version: 0.5.3
+    version: 0.5.4
 
   kilt:
     git: https://github.com/jeromegn/kilt.git
