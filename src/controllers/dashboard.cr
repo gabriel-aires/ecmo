@@ -150,7 +150,7 @@ class Dashboard < Application
     end
 
     disks = Array(Hash(Symbol, Float64 | String)).new
-    Psutil.disk_partitions.each do |partition|
+    Psutil.disk_partitions(true).each do |partition|
       du = Psutil.disk_usage partition.mountpoint
       disks << {
         :mount   => du.path,

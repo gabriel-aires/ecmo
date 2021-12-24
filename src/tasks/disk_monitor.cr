@@ -1,6 +1,6 @@
 Schedule.job :disk_monitor, :cron, "5 * * * * *" do
   seconds = Time.local.to_unix
-  volumes = Psutil.disk_partitions
+  volumes = Psutil.disk_partitions(true)
   disks = Array(Disk).new
 
   volumes.each do |vol|

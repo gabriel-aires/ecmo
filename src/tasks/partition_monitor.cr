@@ -1,5 +1,5 @@
 Schedule.job :partition_monitor, :cron, "17 * * * * *" do
-  volumes = Psutil.disk_partitions
+  volumes = Psutil.disk_partitions(true)
   parts = Array(Partition).new
 
   volumes.each do |vol|
