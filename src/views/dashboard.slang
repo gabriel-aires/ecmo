@@ -56,9 +56,18 @@ details
       td= net[:packets_out]
 
 h3 Disk Details
-- disks.each do |disk|
+- disks.sort_by {|d| d[:usage]}.reverse.each do |disk|
   details
-    summary Mountpoint #{disk[:mount]}
+    summary.grid
+      div Mountpoint #{disk[:mount]}
+      div
+        - usage_color = case disk[:usage]
+        - when <= 25.0  then "dodgerblue"
+        - when <= 50.0  then "yellowgreen"
+        - when <= 75.0  then "gold"
+        - when <= 100.0 then "tomato"
+        progress value="#{disk[:usage]}" max="100" style="--progress-color:#{usage_color};"
+
     table role="grid"
       tr
         th Filesystem type
@@ -77,7 +86,7 @@ h3 Disk Details
         td= disk[:free_mb]
       tr
         th Usage (%)
-        td= disk[:usage]             
+        td= disk[:usage]
 
 h3 Process Details
 - pids.each do |pid|
