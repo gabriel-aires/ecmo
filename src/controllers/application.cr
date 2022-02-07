@@ -20,4 +20,12 @@ abstract class Application < ActionController::Base
     response.headers["Date"] = HTTP.format_time(Time.utc)
   end
 
+  def require_read
+    true
+  end
+
+  def require_write
+    false
+  end
+
 end

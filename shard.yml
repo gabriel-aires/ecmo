@@ -23,6 +23,9 @@ dependencies:
   tasker:
     github: spider-gazelle/tasker
     version: ~> 2.0    
+  ssh2:
+    github: spider-gazelle/ssh2.cr
+    version: ~> 1.5    
   sqlite3:
     github: crystal-lang/crystal-sqlite3
     version: ~> 0.18    
