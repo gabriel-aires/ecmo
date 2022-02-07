@@ -7,10 +7,12 @@ require "./constants"
 require "./lib/*"
 
 # App defaults
+app = App::NAME
 port = App::DEFAULT_PORT
 host = App::DEFAULT_HOST
+ssl_pkey = App::SSL_PKEY
+ssl_cert = App::SSL_CERT
 process_count = App::DEFAULT_PROCESS_COUNT
-app = App::NAME
 install_path = App::ROOT
 db_path = App::ROOT + "/db"
 binary_path = App::ROOT + "/bin"
@@ -87,6 +89,13 @@ OptionParser.parse(ARGV.dup) do |parser|
       File.chmod script_path, 0o644
     end
 
+    exit 0
+  end
+
+  parser.on("-t", "--tls", "Generate temporary self-signed certificate (requires openssl)") do
+    fqdn = `hostname -f 2> /dev/null || echo $HOSTNAME`.chomp
+    subj = "/CN=#{fqdn}"
+    `openssl req -x509 -newkey rsa:4096 -subj "#{subj}" -keyout "#{ssl_pkey}" -out "#{ssl_cert}" -sha256 -days 365 -nodes -batch`
     exit 0
   end
 
@@ -203,9 +212,17 @@ end
 Signal::USR1.trap &logging
 Signal::USR2.trap &logging
 
-# Start the server
-server.run do
-  puts "Listening on #{server.print_addresses}"
+# Start the https server
+begin
+  ctx = OpenSSL::SSL::Context::Server.new
+  ctx.certificate_chain = ssl_cert
+  ctx.private_key = ssl_pkey
+  server.socket.bind_tls host, port, ctx
+  puts "Listening on https://#{host}:#{port}"
+  server.socket.listen
+rescue error
+  puts "Failed to start https server."
+  exit 1
 end
 
 # Shutdown message
