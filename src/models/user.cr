@@ -15,60 +15,35 @@ class User
   getter membership : Array(Array(String)) = [] of Array(String)
 
   def initialize(txt :  String)
-    if str.starts_with? "uid="
-      self.from_id_output txt
+    if txt.starts_with? "uid="
+      from_id_output txt
     else
-      self.from_username txt
+      from_username txt
     end
   end
 
-  def initialize(num : Int64)
-    self[num]
+  def initialize(uid : Int64)
+  	from_username get_name_from_uid(uid)
   end
 
-  protected def self.[](uid : Int64)
-    self.from_username self.get_name_from_uid
-  end
-
-  protected def self.from_username(username : String)
+  private def from_username(username : String)
     sanitized_username = username.delete &.in?('$', ';', ':', '(', ')', '<', '>', '&', '#', '=', '/', '\\', '?', '*')
-    self.from_id_output `id #{sanitized_username}`
+    from_id_output `id #{sanitized_username}`
   rescue
     raise UserNotFoundError.new("Couldn't find user '#{username}'")
   end
 
-  protected def self.from_id_output(id_output :  String)
+  private def from_id_output(id_output :  String)
     parse_id_output id_output
   end
 
-  protected def self.authenticate!(username : String, password :  String)
-    authenticated = false
-    requested_user = User.new(username)
-
-    SSH2::Session.open("127.0.0.1") do |conn|
-      conn.login(username, password)
-      conn.open_session do |ssh|
-        ssh.command("id")
-        ssh_user = User.new(ssh.read_line)
-        authenticated = requested_user == ssh_user
-      end
-    end
-
-    if authenticated
-      ssh_user
-    else
-      raise UserAuthenticationError.new("Failed login for #{username}")
-    end
-
-  rescue error
-    raise UserAuthenticationError.new("Failed login for #{username}")
-  end
-
   private def get_name_from_uid(uid : Int64)
-    File
+	File
       .read("/etc/passwd")
+	  .chomp
       .split("\n")
       .select { |l| l.split(":")[2].to_i64 == uid }
+	  .first
       .split(":")
       .first
   rescue
@@ -79,7 +54,7 @@ class User
     _id = _gid = _name = _group = ""
     fields = id_output.gsub(") ", ")|").split("|")
     records = {} of Symbol => String
-    [:uid_info, :gid_info, :group_info].each { |k| records[k] =  fields.shift.split("=").last }
+    [:uid_info, :gid_info, :group_info].each { |k| records[k] =  fields.shift.split("=").last.chomp }
 
     records.each do |k, v|
       case k
@@ -109,10 +84,37 @@ class User
 
     self
 
-	rescue
+  rescue
     msg = "User should take a string in the form "
     msg += "'uid=00(AAAA) gid=11(BBBB) groups=22(CCCC),11(BBBB)'"
-		raise InvalidUserParamsError.new(msg)
+    raise InvalidUserParamsError.new(msg)
+  end
+
+  private def normalize_string(obj)
+    obj.inspect.gsub(/\#\<User\:[^ ]+/, "#<User:")
+  end
+
+  def self.authenticate!(username : String, password :  String)
+    authenticated = false
+    requested_user = User.new(username)
+
+    SSH2::Session.open("127.0.0.1") do |conn|
+      conn.login(username, password)
+      conn.open_session do |ssh|
+        ssh.command("whoami")
+        ssh_user = User.new(ssh.read_line.chomp)
+        authenticated = requested_user == ssh_user
+      end
+    end
+
+    authenticated ? ssh_user : raise UserAuthenticationError.new("Failed login for #{username}")
+
+  rescue error
+    raise UserAuthenticationError.new("Failed login for #{username}")
+  end
+
+  def ==(obj)
+    normalize_string(self) == normalize_string(obj)
   end
 
   def member_of?(gid : Int64)
