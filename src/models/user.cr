@@ -6,7 +6,13 @@ class UserNotFoundError < UserError; end
 class UserAuthenticationError < UserError; end
 
 class User
-  getter id : Int64, gid : Int64, name : String, group : String, type : Symbol
+
+  getter id : Int64 = 100000000
+  getter gid : Int64 = 100000000
+  getter name : String = ""
+  getter group : String = ""
+  getter type : Symbol = :other
+  getter membership : Array(Array(String)) = [] of Array(String)
 
   def initialize(txt :  String)
     if str.starts_with? "uid="
@@ -20,19 +26,56 @@ class User
     self[num]
   end
 
-  protected def self.init_ivars
-    @id = @gid = 100000000
-    @name = @group = ""
-    @type = :other
-    @membership = [] of Array(String)
+  protected def self.[](uid : Int64)
+    self.from_username self.get_name_from_uid
+  end
+
+  protected def self.from_username(username : String)
+    sanitized_username = username.delete &.in?('$', ';', ':', '(', ')', '<', '>', '&', '#', '=', '/', '\\', '?', '*')
+    self.from_id_output `id #{sanitized_username}`
+  rescue
+    raise UserNotFoundError.new("Couldn't find user '#{username}'")
   end
 
   protected def self.from_id_output(id_output :  String)
-    self.init_ivars
-    self.parse_id_output id_output
+    parse_id_output id_output
   end
 
-  protected def self.parse_id_output(id_output :  String)
+  protected def self.authenticate!(username : String, password :  String)
+    authenticated = false
+    requested_user = User.new(username)
+
+    SSH2::Session.open("127.0.0.1") do |conn|
+      conn.login(username, password)
+      conn.open_session do |ssh|
+        ssh.command("id")
+        ssh_user = User.new(ssh.read_line)
+        authenticated = requested_user == ssh_user
+      end
+    end
+
+    if authenticated
+      ssh_user
+    else
+      raise UserAuthenticationError.new("Failed login for #{username}")
+    end
+
+  rescue error
+    raise UserAuthenticationError.new("Failed login for #{username}")
+  end
+
+  private def get_name_from_uid(uid : Int64)
+    File
+      .read("/etc/passwd")
+      .split("\n")
+      .select { |l| l.split(":")[2].to_i64 == uid }
+      .split(":")
+      .first
+  rescue
+    raise UserNotFoundError.new("Couldn't find username matching uid #{uid}")
+  end
+
+  private def parse_id_output(id_output :  String)
     _id = _gid = _name = _group = ""
     fields = id_output.gsub(") ", ")|").split("|")
     records = {} of Symbol => String
@@ -72,28 +115,6 @@ class User
 		raise InvalidUserParamsError.new(msg)
   end
 
-  protected def self.[](uid : Int64)
-    self.from_username self.get_name_from_uid
-  end
-
-  protected def self.get_name_from_uid(uid : Int64)
-    File
-      .read("/etc/passwd")
-      .split("\n")
-      .select { |l| l.split(":")[2].to_i64 == uid }
-      .split(":")
-      .first
-  rescue
-    raise UserNotFoundError.new("Couldn't find username matching uid #{uid}")
-  end
-
-  protected def self.from_username(username : String)
-    sanitized_username = username.delete &.in?('$', ';', ':', '(', ')', '<', '>', '&', '#', '=', '/', '\\', '?', '*')
-    self.from_id_output `id #{sanitized_username}`
-  rescue
-    raise UserNotFoundError.new("Couldn't find user '#{username}'")
-  end
-
   def member_of?(gid : Int64)
     group_ids.includes? gid
   end
@@ -120,30 +141,6 @@ class User
 
   def regular?
     type == :regular
-  end
-
-  def self.authenticate!(username : String, password :  String)
-
-    authenticated = false
-    requested_user = User.new(username)
-
-    SSH2::Session.open("127.0.0.1") do |conn|
-      conn.login(username, password)
-      conn.open_session do |ssh|
-        ssh.command("id")
-        ssh_user = User.new(ssh.read_line)
-        authenticated = requested_user == ssh_user
-      end
-    end
-
-    if authenticated
-      ssh_user
-    else
-      raise UserAuthenticationError.new("Failed login for #{username}")
-    end
-
-  rescue error
-    raise UserAuthenticationError.new("Failed login for #{username}")
   end
 
 end
