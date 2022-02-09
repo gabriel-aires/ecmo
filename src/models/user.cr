@@ -23,7 +23,7 @@ class User
   end
 
   def initialize(uid : Int64)
-  	from_username get_name_from_uid(uid)
+    from_username get_name_from_uid(uid)
   end
 
   private def from_username(username : String)
@@ -96,6 +96,7 @@ class User
 
   def self.authenticate!(username : String, password :  String)
     authenticated = false
+    ssh_user = nil
     requested_user = User.new(username)
 
     SSH2::Session.open("127.0.0.1") do |conn|

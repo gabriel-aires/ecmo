@@ -2,7 +2,7 @@ doctype html
 html lang="en"
 
   head
-    title Ecmo
+    title= App::NAME
     meta charset="UTF-8"
     link rel="shortcut icon" href=Assets.show(id:"favicon.ico")
     link rel="stylesheet" href=Assets.show(id:"vital.min.css")
@@ -18,24 +18,37 @@ html lang="en"
       .section
         nav
           a.logo href=Home.index
-            img src=Assets.show(id:"icon-vital-orange.svg")
+            img src=Assets.show(id:"icon-vital-#{ui_status}.svg")
 
     .contents
-      .row.hero.bg-orange.light-text
+      - if notice?
+        .row.notice
+          .section
+            .notice-message
+              .notice-text= notice
+              .notice-dismiss
+                img src=Assets.show(id:"icon-vital-close-outline") alt="close icon"
+
+      .row.hero.light-text class="bg-#{ui_status}"
         .section.narrow.center
-          h1 Ecmo
+          h1= App::NAME
           hr.small.opacity-4
-          h2 Easy Configuration Management Orchestration
+          h2= App::NAME
 
       .row
         .section
           == content
 
-    .row.footer
-      .section
-        h6
-          | Built with S2 and
-          a href="https://spider-gazelle.net" Spider-Gazelle
-        h6
-          | Check the
-          a href="https://github.com/gabriel-aires/os-probe" Github Repo
+    .row.footer.center.full-width-forms
+      .section.autogrid
+        .col
+          a href="https://spider-gazelle.net" Built with S2 and Spider-Gazelle
+        .col
+          a href="https://github.com/gabriel-aires/ecmo" Check the Github Repo
+
+    javascript:
+      notice = document.querySelector(".row.notice");
+      closeButton = document.querySelector(".notice-dismiss");
+      closeButton.addEventListener("click", function() {
+        notice.style.display = "none";
+      });

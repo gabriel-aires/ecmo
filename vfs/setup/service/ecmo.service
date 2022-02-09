@@ -1,0 +1,13 @@
+[Unit]
+Description=Ecmo: Easy Configuration Management Orchestration
+After=network.target remote-fs.target
+
+[Service]
+EnvironmentFile=/opt/ecmo/ecmo.conf
+PassEnvironment=MODE SERVER_PORT SERVER_HOST DB_RETENTION SESSION_KEY SESSION_SECRET
+ExecStart=/opt/ecmo/bin/ecmo
+ExecStop=/bin/kill -s TERM $MAINPID
+User=root
+
+[Install]
+WantedBy=multi-user.target

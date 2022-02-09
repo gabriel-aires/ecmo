@@ -1,11 +1,11 @@
-name: os-probe
-version: 0.8.3
+name: ecmo
+version: 0.9
 
 authors:
   - Gabriel Aires <airesgabriel@gmail.com>
 
 description: |
-  Dead simple dashboard for machine metrics and jobs
+  Easy Configuration Management Orchestration
 
 dependencies:
   granite:
@@ -22,13 +22,13 @@ dependencies:
     version: ~> 4.0
   tasker:
     github: spider-gazelle/tasker
-    version: ~> 2.0    
+    version: ~> 2.0
   ssh2:
     github: spider-gazelle/ssh2.cr
-    version: ~> 1.5    
+    version: ~> 1.5
   sqlite3:
     github: crystal-lang/crystal-sqlite3
-    version: ~> 0.18    
+    version: ~> 0.18
   future:
     github: crystal-community/future.cr
     version: ~> 1.0
@@ -48,6 +48,6 @@ development_dependencies:
 
 targets:
   app:
-    main: src/app.cr  
+    main: src/app.cr
 
 license: MPL v2

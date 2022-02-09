@@ -6,19 +6,21 @@ html lang="en"
     meta charset="UTF-8"
     link rel="shortcut icon" href=Assets.show(id:"favicon.ico")
     link rel="stylesheet" href=Assets.show(id:"vital.min.css")
-    css:
-      pre {
-        margin:         0.2rem;
-        padding:        1rem;
-        border-radius:  0.5rem;
-      }
 
   body
     .row.header-center
       .section
-        h5 Ecmo: Easy Configuration Management Orchestration
+        h5= "#{App::NAME}: #{App::DESC}"
 
-    .contents.hero.bg-green
+    .contents.hero class="bg-#{ui_status}"
+      - if notice?
+        .row.notice
+          .section
+            .notice-message
+              .notice-text= notice
+              .notice-dismiss
+                img src=Assets.show(id:"icon-vital-close-outline") alt="close icon"
+
       .row
         .section.center
           form.full-width-forms.padded method="POST" action=Sessions.create
@@ -39,4 +41,11 @@ html lang="en"
         .col
           a href="https://spider-gazelle.net" Built with S2 and Spider-Gazelle
         .col
-          a href="https://github.com/gabriel-aires/os-probe" Check the Github Repo
+          a href="https://github.com/gabriel-aires/ecmo" Check the Github Repo
+
+    javascript:
+      notice = document.querySelector(".row.notice");
+      closeButton = document.querySelector(".notice-dismiss");
+      closeButton.addEventListener("click", function() {
+        notice.style.display = "none";
+      });

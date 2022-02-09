@@ -43,7 +43,7 @@ Vagrant.configure("2") do |config|
   # the path on the host to the actual folder. The second argument is
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
-  config.vm.synced_folder ".", "/os-probe"
+  config.vm.synced_folder ".", "/ecmo"
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
@@ -67,10 +67,10 @@ Vagrant.configure("2") do |config|
     echo "* Using edge repositories"
     sed -i -r s/v3\.14/edge/ /etc/apk/repositories
     echo "* Installig toolchain..."
-    apk add -U git llvm12-static yaml-static sqlite-static zlib-static libretls-static openssl-libs-static openssl-dev crystal shards
+    apk add -U git llvm12-static yaml-static sqlite-static libssh2-static zlib-static libretls-static openssl-libs-static openssl-dev crystal shards
     echo "* Installing dependencies..."
-    cd /os-probe ; shards install --production
+    cd /ecmo ; shards install --production
     echo "* Building release..."
-    crystal build --release --static /os-probe/src/app.cr -o /os-probe/dist/os-probe-linux-x86-64.bin
+    crystal build --release --static /ecmo/src/app.cr -o /ecmo/dist/ecmo-linux-x86-64.bin
   SHELL
 end

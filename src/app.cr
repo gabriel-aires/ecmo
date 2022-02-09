@@ -8,6 +8,7 @@ require "./lib/*"
 
 # App defaults
 app = App::NAME
+version = App::VERSION
 port = App::DEFAULT_PORT
 host = App::DEFAULT_HOST
 ssl_pkey = App::SSL_PKEY
@@ -73,7 +74,7 @@ OptionParser.parse(ARGV.dup) do |parser|
       File.copy Process.executable_path.not_nil!, program_path
 
       # install sample jobs / lib
-      job_samples = ["host_inventory.rb", "host_report.rb", "probe_restart.rb", "probe_shutdown.rb"]
+      job_samples = ["host_inventory.rb", "host_report.rb", "app_restart.rb", "app_shutdown.rb"]
 
       job_samples.each do |job_sample|
         script = Storage.get "setup/jobs/" + job_sample
@@ -130,18 +131,18 @@ OptionParser.parse(ARGV.dup) do |parser|
     when "openrc"
       unit_mode = 0o755
       conf_mode = 0o644
-      unit_file = Storage.get "setup/service/os-probe.sh"
-      conf_file = Storage.get "setup/service/os-probe.conf"
-      service_unit = "/etc/init.d/os-probe"
-      service_conf = "/etc/conf.d/os-probe"
+      unit_file = Storage.get "setup/service/#{app.downcase}.sh"
+      conf_file = Storage.get "setup/service/#{app.downcase}.conf"
+      service_unit = "/etc/init.d/#{app.downcase}"
+      service_conf = "/etc/conf.d/#{app.downcase}"
 
     when "systemd"
       unit_mode = 0o644
       conf_mode = 0o644
-      unit_file = Storage.get "setup/service/os-probe.service"
-      conf_file = Storage.get "setup/service/os-probe.conf"
-      service_unit = "/etc/systemd/system/os-probe.service"
-      service_conf = install_path + "/os-probe.conf"
+      unit_file = Storage.get "setup/service/#{app.downcase}.service"
+      conf_file = Storage.get "setup/service/#{app.downcase}.conf"
+      service_unit = "/etc/systemd/system/#{app.downcase}.service"
+      service_conf = install_path + "/#{app.downcase}.conf"
 
     else
       puts "Unknown init type. Options are: OpenRC|systemd"
@@ -174,7 +175,7 @@ OptionParser.parse(ARGV.dup) do |parser|
 end
 
 # Load the routes
-puts "Launching #{App::NAME} v#{App::VERSION}"
+puts "Launching #{app} v#{version}"
 
 # Requiring config here ensures that the option parser runs before
 # attempting to connect to databases etc.
@@ -203,7 +204,7 @@ Signal::TERM.trap &terminate
 logging = Proc(Signal, Nil).new do |signal|
   level = signal.usr1? ? Log::Severity::Debug : Log::Severity::Info
   puts " > Log level changed to #{level}"
-  Log.builder.bind "#{App::NAME}.*", level, App::LOG_BACKEND
+  Log.builder.bind "#{app}.*", level, App::LOG_BACKEND
   signal.ignore
 end
 
@@ -226,4 +227,4 @@ rescue error
 end
 
 # Shutdown message
-puts "#{App::NAME} stopped.\n"
+puts "#{app} stopped.\n"

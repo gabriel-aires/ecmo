@@ -1,8 +1,8 @@
-# os-probe
+# ecmo
 
-Dead simple dashboard for machine metrics and jobs
+Easy Configuration Management Orchestration
 
-More details at [gabriel-aires.github.io/os-probe](https://gabriel-aires.github.io/os-probe/)
+More details at [gabriel-aires.github.io/ecmo](https://gabriel-aires.github.io/ecmo/)
 
 ## Testing
 
