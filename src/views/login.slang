@@ -12,7 +12,7 @@ html lang="en"
       .section
         h5= "#{App::NAME}: #{App::DESC}"
 
-    .contents.hero class="bg-#{ui_status}"
+    .contents.hero class="bg-#{status}"
       - if notice?
         .row.notice
           .section

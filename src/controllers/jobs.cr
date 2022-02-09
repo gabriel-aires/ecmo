@@ -1,4 +1,5 @@
 class Jobs < Application
+
   def index
     on_schedule = [] of Job
     on_demand = [] of Job
@@ -78,4 +79,5 @@ class Jobs < Application
 
     last
   end
+
 end

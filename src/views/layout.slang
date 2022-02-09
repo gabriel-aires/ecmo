@@ -18,7 +18,7 @@ html lang="en"
       .section
         nav
           a.logo href=Home.index
-            img src=Assets.show(id:"icon-vital-#{ui_status}.svg")
+            img src=Assets.show(id:"icon-vital-#{status}.svg")
 
     .contents
       - if notice?
@@ -29,7 +29,7 @@ html lang="en"
               .notice-dismiss
                 img src=Assets.show(id:"icon-vital-close-outline") alt="close icon"
 
-      .row.hero.light-text class="bg-#{ui_status}"
+      .row.hero.light-text class="bg-#{status}"
         .section.narrow.center
           h1= App::NAME
           hr.small.opacity-4

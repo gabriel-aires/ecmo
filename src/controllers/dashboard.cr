@@ -1,4 +1,5 @@
 class Dashboard < Application
+
   rescue_from DB::ConnectionRefused, :db_error
   rescue_from NilAssertionError, :null_error
 
@@ -168,4 +169,5 @@ class Dashboard < Application
       json({host: host, boot: boot, memory: memory, cpu: cpu, pids: pids, disks: disks, load: load, net: net})
     end
   end
+
 end

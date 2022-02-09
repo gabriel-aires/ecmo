@@ -1,4 +1,5 @@
 class Home < Application
+
   base "/"
 
   def index
@@ -6,4 +7,5 @@ class Home < Application
       html template("index.slang")
     end
   end
+
 end

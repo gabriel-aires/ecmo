@@ -7,29 +7,30 @@ class Sessions < Application
 
   # GET /sessions/new (login)
   def new
-    status = :success
+    status :success
     login_form
   end
 
   def retry_login(e)
     end_session
-    notice = e.message
-    status = :error
+    notice (e.message || "Please try again")
+    status :error
     login_form
   end
 
   # POST /sessions/create (verify)
   def create
-    current_user = User.authenticate! params["username"], params["password"]
-    status = :success
+    login = User.authenticate!(params["username"], params["password"])
+    !!login ? current_user(params["username"]) : raise UserAuthenticationError.new("Login failed.")
+    status :success
     redirect_to Home.index
   end
 
   # DELETE /sessions/destroy (logout)
   def destroy
     end_session
-    notice = "Your session is finished. Thank you for using #{App::NAME}."
-    status = :info
+    notice "Your session is finished. Thank you for using #{App::NAME}."
+    status :info
     login_form
   end
 
