@@ -1,18 +1,21 @@
 class Sessions < Application
+  layout ""
   skip_action :require_read
   skip_action :require_write
 
-  # GET login
+  # GET /sessions/new (login)
   def new
-    true
+    respond_with do
+      html template("login.slang")
+    end
   end
 
-  # POST verify
+  # POST /sessions/create (verify)
   def create
     true
   end
 
-  # DELETE logout
+  # DELETE /sessions/destroy (logout)
   def destroy
     true
   end

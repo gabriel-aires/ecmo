@@ -38,12 +38,12 @@ class User
   end
 
   private def get_name_from_uid(uid : Int64)
-	File
+    File
       .read("/etc/passwd")
-	  .chomp
+      .chomp
       .split("\n")
       .select { |l| l.split(":")[2].to_i64 == uid }
-	  .first
+      .first
       .split(":")
       .first
   rescue

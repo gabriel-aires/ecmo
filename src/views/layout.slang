@@ -1,8 +1,8 @@
 doctype html
-html lang="en" data-theme="light"
+html lang="en"
 
   head
-    title Dashboard
+    title Ecmo
     meta charset="UTF-8"
     link rel="shortcut icon" href=Assets.show(id:"favicon.ico")
     link rel="stylesheet" href=Assets.show(id:"vital.min.css")
@@ -11,9 +11,6 @@ html lang="en" data-theme="light"
         margin:         0.2rem;
         padding:        1rem;
         border-radius:  0.5rem;
-      }
-      a.logo svg path {
-        color: crimson;
       }
 
   body
