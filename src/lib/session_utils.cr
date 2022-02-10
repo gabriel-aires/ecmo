@@ -11,25 +11,25 @@ module SessionUtils
   end
 
   def notice
-    msg = session["notice"].to_s
-    notice ""
-    msg
+    unpack_string cookies.delete("notice").not_nil!.value.to_s
   end
 
   def notice?
-    session["notice"]? ? (session["notice"].to_s.size > 0) : false
+    cookies["notice"]?
   end
 
-  def notice (message : String)
-    session["notice"] = message
+  def notice(message : String)
+    cookies["notice"] = pack_string message
   end
 
   def tone
-    @_tone ||= session["tone"]? ? session["tone"].to_s : "blue"
+    unpack_string cookies["tone"].value
+  rescue
+    "blue"
   end
 
   def tone(color : String)
-    @_tone = session["tone"] = (color.in?(["green", "orange", "red", "black"]) ? color : "blue")
+    cookies["tone"] = pack_string(color.in?(["green", "orange", "red", "black"]) ? color : "blue")
   end
 
   def tone(level : Symbol)
@@ -37,14 +37,29 @@ module SessionUtils
     when :success then  tone "green"
     when :warn    then  tone "orange"
     when :error   then  tone "red"
-    when :unknown then  tone "black"
+    when :none    then  tone "black"
+    when :random  then  tone ["green", "orange", "red", "blue"].shuffle.first
     else                tone "blue"
     end
   end
 
   def end_session
-    session.clear
+    session.delete "username"
     @_current_user = nil
+  end
+
+  def require_login
+    redirect_to Sessions.new unless current_user
+  end
+
+  # safe string encoding inside cookies
+  # See https://tools.ietf.org/html/rfc6265#section-4.1.1
+  def pack_string(txt : String)
+    txt.tr " ,\";\\", "|&@\$#"
+  end
+
+  def unpack_string(txt : String)
+    txt.tr "|&@\$#", " ,\";\\"
   end
 
 end

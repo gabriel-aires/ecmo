@@ -6,6 +6,8 @@ class Home < Application
   base "/"
 
   def index
+    tone :random
+
     respond_with do
       html template("index.slang")
     end

@@ -3,6 +3,7 @@ class Sessions < Application
   layout ""
   skip_action :require_read
   skip_action :require_write
+  skip_action :require_login
   rescue_from UserAuthenticationError, :retry_login
 
   # GET /sessions/ (login)
@@ -13,7 +14,7 @@ class Sessions < Application
 
   def retry_login(e)
     end_session
-    notice (e.message || "Please try again")
+    notice e.message.to_s
     tone :error
     login_form
   end

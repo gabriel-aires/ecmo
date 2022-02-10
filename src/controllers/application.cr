@@ -7,6 +7,7 @@ abstract class Application < ActionController::Base
   Log = ::App::Log.for("controller")
   before_action :set_request_id
   before_action :set_date_header
+  before_action :require_login
   before_action :require_read, only: [:index, :show]
   before_action :require_write, except: [:index, :show]
 

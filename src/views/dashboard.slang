@@ -1,6 +1,8 @@
+h3 System Information for #{host[:name]}
+
 details
-  summary.btn.solid class="#{tone}" System Information for #{host[:name]}
-  table role="grid"
+  summary.btn.solid class="#{tone}" Machine Info
+  table
     tr
       th OS
       td= host[:os]
@@ -15,6 +17,7 @@ details
         td= Time.new seconds: boot[:seconds], nanoseconds: 0, location: Time.local.location
 
 br
+
 details
   summary.btn.solid class="#{tone}" Hardware Resources
   table role="grid"
@@ -38,6 +41,7 @@ details
       td= load[:load15]
 
 br
+
 details
   summary.btn.solid class="#{tone}" Net I/O
   table role="grid"
@@ -55,8 +59,8 @@ details
       td= net[:packets_out]
 
 h3 Disk Details
+
 - disks.sort_by {|d| d[:usage].to_f}.reverse.each do |disk|
-  br
   details
     summary.btn.solid class="#{tone}"
       .grid style="width:95%; display: inline-block; vertical-align:bottom;"
@@ -84,10 +88,11 @@ h3 Disk Details
       tr
         th Usage (%)
         td= disk[:usage]
+  br
 
 h3 Process Details
+
 - pids.each do |pid|
-  br
   details
     summary.btn.solid class="#{tone}" #{pid[:pid]} - #{pid[:name]}
     table role="grid"
@@ -106,3 +111,4 @@ h3 Process Details
       tr
         th Parent
         td= pid[:parent]
+  br

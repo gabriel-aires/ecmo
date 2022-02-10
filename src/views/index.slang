@@ -1,33 +1,33 @@
-h4 Dashboards
+.autogrid.padded
+  .col.space
+  .col
 
-ul
-  li
-    a href=Dashboard.index System Dashboard
-  li
-    a href=Dashboard.realtime Realtime Dashboard
+    a.btn.solid class=tone href=Dashboard.index Dashboard
 
-h4 Configuration Management
+    a.btn.solid class=tone href=Dashboard.realtime Dash(current)
 
-ul
-  li
-    a href=Jobs.index Available Jobs
+    a.btn.solid class=tone href=Jobs.index Available Jobs
 
-h4 Metrics
+  .col
 
-ul
-  li
-    a href=Metrics.host Host Info
-  li
-    a href=Metrics.boot Boot Time
-  li
-    a href=Metrics.load System Load
-  li
-    a href=Metrics.memory Memory Usage
-  li
-    a href=Metrics.net Net I/O
-  li
-    a href=Metrics.disk Disk Usage
-  li
-    a href=Metrics.partition Partitions
-  li
-    a href=Metrics.pid Processes
+    a.btn.black href=Metrics.host Host Info
+
+    a.btn.black href=Metrics.boot Boot Time
+
+    a.btn.black href=Metrics.load System Load
+
+  .col
+
+    a.btn.black href=Metrics.memory Memory Usage
+
+    a.btn.black href=Metrics.net Net I/O
+
+    a.btn.black href=Metrics.disk Disk Usage
+
+  .col
+
+    a.btn.black href=Metrics.partition Partitions
+
+    a.btn.black href=Metrics.pid Processes
+
+  .col.space

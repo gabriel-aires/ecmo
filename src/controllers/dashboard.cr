@@ -6,10 +6,10 @@ class Dashboard < Application
   rescue_from DB::ConnectionRefused, :db_error
   rescue_from NilAssertionError, :null_error
 
-  before_action :set_tone
+  before_action :unset_tone
 
-  def set_tone
-    tone "black"
+  def unset_tone
+    tone :none
   end
 
   def db_error(e)

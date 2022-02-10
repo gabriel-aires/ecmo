@@ -1,6 +1,11 @@
 require "mime"
 
 class Assets < Application
+
+  skip_action :require_read
+  skip_action :require_write
+  skip_action :require_login
+
   rescue_from BakedFileSystem::NoSuchFileError, :file_not_found
 
   def file_not_found(e)
