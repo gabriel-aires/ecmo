@@ -1,5 +1,5 @@
 details
-  summary System Information for #{host[:name]}
+  summary.btn.solid class="#{tone}" System Information for #{host[:name]}
   table role="grid"
     tr
       th OS
@@ -14,12 +14,10 @@ details
       th Boot Time
         td= Time.new seconds: boot[:seconds], nanoseconds: 0, location: Time.local.location
 
+br
 details
-  summary Hardware Resources
+  summary.btn.solid class="#{tone}" Hardware Resources
   table role="grid"
-    tr
-      th CPU (%)
-      td= cpu[:usage]
     tr
       th Total Memory (Mb)
       td= memory[:total_mb]
@@ -39,8 +37,9 @@ details
       th Load (15m)
       td= load[:load15]
 
+br
 details
-  summary Net I/O
+  summary.btn.solid class="#{tone}" Net I/O
   table role="grid"
     tr
       th Upload (Mb)
@@ -57,18 +56,13 @@ details
 
 h3 Disk Details
 - disks.sort_by {|d| d[:usage].to_f}.reverse.each do |disk|
+  br
   details
-    summary style="display:flex;"
-      .grid style="width:97%;margin-right:3%;"
-        div Mountpoint #{disk[:mount]}
-        div
-          - usage_color = case disk[:usage].to_f
-          - when .<= 25.0  then "dodgerblue"
-          - when .<= 50.0  then "yellowgreen"
-          - when .<= 75.0  then "gold"
-          - when .<= 100.0 then "tomato"
-          - end
-          - progress_style ="--progress-color:#{usage_color};margin-top:0.3rem;"
+    summary.btn.solid class="#{tone}"
+      .grid style="width:95%; display: inline-block; vertical-align:bottom;"
+        div.col-1-4.align-left Mountpoint #{disk[:mount]}
+        div.col-3-4.align-right
+          - progress_style="width:85%;margin-top:0.4rem;vertical-align:top;"
           progress value=disk[:usage] max="100" style=progress_style
 
     table role="grid"
@@ -93,15 +87,13 @@ h3 Disk Details
 
 h3 Process Details
 - pids.each do |pid|
+  br
   details
-    summary #{pid[:pid]} - #{pid[:name]}
+    summary.btn.solid class="#{tone}" #{pid[:pid]} - #{pid[:name]}
     table role="grid"
       tr
         th Command
         td= pid[:cmd]
-      tr
-        th Cpu Usage
-        td= pid[:cpu]
       tr
         th Memory
         td= pid[:memory]

@@ -20,8 +20,6 @@ ul
   li
     a href=Metrics.boot Boot Time
   li
-    a href=Metrics.cpu CPU Usage
-  li
     a href=Metrics.load System Load
   li
     a href=Metrics.memory Memory Usage
@@ -32,4 +30,4 @@ ul
   li
     a href=Metrics.partition Partitions
   li
-    a href=Metrics.pid Processes                 
+    a href=Metrics.pid Processes

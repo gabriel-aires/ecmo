@@ -7,7 +7,6 @@ class Pid < Granite::Base
   column pid : Int64
   column name : String
   column cmd : String
-  column cpu : Float64
   column memory : String
   column threads : String
   column state : String

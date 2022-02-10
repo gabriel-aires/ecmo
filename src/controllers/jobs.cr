@@ -1,5 +1,8 @@
 class Jobs < Application
 
+  @title : String = "Jobs"
+  @description : String = "System Configuration"
+
   def index
     on_schedule = [] of Job
     on_demand = [] of Job

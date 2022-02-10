@@ -6,21 +6,22 @@ html lang="en"
     meta charset="UTF-8"
     link rel="shortcut icon" href=Assets.show(id:"favicon.ico")
     link rel="stylesheet" href=Assets.show(id:"vital.min.css")
+    script src=Assets.show(id:"htmx.min.js")
 
   body
     .row.header-center
       .section
         h5= "#{App::NAME}: #{App::DESC}"
 
-    .contents.hero class="bg-#{status}"
-      - if notice?
-        .row.notice
-          .section
-            .notice-message
-              .notice-text= notice
-              .notice-dismiss
-                img src=Assets.show(id:"icon-vital-close-outline") alt="close icon"
+    - if notice?
+      .row.notice
+        .section
+          .notice-message
+            .notice-text= notice
+            .notice-dismiss
+              img src=Assets.show(id:"icon-close-outline.svg") alt="close icon"
 
+    .contents.hero class="bg-#{tone}"
       .row
         .section.center
           form.full-width-forms.padded method="POST" action=Sessions.create
@@ -46,6 +47,8 @@ html lang="en"
     javascript:
       notice = document.querySelector(".row.notice");
       closeButton = document.querySelector(".notice-dismiss");
-      closeButton.addEventListener("click", function() {
-        notice.style.display = "none";
-      });
+      if (closeButton) {
+        closeButton.addEventListener("click", function() {
+          notice.style.display = "none";
+        });
+      }

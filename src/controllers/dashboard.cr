@@ -1,7 +1,16 @@
 class Dashboard < Application
 
+  @title : String = "Dashboard"
+  @description : String = "General System Metrics"
+
   rescue_from DB::ConnectionRefused, :db_error
   rescue_from NilAssertionError, :null_error
+
+  before_action :set_tone
+
+  def set_tone
+    tone "black"
+  end
 
   def db_error(e)
     render :internal_server_error, text: "500 Internal Server Error: Unable to open database"
@@ -15,7 +24,6 @@ class Dashboard < Application
   def index
     last = {
       boot:   Sequence.find_by(name: "boot"),
-      cpu:    Sequence.find_by(name: "cpu"),
       load:   Sequence.find_by(name: "load"),
       memory: Sequence.find_by(name: "memory"),
       net:    Sequence.find_by(name: "net"),
@@ -40,9 +48,6 @@ class Dashboard < Application
       :used_mb  => mem.not_nil!.used_mb,
       :free_mb  => mem.not_nil!.free_mb,
     }
-
-    processor = CPU.find last[:cpu].not_nil!.seq
-    cpu = {:usage => processor.not_nil!.usage}
 
     l_avg = Load.find last[:load].not_nil!.seq
     load = {
@@ -77,7 +82,7 @@ class Dashboard < Application
       }
     end
 
-    pids = Array(Hash(Symbol, Float64 | Int64 | String)).new
+    pids = Array(Hash(Symbol, Int64 | String)).new
     latest_pid = Pid.find last[:pid].not_nil!.seq
     processes = Pid.all("WHERE seconds = ? ORDER BY name ASC", [latest_pid.not_nil!.seconds])
 
@@ -86,7 +91,6 @@ class Dashboard < Application
         :pid     => pid.pid,
         :name    => pid.name,
         :cmd     => pid.cmd,
-        :cpu     => pid.cpu,
         :memory  => pid.memory,
         :threads => pid.threads,
         :state   => pid.state,
@@ -96,7 +100,7 @@ class Dashboard < Application
 
     respond_with do
       html template("dashboard.slang")
-      json({host: host, boot: boot, memory: memory, cpu: cpu, pids: pids, disks: disks, load: load, net: net})
+      json({host: host, boot: boot, memory: memory, pids: pids, disks: disks, load: load, net: net})
     end
   end
 
@@ -118,8 +122,6 @@ class Dashboard < Application
       :free_mb  => mem.available / 1024,
     }
 
-    cpu = {:usage => Hardware::CPU.new.usage!.to_i}
-
     l_avg = Psutil.load_avg
     load = {
       :load1  => l_avg.load1,
@@ -135,14 +137,13 @@ class Dashboard < Application
       :packets_out => netio.packets_sent,
     }
 
-    pids = Array(Hash(Symbol, Float64 | Int64 | String)).new
+    pids = Array(Hash(Symbol, Int64 | String)).new
     Hardware::PID.each do |pid|
       next unless pid.name.size > 0
       pids << {
         :pid     => pid.number,
         :name    => pid.name,
         :cmd     => pid.command,
-        :cpu     => pid.stat.cpu_usage!,
         :memory  => pid.status.vmrss,
         :threads => pid.status.threads,
         :state   => pid.status.state,
@@ -166,7 +167,7 @@ class Dashboard < Application
 
     respond_with do
       html template("dashboard.slang")
-      json({host: host, boot: boot, memory: memory, cpu: cpu, pids: pids, disks: disks, load: load, net: net})
+      json({host: host, boot: boot, memory: memory, pids: pids, disks: disks, load: load, net: net})
     end
   end
 

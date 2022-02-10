@@ -5,32 +5,32 @@ class Sessions < Application
   skip_action :require_write
   rescue_from UserAuthenticationError, :retry_login
 
-  # GET /sessions/new (login)
+  # GET /sessions/ (login)
   def new
-    status :success
+    tone :success
     login_form
   end
 
   def retry_login(e)
     end_session
     notice (e.message || "Please try again")
-    status :error
+    tone :error
     login_form
   end
 
-  # POST /sessions/create (verify)
+  # POST /sessions/ (verify)
   def create
     login = User.authenticate!(params["username"], params["password"])
     !!login ? current_user(params["username"]) : raise UserAuthenticationError.new("Login failed.")
-    status :success
+    tone :info
     redirect_to Home.index
   end
 
-  # DELETE /sessions/destroy (logout)
+  # DELETE /sessions/close
   def destroy
     end_session
     notice "Your session is finished. Thank you for using #{App::NAME}."
-    status :info
+    tone :info
     login_form
   end
 

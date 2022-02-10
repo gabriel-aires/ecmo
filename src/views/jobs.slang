@@ -1,18 +1,20 @@
 h4 Scheduled Jobs
 - on_schedule.each do |job|
   details
-    summary= job.name
-    table role="grid"
+    summary.btn.solid class="#{tone}"
+      = job.name
+    table
       tr
         th Schedule
-        td= job.cron       
+        td= job.cron
       tr
         th Path
         td= job.path
       tr
         th Definition
         td
-          pre= File.read(job.path)
+          code
+            pre= File.read(job.path)
       tr
         th Version
         td= job.rev
@@ -30,10 +32,14 @@ h4 Scheduled Jobs
             a href=Jobs.show(id:job.id)
               del View Log
 
+  br
+
 h4 On-Demand Jobs
 - on_demand.each do |job|
+
   details
-    summary= job.name
+    summary.btn.solid class="#{tone}"
+      = job.name
     table role="grid"
       tr
         th Path
@@ -41,7 +47,7 @@ h4 On-Demand Jobs
       tr
         th Definition
         td
-          pre= File.read(job.path)              
+          pre= File.read(job.path)
       tr
         th Version
         td= job.rev
@@ -52,3 +58,5 @@ h4 On-Demand Jobs
         th Run job
         td
           a href=Jobs.show(id:job.id) role="button" Start!
+
+  br

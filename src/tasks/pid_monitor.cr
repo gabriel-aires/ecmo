@@ -8,7 +8,6 @@ Schedule.job :pid_monitor, :cron, "20 * * * * *" do
       pid: pid.number,
       name: pid.name,
       cmd: pid.command,
-      cpu: pid.stat.cpu_usage!,
       memory: pid.status.vmrss,
       threads: pid.status.threads,
       state: pid.status.state,
