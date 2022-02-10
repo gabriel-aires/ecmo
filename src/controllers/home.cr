@@ -7,6 +7,7 @@ class Home < Application
 
   def index
     tone :random
+    theme :night
 
     respond_with do
       html template("index.slang")

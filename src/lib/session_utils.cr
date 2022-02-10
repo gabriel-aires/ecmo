@@ -43,6 +43,30 @@ module SessionUtils
     end
   end
 
+  def theme
+    unpack_string cookies["theme"].value
+  rescue
+    "bg-white"
+  end
+
+  def theme(palette : String)
+    cookies["theme"] = pack_string palette
+  end
+
+  def theme(level : Symbol)
+    case level
+    when :ocean   then  theme "bg-blue light-text"
+    when :sky     then  theme "bg-default light-text"
+    when :grass   then  theme "bg-green light-text"
+    when :sunset  then  theme "bg-orange light-text"
+    when :blood   then  theme "bg-red light-text"
+    when :night   then  theme "bg-black light-text"
+    when :rain    then  theme "bg-gray light-text"
+    when :day     then  theme "bg-white"
+    else                theme "bg-white"
+    end
+  end
+
   def end_session
     session.delete "username"
     @_current_user = nil

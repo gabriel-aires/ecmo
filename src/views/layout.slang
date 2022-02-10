@@ -41,7 +41,7 @@ html lang="en"
             .notice-dismiss
               img src=Assets.show(id:"icon-close-outline.svg") alt="close icon"
 
-    .contents
+    .contents class=theme
       .row.light-text class="bg-#{tone}"
         .section.narrow.center
           h1= @title

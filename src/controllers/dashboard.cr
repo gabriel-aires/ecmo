@@ -22,6 +22,8 @@ class Dashboard < Application
   end
 
   def index
+    theme :grass
+
     last = {
       boot:   Sequence.find_by(name: "boot"),
       load:   Sequence.find_by(name: "load"),
@@ -105,6 +107,8 @@ class Dashboard < Application
   end
 
   get "/realtime", :realtime do
+    theme :blood
+
     info = Psutil.host_info
     host = {
       :name   => info.hostname,

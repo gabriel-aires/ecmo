@@ -8,6 +8,7 @@ class Sessions < Application
 
   # GET /sessions/ (login)
   def new
+    theme :day
     tone :success
     login_form
   end
@@ -31,6 +32,7 @@ class Sessions < Application
   def destroy
     end_session
     notice "Your session is finished. Thank you for using #{App::NAME}."
+    theme :day
     tone :info
     login_form
   end

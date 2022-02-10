@@ -3,6 +3,13 @@ class Jobs < Application
   @title : String = "Jobs"
   @description : String = "System Configuration"
 
+  before_action :set_theme
+
+  def set_theme
+    theme :day
+    tone :info
+  end
+
   def index
     on_schedule = [] of Job
     on_demand = [] of Job

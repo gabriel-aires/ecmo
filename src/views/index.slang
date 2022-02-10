@@ -10,24 +10,24 @@
 
   .col
 
-    a.btn.black href=Metrics.host Host Info
+    a.btn href=Metrics.host Host Info
 
-    a.btn.black href=Metrics.boot Boot Time
+    a.btn href=Metrics.boot Boot Time
 
-    a.btn.black href=Metrics.load System Load
-
-  .col
-
-    a.btn.black href=Metrics.memory Memory Usage
-
-    a.btn.black href=Metrics.net Net I/O
-
-    a.btn.black href=Metrics.disk Disk Usage
+    a.btn href=Metrics.load System Load
 
   .col
 
-    a.btn.black href=Metrics.partition Partitions
+    a.btn href=Metrics.memory Memory Usage
 
-    a.btn.black href=Metrics.pid Processes
+    a.btn href=Metrics.net Net I/O
+
+    a.btn href=Metrics.disk Disk Usage
+
+  .col
+
+    a.btn href=Metrics.partition Partitions
+
+    a.btn href=Metrics.pid Processes
 
   .col.space
