@@ -2,6 +2,10 @@ require "uuid"
 
 abstract class Application < ActionController::Base
 
+  @title : String?
+  @description : String?
+  @alert : String?
+
   force_ssl
   layout "layout.slang"
   Log = ::App::Log.for("controller")
@@ -24,11 +28,39 @@ abstract class Application < ActionController::Base
   end
 
   def require_read
-    true
+    @alert = "Read access required"
+    authorize_groups App::ALLOW_WRITE + " " + App::ALLOW_READ
   end
 
   def require_write
-    false
+    @alert = "Write access required"
+    authorize_groups App::ALLOW_WRITE
+  end
+
+  def authorize_groups(group_names : String)
+    user  = current_user.not_nil!
+    route = self.class.name + "#" + action_name.to_s
+    level = @alert.to_s
+    granted = group_names.strip
+    time  = Time.utc
+    perm = "#{level} for #{route} | Groups allowed: #{granted}."
+
+    if (user.groups & granted.split(" ")).empty?
+      tone :warn
+      theme :night
+
+      notice "Access denied for user '#{user.name}'"
+      puts "#{time} | #{user.name} blocked. | #{perm}"
+
+      respond_with do
+        html template("unauthorized.slang")
+      end
+
+    else
+      puts "#{time} | #{user.name} granted. | #{perm}"
+
+    end
+
   end
 
 end

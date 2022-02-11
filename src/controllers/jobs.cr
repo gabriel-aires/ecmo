@@ -1,7 +1,7 @@
 class Jobs < Application
 
-  @title : String = "Jobs"
-  @description : String = "System Configuration"
+  @title = "Jobs"
+  @description = "System Configuration"
 
   before_action :set_theme
 
@@ -35,6 +35,11 @@ class Jobs < Application
 
   def show
     job = Job.find(params["id"]).not_nil!
+    job_report job
+  end
+
+  def replace
+    job = Job.find(params["id"]).not_nil!
 
     if job.cron == "on-demand"
       mitamae = App::ROOT + "/bin/mitamae"
@@ -65,29 +70,32 @@ class Jobs < Application
         success: success,
         job_id: job.id
 
-      log = last_run job.id
-    else
-      log = last_run job.id
+      job_report job
     end
 
+  end
+
+  private def last_run(job_id)
+    log = {:output => "", :error => nil, :duration => 0_i64, :success => false}
+
+    Run.where(job_id: job_id).order(seconds: :desc).each do |run|
+      log[:output] = run.output
+      log[:error] = run.error
+      log[:duration] = run.duration
+      log[:success] = run.success
+      break
+    end
+
+    log
+  end
+
+  private def job_report(job)
+    log = last_run(job.id)
+    log[:success] ? (tone :success) : (tone :error)
     respond_with do
       html template("job_report.slang")
       json({job: job.to_json, log: log})
     end
-  end
-
-  private def last_run(job_id)
-    last = {:output => "", :error => nil, :duration => 0_i64, :success => false}
-
-    Run.where(job_id: job_id).order(seconds: :desc).each do |run|
-      last[:output] = run.output
-      last[:error] = run.error
-      last[:duration] = run.duration
-      last[:success] = run.success
-      break
-    end
-
-    last
   end
 
 end

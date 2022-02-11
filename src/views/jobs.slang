@@ -55,8 +55,18 @@ h4 On-Demand Jobs
         th Log level
         td= job.log.to_s
       tr
+        th Last Run
+        - if last_run(job.id)[:success]
+          td
+            a href=Jobs.show(id:job.id)
+              ins View Log
+        - else
+          td
+            a href=Jobs.show(id:job.id)
+              del View Log
+      tr
         th Run job
         td
-          a href=Jobs.show(id:job.id) role="button" Start!
+          a.btn.solid.black hx-put=Jobs.replace(id:job.id) hx-target="body" Start!
 
   br

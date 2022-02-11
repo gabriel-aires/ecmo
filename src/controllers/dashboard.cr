@@ -1,7 +1,7 @@
 class Dashboard < Application
 
-  @title : String = "Dashboard"
-  @description : String = "General System Metrics"
+  @title = "Dashboard"
+  @description = "General System Metrics"
 
   rescue_from DB::ConnectionRefused, :db_error
   rescue_from NilAssertionError, :null_error

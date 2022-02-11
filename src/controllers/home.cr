@@ -1,7 +1,7 @@
 class Home < Application
 
-  @title : String = App::NAME
-  @description : String = App::DESC
+  @title = App::NAME
+  @description = App::DESC
 
   base "/"
 

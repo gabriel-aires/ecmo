@@ -25,6 +25,9 @@ module App
 
   DB_RETENTION  = (ENV["DB_RETENTION"]? || 7).to_i
 
+  ALLOW_READ    = ENV["ALLOW_READ"]? || ""
+  ALLOW_WRITE   = ENV["ALLOW_WRITE"]? || "wheel"
+
   COOKIE_SESSION_KEY    = ENV["SESSION_KEY"]? || "_ecmo_"
   COOKIE_SESSION_SECRET = ENV["SESSION_SECRET"]? || "4f74c0b358d5bab4000dd3c75465dc2c"
 

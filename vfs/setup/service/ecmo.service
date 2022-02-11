@@ -4,7 +4,7 @@ After=network.target remote-fs.target
 
 [Service]
 EnvironmentFile=/opt/ecmo/ecmo.conf
-PassEnvironment=MODE SERVER_PORT SERVER_HOST DB_RETENTION SESSION_KEY SESSION_SECRET
+PassEnvironment=MODE SERVER_PORT SERVER_HOST DB_RETENTION SESSION_KEY SESSION_SECRET ALLOW_READ ALLOW_WRITE
 ExecStart=/opt/ecmo/bin/ecmo
 ExecStop=/bin/kill -s TERM $MAINPID
 User=root

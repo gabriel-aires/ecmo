@@ -8,7 +8,7 @@ output_log="/opt/ecmo/service.log"
 error_log="/opt/ecmo/error.log"
 
 start_pre() {
-  export MODE SERVER_PORT SERVER_HOST DB_RETENTION SESSION_KEY SESSION_SECRET
+  export MODE SERVER_PORT SERVER_HOST DB_RETENTION SESSION_KEY SESSION_SECRET ALLOW_READ ALLOW_WRITE
 }
 
 depend() {
