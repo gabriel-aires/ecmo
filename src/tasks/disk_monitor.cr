@@ -19,10 +19,11 @@ Schedule.job :disk_monitor, :cron, "5 * * * * *" do
               "JOIN partition p on p.id = disk.partition_id \
               WHERE seconds = ? \
               ORDER BY p.mountpoint ASC",
-              [record.not_nil!.seconds]
-            ).select { |d| d.partition == part }
-      change_size = ((du.total / 1024 ** 2) - dk.size_mb).abs
-      change_used = ((du.free / 1024 ** 2) - dk.used_mb).abs
+              [record.not_nil!.seconds])
+            .select { |d| d.partition == part }
+            .first
+      change_size = ((du.total / 1024 ** 2) - dk.not_nil!.size_mb).abs
+      change_used = ((du.free / 1024 ** 2) - dk.not_nil!.used_mb).abs
       persist = (change_size > acc) || (change_used > acc)
     end
 

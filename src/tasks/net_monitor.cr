@@ -9,8 +9,8 @@ Schedule.job :net_monitor, :cron, "15 * * * * *" do
     persist = true
   else
     nt = Net.find last.not_nil!.seq
-    change_up = ((net.bytes_recv / 1024 ** 2) - nt.received_mb).abs
-    change_dn = ((net.bytes_sent / 1024 ** 2) - nt.sent_mb).abs
+    change_up = ((net.bytes_recv / 1024 ** 2) - nt.not_nil!.received_mb).abs
+    change_dn = ((net.bytes_sent / 1024 ** 2) - nt.not_nil!.sent_mb).abs
     persist = (change_up > acc) || (change_dn > acc)
   end
 

@@ -9,8 +9,8 @@ Schedule.job :memory_monitor, :cron, "12 * * * * *" do
     persist = true
   else
     mm = Memory.find last.not_nil!.seq
-    change_size = ((mem.total / 1024) - mm.total_mb).abs
-    change_used = ((mem.used / 1024) - mm.used_mb).abs
+    change_size = ((mem.total / 1024) - mm.not_nil!.total_mb).abs
+    change_used = ((mem.used / 1024) - mm.not_nil!.used_mb).abs
     persist = (change_size > acc) || (change_used > acc)
   end
 

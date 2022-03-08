@@ -8,9 +8,9 @@ Schedule.job :load_monitor, :cron, "10 * * * * *" do
     persist = true
   else
     ld = Load.find last.not_nil!.seq
-    change1 = (l_avg.load1 - ld.load1).abs
-    change5 = (l_avg.load5 - ld.load5).abs
-    change15 = (l_avg.load15 - ld.load15).abs
+    change1 = (l_avg.load1 - ld.not_nil!.load1).abs
+    change5 = (l_avg.load5 - ld.not_nil!.load5).abs
+    change15 = (l_avg.load15 - ld.not_nil!.load15).abs
     acc = App::ACCURACY_LOAD
     persist = (change1 > acc) || (change5 > acc) || (change15 > acc)
   end
