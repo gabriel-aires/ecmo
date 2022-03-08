@@ -25,6 +25,11 @@ module App
 
   DB_RETENTION  = (ENV["DB_RETENTION"]? || 7).to_i
 
+  ACCURACY_LOAD = (ENV["ACCURACY_LOAD"]? || 0.15).to_f
+  ACCURACY_DISK = (ENV["ACCURACY_DISK"]? || 50).to_f
+  ACCURACY_NET = (ENV["ACCURACY_NET"]? || 100).to_f
+  ACCURACY_MEM = (ENV["ACCURACY_MEM"]? || 25).to_f
+
   ALLOW_READ    = ENV["ALLOW_READ"]? || ""
   ALLOW_WRITE   = ENV["ALLOW_WRITE"]? || "wheel"
 
