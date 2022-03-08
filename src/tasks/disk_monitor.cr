@@ -27,7 +27,7 @@ Schedule.job :disk_monitor, :cron, "5 * * * * *" do
     end
 
     disks << Disk.new(
-    ''seconds: seconds,
+      seconds: seconds,
       size_mb: du.total / 1024 ** 2,
       used_mb: du.used / 1024 ** 2,
       free_mb: du.free / 1024 ** 2,
