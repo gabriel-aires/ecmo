@@ -8,6 +8,4 @@ Schedule.job :db_cleaner, :cron, "40 * * * * *" do
     end
   {% end %}
 
-  conn = Granite::Connections["embedded"]
-  conn.open { |db| db.exec "VACUUM;" } if conn
 end
