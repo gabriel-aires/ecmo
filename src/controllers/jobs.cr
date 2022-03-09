@@ -90,7 +90,7 @@ class Jobs < Application
     end
   end
 
-  post "/vacuum-db", :vaccum_db do
+  post "/vacuum-db", :vacuum_db do
     conn = Granite::Connections["embedded"]
     conn.open { |db| db.exec "VACUUM;" } if conn
     notice "SQLite Vacuum finished."
