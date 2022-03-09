@@ -75,26 +75,45 @@ class Jobs < Application
 
   end
 
-  get "/vacuum-warning", :vacuum_warn do
-    @title = "SQLite VACUUM"
-    @description = "Reduce database fragmentation and recover disk space"
+  get "/bkp-info", :bkp_info do
+    @title = "Backup Data"
+    @description = "Embedded SQLite Backup"
 
     db_files = App::ROOT + "/db" + "/*"
     du_output = `du -sh #{db_files}`.chomp
 
-    theme :night
-    tone :warn
-
     respond_with do
-      html template("vacuum.slang")
+      html template("backup.slang")
     end
   end
 
-  put "/vacuum-db", :vacuum_db do
+  post "/bkp-db", :bkp_db do
     conn = Granite::Connections["embedded"]
-    conn.open { |db| db.exec "VACUUM;" } if conn
-    notice "SQLite Vacuum finished."
+
+    conn.not_nil!.open do |main|
+      DB.open "sqlite3:#{App::ROOT + "/db/backup.db"}" do |bak|
+        begin
+          backup main, bak
+          notice "SQLite Backup finished."
+        rescue
+          notice "SQLite Backup failed. Please try again later"
+        end
+      end
+    end
+
     redirect_to Jobs.index
+  end
+
+  private def backup(source, target)
+
+    source.using_connection do |conn|
+      conn = conn.as(SQLite3::Connection)
+      target.using_connection do |backup_conn|
+        backup_conn = backup_conn.as(SQLite3::Connection)
+        conn.dump(backup_conn)
+      end
+    end
+
   end
 
   private def last_run(job_id)
