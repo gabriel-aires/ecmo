@@ -80,7 +80,7 @@ class Jobs < Application
     @description = "Reduce database fragmentation and recover disk space"
 
     db_files = App::ROOT + "/db" + "/*"
-    du_output = `du -sh #{db_files}`
+    du_output = `du -sh #{db_files}`.chomp
 
     theme :night
     tone :warn
@@ -90,7 +90,7 @@ class Jobs < Application
     end
   end
 
-  post "/vacuum-db", :vacuum_db do
+  put "/vacuum-db", :vacuum_db do
     conn = Granite::Connections["embedded"]
     conn.open { |db| db.exec "VACUUM;" } if conn
     notice "SQLite Vacuum finished."

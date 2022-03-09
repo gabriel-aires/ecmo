@@ -20,4 +20,5 @@ table
 p This operation is irreversible. Do you want to proceed?
 
 a.btn.orange href=Jobs.index Cancel
-a.btn.solid.orange hx-delete=Jobs.vacuum_db hx-target="body" Start!
+br
+a.btn.solid.orange hx-put=Jobs.vacuum_db hx-target="body" Start!
