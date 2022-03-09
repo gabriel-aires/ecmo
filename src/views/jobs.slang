@@ -70,3 +70,7 @@ h4 On-Demand Jobs
           a.btn.solid.black hx-put=Jobs.replace(id:job.id) hx-target="body" Start!
 
   br
+
+h4 Ecmo Maintenance
+
+a.btn.solid class="#{tone}" href=Jobs.vacuum_warn Defrag & Shrink Data

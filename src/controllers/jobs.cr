@@ -75,6 +75,28 @@ class Jobs < Application
 
   end
 
+  get "/vacuum-warning", :vacuum_warn do
+    @title = "SQLite VACUUM"
+    @description = "Reduce database fragmentation and recover disk space"
+
+    db_files = App::ROOT + "/db" + "/*"
+    du_output = `du -sh #{db_files}`
+
+    theme :night
+    tone :warn
+
+    respond_with do
+      html template("vacuum.slang")
+    end
+  end
+
+  post "/vacuum-db", :vaccum_db do
+    conn = Granite::Connections["embedded"]
+    conn.open { |db| db.exec "VACUUM;" } if conn
+    notice "SQLite Vacuum finished."
+    redirect_to Jobs.index
+  end
+
   private def last_run(job_id)
     log = {:output => "", :error => nil, :duration => 0_i64, :success => false}
 
