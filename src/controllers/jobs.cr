@@ -15,11 +15,8 @@ class Jobs < Application
     on_demand = [] of Job
 
     Job.all.each do |job|
-      if job.cron == "on-demand"
-        on_demand << job
-      else
-        on_schedule << job
-      end
+      next unless File.exists?(job.path)
+      job.cron == "on-demand" ? on_demand << job : on_schedule << job
     end
 
     respond_with do

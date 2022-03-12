@@ -3,6 +3,8 @@ Schedule.job :itamae_scheduler, :in, 10.seconds do
   jobs_path = App::ROOT + "/jobs/"
 
   Job.all.each do |job|
+    next unless File.exists?(job.path)
+
     job_id = job
       .path
       .sub(jobs_path, "")

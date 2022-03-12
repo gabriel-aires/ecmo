@@ -47,7 +47,8 @@ h4 On-Demand Jobs
       tr
         th Definition
         td
-          pre= File.read(job.path)
+          code
+            pre= File.read(job.path)
       tr
         th Version
         td= job.rev
