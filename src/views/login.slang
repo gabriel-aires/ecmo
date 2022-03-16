@@ -4,51 +4,63 @@ html lang="en"
   head
     title Login
     meta charset="UTF-8"
-    link rel="shortcut icon" href=Assets.show(id:"favicon.ico")
-    link rel="stylesheet" href=Assets.show(id:"vital.min.css")
+    link rel="icon" href=Assets.show(id:"activity.svg")
+    link rel="stylesheet" href=Assets.show(id:"gralig.min.css")
+    link rel="stylesheet" href=Assets.show(id:"ecmo.css")
+    script src=Assets.show(id:"dygraph.min.js")
     script src=Assets.show(id:"htmx.min.js")
 
   body
-    .row.header-center
-      .section
-        h5= "#{App::NAME}: #{App::DESC}"
 
-    - if notice?
-      .row.notice
-        .section
-          .notice-message
-            .notice-text= notice
-            .notice-dismiss
-              img src=Assets.show(id:"icon-close-outline.svg") alt="close icon"
+    header.login.gra-navbar class="gra-#{tone}-bg"
+      .gra-container.gra-bold-text
+        .gra-navbar-logo
+          a.gra-navbar-logo-link href=Home.index
+            == Storage.read "assets/activity.svg"
+            span= " " + App::NAME
 
-    .contents.hero class="bg-#{tone}"
+        .gra-navbar-content
+          nav
+            ul.gra-nav
+              li.gra-nav-item
+                a.gra-nav-link Built with S2 and Spider-Gazelle
+
+              li.gra-nav-item
+                a.gra-nav-link Check the Github Repo
+
+    .gra-container
+
       .row
-        .section.center
-          form.full-width-forms.padded method="POST" action=Sessions.create
-            .col-1-4.space
-            .col-1-4.logo
-              img src=Assets.show(id:"icon-vital-white.svg")
-            .col-1-4
-              br
-              input name="username" placeholder="Username" required="true" type="text"
-              br
-              input name="password" placeholder="Password" required="true" type="password"
-              br
-              input.btn.solid name="submit" type="submit" value="Login"
-            .col-1-4.space
+        .col.gra-center-text
 
-    .row.footer.center.full-width-forms
-      .section.autogrid
-        .col
-          a href="https://spider-gazelle.net" Built with S2 and Spider-Gazelle
-        .col
-          a href="https://github.com/gabriel-aires/ecmo" Check the Github Repo
+          - if notice?
+            span.gra-alert class=tone role="alert"
+              = notice
+
+      .row
+        .col.col-span-33.col-33
+
+          form method="POST" action=Sessions.create
+            fieldset
+              legend
+                h5.gra-heading Sign In:
+              .gra-form-group
+                label for="username" Username
+                input#username type="text" name="username" required="true" placeholder="username..."
+              .gra-form-group
+                label for="password" Password
+                input#password type="password" name="password" required="true" placeholder="password..."
+              .gra-form-actions
+                input.gra-btn class="gra-btn-#{tone}" type="submit" name="submit" value="Go"
+
+      .row
+
+      footer.gra-footer= App::DESC
 
     javascript:
-      notice = document.querySelector(".row.notice");
-      closeButton = document.querySelector(".notice-dismiss");
-      if (closeButton) {
-        closeButton.addEventListener("click", function() {
+      notice = document.querySelector("span.gra-alert");
+      if (notice) {
+        notice.addEventListener("click", function() {
           notice.style.display = "none";
         });
       }

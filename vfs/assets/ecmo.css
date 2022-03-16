@@ -1,0 +1,17 @@
+header a.gra-navbar-logo-link, header a.gra-nav-link {
+  color: white;
+}
+
+.dark header.login a.gra-navbar-logo-link, .dark header.login a.gra-nav-link {
+  color: black;
+}
+
+.square svg {
+  transform: scale(4) !important;
+}
+
+.square {
+  height: 170px !important;
+  width: 170px !important;
+  text-align: center !important;
+}

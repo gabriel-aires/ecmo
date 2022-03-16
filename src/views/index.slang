@@ -1,33 +1,41 @@
-.autogrid.padded
-  .col.space
-  .col
+.row
 
-    a.btn.solid class=tone href=Dashboard.index Dashboard
+  .col.col-20.col-span-10
 
-    a.btn.solid class=tone href=Dashboard.realtime Dash(current)
+    a.gra-btn.gra-btn-yellow.square href="#"
+      .gra-block
+        == Storage.read "assets/info.svg"
 
-    a.btn.solid class=tone href=Jobs.index Available Jobs
+    br
+    .gra-center-text
+      h5.gra-subheading Info
 
-  .col
+  .col.col-20
 
-    a.btn href=Metrics.host Host Info
+    a.gra-btn.gra-btn-red.square href="#"
+      .gra-block
+        == Storage.read "assets/trending-up.svg"
 
-    a.btn href=Metrics.boot Boot Time
+    br
+    .gra-center-text
+      h5.gra-subheading Metrics
 
-    a.btn href=Metrics.load System Load
+  .col.col-20
 
-  .col
+    a.gra-btn.gra-btn-green.square href="#"
+      .gra-block
+        == Storage.read "assets/zap.svg"
 
-    a.btn href=Metrics.memory Memory Usage
+    br
+    .gra-center-text
+      h5.gra-subheading Jobs
 
-    a.btn href=Metrics.net Net I/O
+  .col.col-20
 
-    a.btn href=Metrics.disk Disk Usage
+    a.gra-btn.gra-btn-blue.square href="#"
+      .gra-block
+        == Storage.read "assets/tool.svg"
 
-  .col
-
-    a.btn href=Metrics.partition Partitions
-
-    a.btn href=Metrics.pid Processes
-
-  .col.space
+    br
+    .gra-center-text
+      h5.gra-subheading Config

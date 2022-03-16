@@ -31,7 +31,7 @@ class Sessions < Application
   # DELETE /sessions/close
   def destroy
     end_session
-    notice "Your session is finished. Thank you for using #{App::NAME}."
+    notice "Thank you for using #{App::NAME}."
     theme :day
     tone :info
     login_form
