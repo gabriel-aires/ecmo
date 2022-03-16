@@ -1,23 +1,15 @@
-# ecmo
+# Ecmo
 
-Easy Configuration Management Orchestration
+Easy Configuration Management Orchestration:
 
-More details at [gabriel-aires.github.io/ecmo](https://gabriel-aires.github.io/ecmo/)
+* Infrastructure as Code 
+* Hardware Resources Dashboard
+* RESTful API for machine metrics
+* Time-Series Visualization 
+* Job Creator / Scheduler
+* Easy agent installation: standalone binary, courtesy of crystal-lang, mruby, sqlite, alpine-linux and musl-libc
+* Credits to [mitamae](https://github.com/itamae-kitchen/mitamae), [dygraphs](https://github.com/danvk/dygraphs), [htmx](https://github.com/bigskysoftware/htmx), [spider-gazelle](https://github.com/spider-gazelle/spider-gazelle), [gralig](https://github.com/erenesto/gralig), [feather](https://github.com/feathericons/feather) and many others!
 
-## Testing
+###### TLDR :)
 
-`crystal spec`
-
-* to run in development mode `crystal ./src/app.cr`
-
-## Compiling
-
-`crystal build ./src/app.cr`
-
-### Deploying
-
-Once compiled you are left with a binary `./app`
-
-* for help `./app --help`
-* viewing routes `./app --routes`
-* run on a different port or host `./app -b 0.0.0.0 -p 80`
+![Application Screenshot](https://raw.githubusercontent.com/gabriel-aires/ecmo/main/doc/welcome-screen.png)
