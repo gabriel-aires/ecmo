@@ -15,3 +15,23 @@ header a.gra-navbar-logo-link, header a.gra-nav-link {
   width: 170px !important;
   text-align: center !important;
 }
+
+.user-icon, .logoff-icon {
+  display: none;
+}
+
+@media only screen and (max-width: 1024px) {
+
+  .square {
+    width: 100% !important;
+  }
+
+  .user-text, .logoff-text {
+    display: none;
+  }
+
+  .user-icon, .logoff-icon {
+    display: block;
+  }
+
+}
