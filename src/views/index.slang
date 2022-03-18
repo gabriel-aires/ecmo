@@ -2,7 +2,7 @@
 
   .col.col-20.col-span-10
 
-    a.gra-btn.gra-btn-yellow.square href="#"
+    a.gra-btn.gra-btn-yellow.square href=Dashboard.index
       .gra-block
         == Storage.read "assets/info.svg"
 
@@ -12,7 +12,7 @@
 
   .col.col-20
 
-    a.gra-btn.gra-btn-red.square href="#"
+    a.gra-btn.gra-btn-red.square href=Metrics.index
       .gra-block
         == Storage.read "assets/trending-up.svg"
 
@@ -22,7 +22,7 @@
 
   .col.col-20
 
-    a.gra-btn.gra-btn-green.square href="#"
+    a.gra-btn.gra-btn-green.square href=Jobs.index
       .gra-block
         == Storage.read "assets/zap.svg"
 
