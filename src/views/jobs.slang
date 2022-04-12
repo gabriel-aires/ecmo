@@ -13,8 +13,7 @@ h4 Scheduled Jobs
       tr
         th Definition
         td
-          code
-            pre= File.read(job.path)
+          pre= File.read(job.path)
       tr
         th Version
         td= job.rev
@@ -47,8 +46,7 @@ h4 On-Demand Jobs
       tr
         th Definition
         td
-          code
-            pre= File.read(job.path)
+          pre= File.read(job.path)
       tr
         th Version
         td= job.rev

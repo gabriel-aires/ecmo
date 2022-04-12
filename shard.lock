@@ -6,11 +6,15 @@ shards:
 
   ameba:
     git: https://github.com/veelenga/ameba.git
-    version: 0.14.3
+    version: 1.0.0
 
   baked_file_system:
     git: https://github.com/schovi/baked_file_system.git
     version: 0.10.0
+
+  crikey:
+    git: https://github.com/abidon/crikey.git
+    version: 0.1.0+git.commit.f019441940648bbee7895a258fdd14c68f316f89
 
   cron_parser:
     git: https://github.com/kostya/cron_parser.git
@@ -48,17 +52,13 @@ shards:
     git: https://github.com/gabriel-aires/psutil.cr.git
     version: 0.2.2
 
-  slang:
-    git: https://github.com/jeromegn/slang.git
-    version: 1.7.3
-
   sqlite3:
     git: https://github.com/crystal-lang/crystal-sqlite3.git
     version: 0.18.0
 
   ssh2:
     git: https://github.com/spider-gazelle/ssh2.cr.git
-    version: 1.5.2
+    version: 1.5.3
 
   tasker:
     git: https://github.com/spider-gazelle/tasker.git

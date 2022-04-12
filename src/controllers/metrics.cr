@@ -33,8 +33,9 @@ class Metrics < Application
       { download: n.map(&.received_mb), upload: n.map(&.sent_mb), time: t }
     when "disk"
       usage = Hash(String, Array(Int64) | Array(Float64)).new
+      dk = Disk.all("JOIN partition p on p.id = disk.partition_id ORDER BY disk.seconds ASC")
       Partition.all.each do |p|
-        d = p.disk.all
+        d = dk.select { |disk| disk.partition.mountpoint == p.mountpoint }
         usage["#{p.mountpoint}_time" ] = d.map &.seconds
         usage["#{p.mountpoint}_total"] = d.map &.size_mb
         usage["#{p.mountpoint}_used" ] = d.map &.used_mb

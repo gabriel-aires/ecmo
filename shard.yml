@@ -1,5 +1,5 @@
 name: ecmo
-version: 0.9
+version: 0.11
 
 authors:
   - Gabriel Aires <airesgabriel@gmail.com>
@@ -10,37 +10,26 @@ description: |
 dependencies:
   granite:
     github: amberframework/granite
-    version: ~> 0.23
   kilt:
     github: jeromegn/kilt
-    version: ~> 0.6
-  slang:
-    github: jeromegn/slang
-    version: ~> 1.7
+  crikey:
+    github: abidon/crikey
   action-controller:
     github: spider-gazelle/action-controller
-    version: ~> 4.0
   tasker:
     github: spider-gazelle/tasker
-    version: ~> 2.0
   ssh2:
     github: spider-gazelle/ssh2.cr
-    version: ~> 1.5
   sqlite3:
     github: crystal-lang/crystal-sqlite3
-    version: ~> 0.18
   future:
     github: crystal-community/future.cr
-    version: ~> 1.0
   baked_file_system:
     github: schovi/baked_file_system
-    version: ~> 0.10
   hardware:
     github: gabriel-aires/hardware
-    version: ~> 0.5
   psutil:
     github: gabriel-aires/psutil.cr
-    version: ~> 0.2
 
 development_dependencies:
   ameba:
