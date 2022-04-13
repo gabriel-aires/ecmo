@@ -1,9 +1,13 @@
 # Application dependencies
 require "action-controller"
-require "kilt/slang"
+require "kilt"
+require "crikey"
 require "granite"
 require "granite/adapter/sqlite"
 require "./constants"
+
+# Register .cr views (crikey templates are pure crystal data)
+Kilt.register_engine "cr", Crikey.embed
 
 # Configure and test connection
 db_url = "sqlite3://#{App::ROOT}/db/data.db"

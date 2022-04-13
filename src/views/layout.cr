@@ -1,13 +1,13 @@
 [
   %|<!doctype html>|,
-  [:html {lang: "en"},
+  [:html, {lang: "en"},
 
     [:head,
-      [:title, "Ecmo"],
-      [:meta, {charset: "UTF-8"}],
-      [:link, {rel: "icon", href: Assets.show(id: "activity.svg")}],
-      [:link, {rel: "stylesheet", href: Assets.show(id: "gralig.min.css")}],
-      [:link, {rel: "stylesheet", href: Assets.show(id: "ecmo.css")}],
+      [:title,  "Ecmo"],
+      [:meta,   {charset: "UTF-8"}],
+      [:link,   {rel: "icon", href: Assets.show(id: "activity.svg")}],
+      [:link,   {rel: "stylesheet", href: Assets.show(id: "gralig.min.css")}],
+      [:link,   {rel: "stylesheet", href: Assets.show(id: "ecmo.css")}],
       [:script, {src: Assets.show(id: "dygraph.min.js")}],
       [:script, {src: Assets.show(id: "htmx.min.js")}],
       [:style, 
@@ -35,7 +35,7 @@
           text-shadow: black 0px 1px;
         }
         CSS
-        ]]
+        ]],
         
     [:body,
 
