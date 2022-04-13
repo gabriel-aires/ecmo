@@ -9,7 +9,7 @@ class Metrics < Application
       "Disk"    => ["gray", "assets/database.svg" ]
     }
 
-    respond_with { html template("metrics.slang") }
+    respond_with { html template("metrics.cr") }
   end
 
   def show

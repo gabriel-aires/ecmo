@@ -6,13 +6,13 @@
     [:table,
       [:tr,
         [:th, "OS"],
-        [:td, host[:os]]
+        [:td, host[:os]],
       [:tr,
         [:th, "Architecture"],
-        [:td, host[:arch]]
+        [:td, host[:arch]],
       [:tr,
         [:th, "Uptime"],
-        [:td, host[:uptime]]
+        [:td, host[:uptime]],
       [:tr,
         [:th, "Boot Time"],
         [:td, Time.new(seconds: boot[:seconds], nanoseconds: 0, location: Time.local.location).to_s]]]],
@@ -24,19 +24,19 @@
     [:table, {role: "grid"},
       [:tr,
         [:th, "Total Memory (Mb)"],
-        [:td, memory[:total_mb]]
+        [:td, memory[:total_mb]],
       [:tr,
         [:th, "Used Memory (Mb)"],
-        [:td, memory[:used_mb]]
+        [:td, memory[:used_mb]],
       [:tr,
         [:th, "Free Memory (Mb)"],
-        [:td, memory[:free_mb]]
+        [:td, memory[:free_mb]],
       [:tr,
         [:th, "Load (1m)"],
-        [:td, load[:load1]]
+        [:td, load[:load1]],
       [:tr,
         [:th, "Load (5m)"],
-        [:td, load[:load5]]
+        [:td, load[:load5]],
       [:tr,
         [:th, "Load (15m)"],
         [:td, load[:load15]]]],
@@ -48,13 +48,13 @@
     [:table, {role: "grid"},
       [:tr,
         [:th, "Upload (Mb)"],
-        [:td, net[:sent_mb]]
+        [:td, net[:sent_mb]],
       [:tr,
         [:th, "Download (Mb)"],
-        [:td, net[:received_mb]]
+        [:td, net[:received_mb]],
       [:tr,
         [:th, "Packets Received"],
-        [:td, net[:packets_in]]
+        [:td, net[:packets_in]],
       [:tr,
         [:th, "Packets Sent"],
         [:td, net[:packets_out]]]],
@@ -78,26 +78,26 @@
         [:table, {role: "grid"},
           [:tr,
             [:th, "Filesystem type"],
-            [:td, disk[:fstype]]
+            [:td, disk[:fstype]],
           [:tr,
             [:th, "Device"],
-            [:td, disk[:device]]
+            [:td, disk[:device]],
           [:tr,
             [:th, "Size (Mb)"],
-            [:td, disk[:size_mb]]
+            [:td, disk[:size_mb]],
           [:tr,
             [:th, "Used (Mb)"],
-            [:td, disk[:used_mb]]
+            [:td, disk[:used_mb]],
           [:tr,
             [:th, "Free (Mb)"],
-            [:td, disk[:free_mb]]
+            [:td, disk[:free_mb]],
           [:tr,
             [:th, "Usage (%)"],
             [:td, disk[:usage]]]],
             
       [:br]]
       
-  end,
+  end ,
   
   [:h3, "Process Details"],
 
@@ -111,16 +111,16 @@
         [:table, {role: "grid"},
           [:tr,
             [:th, "Command"],
-            [:td, pid[:cmd]]
+            [:td, pid[:cmd]],
           [:tr,
             [:th, "Memory"],
-            [:td, pid[:memory]]
+            [:td, pid[:memory]],
           [:tr,
             [:th, "Threads"],
-            [:td, pid[:threads]]
+            [:td, pid[:threads]],
           [:tr,
             [:th, "State"],
-            [:td, pid[:state]]
+            [:td, pid[:state]],
           [:tr,
             [:th, "Parent"],
             [:td, pid[:parent]]]],

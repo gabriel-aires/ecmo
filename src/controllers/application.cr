@@ -7,7 +7,7 @@ abstract class Application < ActionController::Base
   @alert : String?
 
   force_ssl
-  layout "layout.slang"
+  layout "layout.cr"
   Log = ::App::Log.for("controller")
   before_action :set_request_id
   before_action :set_date_header
@@ -53,7 +53,7 @@ abstract class Application < ActionController::Base
       puts "#{time} | #{user.name} blocked. | #{perm}"
 
       respond_with do
-        html template("unauthorized.slang")
+        html template("unauthorized.cr")
       end
 
     else

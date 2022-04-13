@@ -39,7 +39,7 @@ class Sessions < Application
 
   private def login_form
     respond_with do
-      html template("login.slang")
+      html template("login.cr")
     end
   end
 

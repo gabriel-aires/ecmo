@@ -20,7 +20,7 @@ class Jobs < Application
     end
 
     respond_with do
-      html template("jobs.slang")
+      html template("jobs.cr")
       json({
         jobs: {
           on_schedule: on_schedule.map { |job| job.to_json },
@@ -80,7 +80,7 @@ class Jobs < Application
     du_output = `du -sh #{db_files}`.chomp
 
     respond_with do
-      html template("backup.slang")
+      html template("backup.cr")
     end
   end
 
@@ -131,7 +131,7 @@ class Jobs < Application
     log = last_run(job.id)
     log[:success] ? (tone :success) : (tone :error)
     respond_with do
-      html template("job_report.slang")
+      html template("job_report.cr")
       json({job: job.to_json, log: log})
     end
   end

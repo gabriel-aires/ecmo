@@ -10,7 +10,7 @@ class Home < Application
     theme :night
 
     respond_with do
-      html template("index.slang")
+      html template("index.cr")
     end
   end
 

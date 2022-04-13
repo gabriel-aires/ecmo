@@ -101,7 +101,7 @@ class Dashboard < Application
     end
 
     respond_with do
-      html template("dashboard.slang")
+      html template("dashboard.cr")
       json({host: host, boot: boot, memory: memory, pids: pids, disks: disks, load: load, net: net})
     end
   end
@@ -170,7 +170,7 @@ class Dashboard < Application
     end
 
     respond_with do
-      html template("dashboard.slang")
+      html template("dashboard.cr")
       json({host: host, boot: boot, memory: memory, pids: pids, disks: disks, load: load, net: net})
     end
   end
