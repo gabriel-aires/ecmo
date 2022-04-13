@@ -68,7 +68,7 @@
       [:div, {class: "gra-container"},
 
         [:div, {class: "row"},
-          [:div, {class: "col gra-center-text"}, [:span, {class: "gra-alert #{tone}", role: "alert"}, notice] if notice?]],
+          [:div, {class: "col gra-center-text"}, notice? ? [:span, {class: "gra-alert #{tone}", role: "alert"}, notice] : "" ]],
 
         [:div, {class: "row"},
           [:div, {class: "col col-80 col-span-10 gra-center-text"},
