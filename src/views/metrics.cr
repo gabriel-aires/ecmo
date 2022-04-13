@@ -1,8 +1,8 @@
 [:div, {class: "row"},
 
-  @links.not_nil!.each_key do |name|
-      
-    color, icon = @links.not_nil![name]
+  @links.not_nil!.map do |name, props|
+
+    color, icon = props
     btn_class = color == "gray" ? "square gra-btn" : "square gra-btn gra-btn-" + color
 
     [:div, {class: "col col-20"},

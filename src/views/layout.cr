@@ -1,5 +1,5 @@
 [
-  %|<!doctype html>|,
+  [%|<!doctype html>|],
   [:html, {lang: "en"},
 
     [:head,
@@ -10,7 +10,7 @@
       [:link,   {rel: "stylesheet", href: Assets.show(id: "ecmo.css")}],
       [:script, {src: Assets.show(id: "dygraph.min.js")}],
       [:script, {src: Assets.show(id: "htmx.min.js")}],
-      [:style, 
+      [:style,
         <<-CSS
         pre {
           color: black;
@@ -36,7 +36,7 @@
         }
         CSS
         ]],
-        
+
     [:body,
 
       [:header, {class: "gra-navbar dark"},
@@ -64,7 +64,7 @@
                   [:a, {class: "gra-nav-link", onclick: "toggleTheme();"},
                     [:div, {class: "sun"}, Storage.read("assets/sun.svg")],
                     [:div, {class: "moon"}, Storage.read("assets/moon.svg")]]]]]]]],
-                  
+
       [:div, {class: "gra-container"},
 
         [:div, {class: "row"},
@@ -77,7 +77,7 @@
 
         [:div, {class: "row"},
           [:div, {class: "col col-80 col-span-10"}, content]],
-      
+
         [:div, {class: "row"}]],
 
       [:footer, {class: "gra-footer"},
@@ -95,7 +95,7 @@
           notice.addEventListener("click", function() {
             notice.style.display = "none";
           });
-        }  
+        }
 
         var pref = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
         toggleTheme();
