@@ -17,14 +17,14 @@ Easy Configuration Management Orchestration:
 ###### Docker/Podman Setup
 
 ```
-sudo setenforce permissive 			# needed for fedora, rhel, centos
-sudo dnf install openssl			# used for signing certificates
-docker build . -t ecmo -v $(pwd):/ecmo		# podman is preferred in fedora, cli arguments are the same
-sudo ./dist/ecmo-linux-x64.bin --install	# installs binaries, recipes and data to /opt/ecmo
-sudo ./dist/ecmo-linux-x64.bin --tls		# creates self-signed certificate
-sudo ./dist/ecmo-linux-x64.bin --config systemd	# creates systemd service configuration
-sudo systemctl enable ecmo			# enables ecmo on boot
-sudo systemctl start ecmo			# start service according to params in /opt/ecmo/ecmo.conf
+sudo setenforce permissive
+sudo dnf install openssl
+docker build . -t ecmo -v $(pwd):/ecmo
+sudo ./dist/ecmo-linux-x64.bin --install
+sudo ./dist/ecmo-linux-x64.bin --tls
+sudo ./dist/ecmo-linux-x64.bin --config systemd
+sudo systemctl enable ecmo
+sudo systemctl start ecmo
 ```
 
 1) needed for fedora, rhel, centos
@@ -34,7 +34,7 @@ sudo systemctl start ecmo			# start service according to params in /opt/ecmo/ecm
 5) creates self-signed certificate
 6) creates systemd service configuration
 7) enables ecmo on boot
-8) start service using configuration defined in /opt/ecmo/ecmo.conf
+8) starts service using configuration defined in /opt/ecmo/ecmo.conf
 
 ###### TLDR :)
 
