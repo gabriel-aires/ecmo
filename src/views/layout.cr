@@ -34,6 +34,12 @@
           color: rgb(245, 242, 240);
           text-shadow: black 0px 1px;
         }
+        summary, .gra-dropdown-list {
+          box-shadow: 0 0 0.2rem;
+          border-radius: 0.2rem;
+          width: 20rem;
+          cursor: pointer;
+        }
         CSS
         ]],
 
