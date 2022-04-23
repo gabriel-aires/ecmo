@@ -20,6 +20,30 @@ header a.gra-navbar-logo-link, header a.gra-nav-link {
   display: none;
 }
 
+pre {
+  color: black;
+  background: rgb(245, 242, 240) none repeat scroll 0% 0%;
+  text-shadow: white 0px 1px;
+  font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  overflow-wrap: normal;
+  line-height: 1.5;
+  tab-size: 4;
+  hyphens: none;
+  padding: 1em;
+  margin: 0.5em;
+  overflow: auto;
+}
+
+.dark pre {
+  background : black;
+  color: rgb(245, 242, 240);
+  text-shadow: black 0px 1px;
+}
+
 @media only screen and (max-width: 1024px) {
 
   .square {

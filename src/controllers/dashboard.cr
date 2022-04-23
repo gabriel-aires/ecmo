@@ -3,6 +3,8 @@ class Dashboard < Application
   @title = "Dashboard"
   @description = "General System Metrics"
 
+  layout "layout_full.cr"
+
   rescue_from DB::ConnectionRefused, :db_error
   rescue_from NilAssertionError, :null_error
 
@@ -19,6 +21,34 @@ class Dashboard < Application
   def null_error(e)
     # Redirect to realtime dashboard if metrics are not in database yet
     redirect_to Dashboard.realtime
+  end
+
+  def show_bar(percent : Int16, size : String = "", color : String = "")
+    <<-GAUGE
+    <span class="gra-progress-bar #{size}">
+      <span class="gra-progress-bar-value #{color}"
+        style="transform: translateX(-#{percent - 100}%);">
+      </span>
+    </span>
+    GAUGE
+  end
+
+  def show_arc(degrees : Int16, size : String = "", color : String = "")
+    <<-GAUGE
+    <div class="gra-progress-circle #{size} #{color}">
+      <svg width="80" height="80" viewBox="0 0 80 80">
+        <circle
+          class="gra-progress-circle-back"
+          cx="40" cy="40" r="35" fill="none">
+        </circle>
+        <circle
+          class="gra-progress-circle-value"
+          cx="40" cy="40" r="33" fill="none"
+          style="stroke-dashoffset: #{degrees}">
+        </circle>
+      </svg>
+    </div>
+    GAUGE
   end
 
   def index

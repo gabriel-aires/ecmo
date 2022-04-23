@@ -44,13 +44,7 @@
         [:div, {class: "row"},
           [:div, {class: "col gra-center-text"}, notice? ? [:span, {class: "gra-alert #{tone}", role: "alert"}, notice] : "" ]],
 
-        [:div, {class: "row"},
-          [:div, {class: "col col-80 col-span-10 gra-center-text"},
-            [:h1, {class: "gra-heading"}, @title],
-            [:h2, {class: "gra-subheading"}, @description]]],
-
-        [:div, {class: "row"},
-          [:div, {class: "col col-80 col-span-10"}, content]],
+        content,
 
         [:div, {class: "row"}]],
 
@@ -62,4 +56,4 @@
             [:li, {class: "gra-nav-item"},
               [:a, {class: "gra-nav-link", href: "https://github.com/gabriel-aires/ecmo"}, "Check the Github Repo"]]]]],
 
-      [:script, {src: Assets.show(id: "_ecmo.js")} ]]]]
+      [:script, {src: Assets.show(id: "_ecmo.js")}]]]]
