@@ -23,17 +23,17 @@ class Dashboard < Application
     redirect_to Dashboard.realtime
   end
 
-  def show_bar(percent : Int16, size : String = "", color : String = "")
+  def show_bar(percent : Float, size : String = "", color : String = "")
     <<-GAUGE
     <span class="gra-progress-bar #{size}">
       <span class="gra-progress-bar-value #{color}"
-        style="transform: translateX(-#{percent - 100}%);">
+        style="transform: translateX(-#{percent - 100.0}%);">
       </span>
     </span>
     GAUGE
   end
 
-  def show_arc(degrees : Int16, size : String = "", color : String = "")
+  def show_arc(percent : Float, size : String = "", color : String = "")
     <<-GAUGE
     <div class="gra-progress-circle #{size} #{color}">
       <svg width="80" height="80" viewBox="0 0 80 80">
@@ -44,7 +44,7 @@ class Dashboard < Application
         <circle
           class="gra-progress-circle-value"
           cx="40" cy="40" r="33" fill="none"
-          style="stroke-dashoffset: #{degrees}">
+          style="stroke-dashoffset: #{percent * 3.6}">
         </circle>
       </svg>
     </div>
