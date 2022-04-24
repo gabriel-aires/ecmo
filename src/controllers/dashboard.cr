@@ -27,7 +27,7 @@ class Dashboard < Application
     <<-GAUGE
     <span class="gra-progress-bar #{size}">
       <span class="gra-progress-bar-value #{color}"
-        style="transform: translateX(-#{percent - 100.0}%);">
+        style="transform: translateX(#{(percent - 100.0).round}%);">
       </span>
     </span>
     GAUGE
@@ -44,7 +44,7 @@ class Dashboard < Application
         <circle
           class="gra-progress-circle-value"
           cx="40" cy="40" r="33" fill="none"
-          style="stroke-dashoffset: #{percent * 3.6}">
+          style="stroke-dashoffset: #{(percent * 2.08 - 208.0).round}px">
         </circle>
       </svg>
     </div>

@@ -20,6 +20,23 @@ header a.gra-navbar-logo-link, header a.gra-nav-link {
   display: none;
 }
 
+.dashboard * {
+  font-size:  1rem;
+}
+
+.dashboard .gra-subheading {
+  font-size: 1.6rem;
+}
+
+.dashboard .gra-table {
+  min-width: 10em;
+}
+
+.dashboard .gra-progress-circle {
+  padding-top: 1rem;
+  margin: auto;
+}
+
 pre {
   color: black;
   background: rgb(245, 242, 240) none repeat scroll 0% 0%;
