@@ -12,7 +12,7 @@ Vagrant.configure("2") do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://vagrantcloud.com/search.
-  config.vm.box = "generic/alpine314"
+  config.vm.box = "generic/alpine315"
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -65,9 +65,9 @@ Vagrant.configure("2") do |config|
   # documentation for more information about their specific syntax and use.
   config.vm.provision "shell", inline: <<-SHELL
     echo "* Using edge repositories"
-    sed -i -r s/v3\.14/edge/ /etc/apk/repositories
+    sed -i -r s/v3\.15/edge/ /etc/apk/repositories
     echo "* Installig toolchain..."
-    apk add -U git llvm12-static yaml-static sqlite-static libssh2-static zlib-static libretls-static openssl-libs-static openssl-dev crystal shards
+    apk add -U git llvm-static yaml-static sqlite-static libssh2-static zlib-static libretls-static openssl-libs-static openssl-dev crystal shards
     echo "* Installing dependencies..."
     cd /ecmo ; shards install --production
     echo "* Building release..."
