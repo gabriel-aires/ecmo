@@ -1,6 +1,7 @@
 lib
 app
 bin
+tmp
 !src/lib
 !vfs/setup/bin
 !vfs/setup/jobs/lib
