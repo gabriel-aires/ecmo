@@ -69,7 +69,7 @@ Vagrant.configure("2") do |config|
     echo "* Installig toolchain..."
     apk add -U git llvm-static yaml-static sqlite-static libssh2-static zlib-static libretls-static openssl-libs-static openssl-dev crystal shards
     echo "* Installing dependencies..."
-    cd /ecmo ; shards install --production
+    cd /ecmo ; shards update
     echo "* Building release..."
     crystal build --release --static /ecmo/src/app.cr -o /ecmo/dist/ecmo-linux-x86-64.bin
   SHELL
