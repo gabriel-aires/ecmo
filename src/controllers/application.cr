@@ -46,9 +46,7 @@ abstract class Application < ActionController::Base
     perm = "#{level} for #{route} | Groups allowed: #{granted}."
 
     if (user.groups & granted.split(" ")).empty?
-      tone :warn
-      theme :night
-
+      
       notice "Access denied for user '#{user.name}'"
       puts "#{time} | #{user.name} blocked. | #{perm}"
 

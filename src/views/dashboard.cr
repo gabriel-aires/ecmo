@@ -53,14 +53,10 @@
             [:th, "Download #{net[:received_mb].round}Mb"],
             [:td, [show_bar(net[:received_mb] * 100.0 / (net[:sent_mb] + net[:received_mb]), "large", "blue")]]]]]]],
 
-  [:div, {class: "row"},          
+  [:div, {class: "row"},
 
     disks
-    .reject { |d| d[:mount].to_s.starts_with? "/sys/" }
-    .reject { |d| d[:mount].to_s.starts_with? "/run/" }
-    .reject { |d| d[:mount].to_s.starts_with? "/dev/" }
-    .reject { |d| d[:mount].to_s.starts_with? "/proc/" }
-    .reject { |d| ["devtmpfs", "proc", "sysfs", "tmpfs", "squashfs"].includes? d[:fstype] }
+    .reject { |d| d[:size_mb] == 0.0 }
     .sort_by { |d| d[:usage].to_f }
     .reverse
     .map do |disk|

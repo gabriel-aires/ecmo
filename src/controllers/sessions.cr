@@ -8,15 +8,12 @@ class Sessions < Application
 
   # GET /sessions/ (login)
   def new
-    theme :day
-    tone :success
     login_form
   end
 
   def retry_login(e)
     end_session
     notice e.message.to_s
-    tone :error
     login_form
   end
 
@@ -24,7 +21,6 @@ class Sessions < Application
   def create
     login = User.authenticate!(params["username"], params["password"])
     !!login ? current_user(params["username"]) : raise UserAuthenticationError.new("Login failed.")
-    tone :info
     redirect_to Home.index
   end
 
@@ -32,8 +28,6 @@ class Sessions < Application
   def destroy
     end_session
     notice "Thank you for using #{App::NAME}."
-    theme :day
-    tone :info
     login_form
   end
 

@@ -1,4 +1,4 @@
-Schedule.job :disk_monitor, :cron, "5 * * * * *" do
+Schedule.job :disk_monitor, :cron, "5,25,45 * * * * *" do
   seconds = Time.local.to_unix
   volumes = Psutil.disk_partitions(true)
   disks = Array(Disk).new

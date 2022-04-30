@@ -8,12 +8,6 @@ class Dashboard < Application
   rescue_from DB::ConnectionRefused, :db_error
   rescue_from NilAssertionError, :null_error
 
-  before_action :unset_tone
-
-  def unset_tone
-    tone :none
-  end
-
   def db_error(e)
     render :internal_server_error, text: "500 Internal Server Error: Unable to open database"
   end
@@ -52,7 +46,6 @@ class Dashboard < Application
   end
 
   def index
-    theme :grass
 
     last = {
       boot:   Sequence.find_by(name: "boot"),
@@ -137,7 +130,6 @@ class Dashboard < Application
   end
 
   get "/realtime", :realtime do
-    theme :blood
 
     info = Psutil.host_info
     host = {

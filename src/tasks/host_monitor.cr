@@ -1,4 +1,4 @@
-Schedule.job :host_monitor, :cron, "8 8 * * * *" do
+Schedule.job :host_monitor, :cron, "8,28,48 * * * * *" do
   seconds = Time.local.to_unix
   info = Psutil.host_info
 

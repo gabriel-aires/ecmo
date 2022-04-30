@@ -3,13 +3,6 @@ class Jobs < Application
   @title = "Jobs"
   @description = "System Configuration"
 
-  before_action :set_theme
-
-  def set_theme
-    theme :day
-    tone :info
-  end
-
   def index
     on_schedule = [] of Job
     on_demand = [] of Job
@@ -129,7 +122,6 @@ class Jobs < Application
 
   private def job_report(job)
     log = last_run(job.id)
-    log[:success] ? (tone :success) : (tone :error)
     respond_with do
       html template("job_report.cr")
       json({job: job.to_json, log: log})

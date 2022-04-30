@@ -6,9 +6,6 @@ class Home < Application
   base "/"
 
   def index
-    tone :random
-    theme :night
-
     respond_with do
       html template("index.cr")
     end

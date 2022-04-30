@@ -42,7 +42,7 @@
       [:div, {class: "gra-container"},
 
         [:div, {class: "row"},
-          [:div, {class: "col gra-center-text"}, notice? ? [:span, {class: "gra-alert #{tone}", role: "alert"}, notice] : "" ]],
+          [:div, {class: "col gra-center-text"}, notice? ? [:span, {class: "gra-alert", role: "alert"}, notice] : "" ]],
 
         content,
 

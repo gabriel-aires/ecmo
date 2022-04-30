@@ -5,7 +5,7 @@
     
     [:div,
       [:details,
-        [:summary, {class: "btn solid #{tone}"}, job.name],
+        [:summary, {class: "gra-btn"}, job.name],
         [:table,
           [:tr,
             [:th, "Schedule"],
@@ -40,7 +40,7 @@
 
 		[:div,
       [:details,
-        [:summary, {class: "btn solid #{tone}"}, job.name],
+        [:summary, {class: "gra-btn"}, job.name],
         [:table, {role: "grid"},
           [:tr,
             [:th, "Path"],
@@ -76,4 +76,4 @@
 
   [:h4, "Ecmo Maintenance" ],
 
-  [:a, {class: "btn solid #{tone}", href: Jobs.bkp_info}, "Backup Data"]]
+  [:a, {class: "gra-btn", href: Jobs.bkp_info}, "Backup Data"]]

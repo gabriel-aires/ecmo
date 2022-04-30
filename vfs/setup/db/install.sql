@@ -13,12 +13,6 @@ create table boot (
   seconds integer
 );
 
-create table cpu (
-	id INTEGER PRIMARY KEY AUTOINCREMENT,
- 	seconds integer,
- 	usage real
-);
-
 create table load (
 	id INTEGER PRIMARY KEY AUTOINCREMENT,
 	seconds integer,
@@ -30,9 +24,12 @@ create table load (
 create table memory (
 	id INTEGER PRIMARY KEY AUTOINCREMENT,
  	seconds integer,
- 	total_mb real,
- 	used_mb real,
- 	free_mb real
+ 	ram_size_mb real,
+ 	ram_used_mb real,
+ 	ram_free_mb real,
+ 	swp_size_mb real,
+ 	swp_used_mb real,
+ 	swp_free_mb real
 );
 
 create table net (
@@ -44,17 +41,22 @@ create table net (
 	sent_packets integer
 );
 
+create table command (
+	id INTEGER PRIMARY KEY AUTOINCREMENT,
+	name text,
+	line text
+);
+
 create table process (
 	id INTEGER PRIMARY KEY AUTOINCREMENT,
 	seconds integer,
 	pid integer,
-	name text,
-	cmd text,
-	cpu real,
 	memory text,
 	threads text,
 	state text,
-	parent text
+	parent text,
+	command_id integer,
+	FOREIGN KEY(command_id) references command(id)
 );
 
 create table partition (
@@ -95,5 +97,6 @@ create table run (
 	FOREIGN KEY(job_id) references job(id)	
 );
 
+create index command_id_idx ON process (command_id);
 create index partition_id_idx ON disk (partition_id);
 create index job_id_idx ON run (job_id)

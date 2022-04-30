@@ -1,4 +1,4 @@
-Schedule.job :load_monitor, :cron, "10 * * * * *" do
+Schedule.job :load_monitor, :cron, "10,30,50 * * * * *" do
   seconds = Time.local.to_unix
   l_avg = Psutil.load_avg
   last = Sequence.find_by(name: "load")

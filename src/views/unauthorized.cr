@@ -1,1 +1,1 @@
-[:h2, @alert]
+[:h5, @alert]

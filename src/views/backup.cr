@@ -20,6 +20,6 @@
 
   [:form, {method: "post", action: Jobs.bkp_db},
     [:p,
-      [:a, {class: "btn #{tone}", href: Jobs.index}, "Cancel"]],
+      [:a, {class: "gra-btn", href: Jobs.index}, "Cancel"]],
     [:p,
-      [:input, {class: "btn solid #{tone}", type: "submit", value: "Start"}]]]]
+      [:input, {class: "gra-btn", type: "submit", value: "Start"}]]]]

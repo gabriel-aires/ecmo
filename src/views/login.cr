@@ -13,7 +13,7 @@
 
     [:body,
 
-      [:header, {class: "login gra-navbar gra-#{tone}-bg"},
+      [:header, {class: "login gra-navbar gra-green-bg"},
         [:div, {class: "gra-container gra-bold-text"},
           [:div, {class: "gra-navbar-logo"},
             [:a, {class: "gra-navbar-logo-link", href: Home.index},
@@ -33,7 +33,7 @@
         [:div, {class: "row"},
           [:div, {class: "col gra-center-text"},
           if notice?
-            [:span, {class: "gra-alert #{tone}", role: "alert"}, notice]
+            [:span, {class: "gra-alert", role: "alert"}, notice]
           end ]],
 
         [:div, {class: "row"},
@@ -50,7 +50,7 @@
                   [:label, {for: "password"}, "Password"],
                   [:input, {id: "password", type: "password", name: "password", required: "true", placeholder: "password..."}]],
                 [:div, {class: "gra-form-actions"},
-                  [:input, {class: "gra-btn gra-btn-#{tone}", type: "submit", name: "submit", value: "Go"}]]]]]],
+                  [:input, {class: "gra-btn gra-btn-green", type: "submit", name: "submit", value: "Go"}]]]]]],
 
         [:div, {class: "row"}],
 

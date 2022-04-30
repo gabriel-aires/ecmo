@@ -1,4 +1,4 @@
-Schedule.job :net_monitor, :cron, "15 * * * * *" do
+Schedule.job :net_monitor, :cron, "15,35,55 * * * * *" do
   seconds = Time.local.to_unix
   net = Psutil.net_io_counters.select { |counter| counter.name == "all" }.first
   last = Sequence.find_by(name: "net")
