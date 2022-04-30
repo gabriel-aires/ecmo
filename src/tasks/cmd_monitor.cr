@@ -6,7 +6,7 @@ Schedule.job :command_monitor, :cron, "0,20,40 * * * * *" do
 
   Hardware::PID.each do |proc|
     begin
-      all_cmds << Command.new(name: proc.name, line: proc.command)
+      cmds << Command.new(name: proc.name, line: proc.command)
     rescue
       next
     end

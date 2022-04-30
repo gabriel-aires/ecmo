@@ -6,7 +6,7 @@ class Pid < Granite::Base
   column id : Int64, primary: true
   column seconds : Int64
   column pid : Int64
-  column memory : String
+  column memory : Float64
   column threads : String
   column state : String
   column parent : String

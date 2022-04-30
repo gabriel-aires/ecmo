@@ -69,9 +69,9 @@ class Dashboard < Application
 
     mem = Memory.find last[:memory].not_nil!.seq
     memory = {
-      :total_mb => mem.not_nil!.total_mb,
-      :used_mb  => mem.not_nil!.used_mb,
-      :free_mb  => mem.not_nil!.free_mb,
+      :total_mb => mem.not_nil!.ram_size_mb,
+      :used_mb  => mem.not_nil!.ram_used_mb,
+      :free_mb  => mem.not_nil!.ram_free_mb,
     }
 
     l_avg = Load.find last[:load].not_nil!.seq
@@ -107,15 +107,15 @@ class Dashboard < Application
       }
     end
 
-    pids = Array(Hash(Symbol, Int64 | String)).new
+    pids = Array(Hash(Symbol, Float64 | Int64 | String)).new
     latest_pid = Pid.find last[:pid].not_nil!.seq
     processes = Pid.all("WHERE seconds = ? ORDER BY name ASC", [latest_pid.not_nil!.seconds])
 
     processes.each do |pid|
       pids << {
         :pid     => pid.pid,
-        :name    => pid.name,
-        :cmd     => pid.cmd,
+        :name    => pid.command.name,
+        :cmd     => pid.command.line,
         :memory  => pid.memory,
         :threads => pid.threads,
         :state   => pid.state,

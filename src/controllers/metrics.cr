@@ -26,7 +26,7 @@ class Metrics < Application
     when "memory"
       m = Memory.all
       t = m.map &.seconds
-      { total_memory: m.map(&.total_mb), used_memory: m.map(&.used_mb), free_memory: m.map(&.free_mb), time: t }
+      { total_memory: m.map(&.ram_size_mb), used_memory: m.map(&.ram_used_mb), free_memory: m.map(&.ram_free_mb), time: t }
     when "network"
       n = Net.all
       t = n.map &.seconds

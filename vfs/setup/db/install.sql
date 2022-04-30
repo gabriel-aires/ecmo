@@ -51,7 +51,7 @@ create table process (
 	id INTEGER PRIMARY KEY AUTOINCREMENT,
 	seconds integer,
 	pid integer,
-	memory text,
+	memory real,
 	threads text,
 	state text,
 	parent text,

@@ -26,8 +26,10 @@ module App
 
   ACCURACY_LOAD = (ENV["ACCURACY_LOAD"]? || 0.15).to_f
   ACCURACY_DISK = (ENV["ACCURACY_DISK"]? || 50).to_f
+  ACCURACY_TIME = (ENV["ACCURACY_TIME"]? || 10).to_f
   ACCURACY_NET = (ENV["ACCURACY_NET"]? || 100).to_f
   ACCURACY_MEM = (ENV["ACCURACY_MEM"]? || 25).to_f
+  ACCURACY_RSS = (ENV["ACCURACY_RSS"]? || 5).to_f
 
   ALLOW_READ    = ENV["ALLOW_READ"]? || ""
   ALLOW_WRITE   = ENV["ALLOW_WRITE"]? || "sudo wheel"
