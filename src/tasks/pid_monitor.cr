@@ -2,11 +2,17 @@ Schedule.job :pid_monitor, :cron, "0,20,40 * * * * *" do
   # wait for cmd_monitor
   sleep 0.3
   seconds = Time.local.to_unix
-  metadata = Sequence.find_by(name: "process")
-  last_pid = Pid.find metadata.not_nil!.seq
-  last_time = last_pid.not_nil!.seconds
   pids = Array(Pid).new
   acc = App::ACCURACY_RSS
+  first_run = false
+
+  if metadata = Sequence.find_by(name: "process")
+    last_pid = Pid.find metadata.not_nil!.seq
+    last_time = last_pid.not_nil!.seconds
+  else
+    first_run = true
+  end
+  
 
   Hardware::PID.each do |proc|
     begin
@@ -23,13 +29,16 @@ Schedule.job :pid_monitor, :cron, "0,20,40 * * * * *" do
         command_id: cmd.id
       )
       
-      if last = Pid.find_by(cmd_id: cmd.id, seconds: last_time)
-        persist = ((last.memory - pid.memory).abs > acc) || (last.state != pid.state) || (last.threads != pid.threads)
-     	else
-       	persist = true
+      unless first_run
+        if last = Pid.find_by(command_id: cmd.id, seconds: last_time)
+          new_pid = false
+          change = ((last.memory - pid.memory).abs > acc) || (last.state != pid.state) || (last.threads != pid.threads)
+        else
+          new_pid = true
+        end
       end
       
-      pids << pid if persist
+      pids << pid if (first_run || new_pid || change)
       
     rescue
       next

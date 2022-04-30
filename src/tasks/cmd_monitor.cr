@@ -6,6 +6,7 @@ Schedule.job :command_monitor, :cron, "0,20,40 * * * * *" do
 
   Hardware::PID.each do |proc|
     begin
+      next unless proc.name.size > 0
       cmds << Command.new(name: proc.name, line: proc.command)
     rescue
       next
