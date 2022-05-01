@@ -1,0 +1,10 @@
+[:div, {class: "gauge-net"},
+  [:h4, {class: "gra-subheading"}, "Net I/O"],
+  [:div, {class: "gra-table-wrapper"},
+    [:table, {class: "gra-table"},
+      [:tr,
+        [:th, "Upload #{net.sent_mb.round}Mb"],
+        [:td, [show_bar(net.sent_mb * 100.0 / (net.sent_mb + net.received_mb), "large", "blue")]]],
+      [:tr,
+        [:th, "Download #{net.received_mb.round}Mb"],
+        [:td, [show_bar(net.received_mb * 100.0 / (net.sent_mb + net.received_mb), "large", "blue")]]]]]]
