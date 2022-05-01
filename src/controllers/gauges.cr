@@ -13,17 +13,7 @@ class Gauges < Application
   end
 
   def null_error(e)
-    render(html: show_loading)
-  end
-
-  def show_loading
-    <<-ANIMATION
-      <div class="gra-loading-dots" style="margin:auto; padding: 5rem;">
-        <span class="gra-loading-dot gra-green-bg dot-1"></span>
-        <span class="gra-loading-dot gra-yellow-bg dot-2"></span>
-        <span class="gra-loading-dot gra-red-bg dot-3"></span>
-      </div>    
-    ANIMATION
+    render :internal_server_error, text: "500 Internal Server Error: Resource not found"
   end
 
   def show_bar(percent : Float, size : String = "", color : String = "")
@@ -93,5 +83,29 @@ class Gauges < Application
       html template("gauge_net.cr")
     end
   end
+
+	get "/disk/:group", :disk do
+  	even = odd = Array(Disk).new
+  	latest_disk = Disk.find(last[:disk].not_nil!.seq).not_nil!
+  
+  	Disk.all("JOIN partition p on p.id = disk.partition_id WHERE seconds = ?", [latest_disk.seconds])
+      .reject { |d| d.size_mb == 0.0 }
+  		.each_with_index { |d,i| (i % 2 == 0) ? (even << d) : (odd << d) }
+
+		disks = params["group"] == "even" ? even : odd
+		disk = disks.shuffle.pop
+	
+    accent = case disk.usage
+      when .<= 25.0 then "blue"
+      when .<= 50.0 then "green"
+      when .<= 75.0 then "yellow"
+      else "red"
+    end
+  
+		respond_with do
+  		html template("gauge_disk.cr")  		
+		end
+  
+	end
 
 end

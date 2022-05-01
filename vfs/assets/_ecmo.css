@@ -35,6 +35,7 @@ header a.gra-navbar-logo-link, header a.gra-nav-link {
 .dashboard .gra-progress-circle {
   padding-top: 1rem;
   margin: auto;
+  display: inline-block;
 }
 
 pre {

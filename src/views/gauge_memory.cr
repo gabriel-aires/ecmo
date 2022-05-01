@@ -8,5 +8,5 @@
       [:tr,
         [:th, "Total SWAP #{memory.swp_size_mb.round}Mb"],
         [:td, "Used SWAP #{memory.swp_used_mb.round}Mb"]]]],
-  [show_arc(memory.ram_used_mb * 100.0 / memory.ram_size_mb, "large", "green")],
-  [show_arc(memory.swp_used_mb * 100.0 / memory.swp_size_mb, "large", "red")]]
+  [show_arc(memory.ram_used_mb * 100.0 / memory.ram_size_mb, "medium", "green")],
+  [show_arc(memory.swp_used_mb * 100.0 / memory.swp_size_mb, "medium", "red")]]
