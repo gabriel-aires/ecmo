@@ -85,14 +85,15 @@ class Gauges < Application
   end
 
 	get "/disk/:group", :disk do
-  	even = odd = Array(Disk).new
+  	even = Array(Disk).new
+    odd = Array(Disk).new
   	latest_disk = Disk.find(last[:disk].not_nil!.seq).not_nil!
   
   	Disk.all("JOIN partition p on p.id = disk.partition_id WHERE seconds = ?", [latest_disk.seconds])
       .reject { |d| d.size_mb == 0.0 }
   		.each_with_index { |d,i| (i % 2 == 0) ? (even << d) : (odd << d) }
 
-		disks = params["group"] == "even" ? even : odd
+		disks = (params["group"] == "even") ? even : odd
 		disk = disks.shuffle.pop
 	
     accent = case disk.usage
@@ -103,9 +104,23 @@ class Gauges < Application
     end
   
 		respond_with do
-  		html template("gauge_disk.cr")  		
+  		html template("gauge_disk.cr")
 		end
   
+	end
+	
+	get "/top", :top do
+		latest_pid = Pid.find(last[:pid].not_nil!.seq).not_nil!
+		pids = Pid
+            .where(seconds: latest_pid.seconds)
+            .order(memory: :asc)
+            .select
+            .pop(4)
+            .reverse
+					
+		respond_with do
+			html template("gauge_pid.cr")
+		end
 	end
 
 end
