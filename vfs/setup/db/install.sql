@@ -59,6 +59,14 @@ create table process (
 	FOREIGN KEY(command_id) references command(id)
 );
 
+create table service (
+	id INTEGER PRIMARY KEY AUTOINCREMENT,
+	seconds integer,
+	running integer,
+	enabled integer,
+	name text
+);
+
 create table partition (
 	id INTEGER PRIMARY KEY AUTOINCREMENT,
  	mountpoint text,
