@@ -38,8 +38,27 @@ header a.gra-navbar-logo-link, header a.gra-nav-link {
   display: inline-block;
 }
 
-.gauge-disk p, .gauge-disk tr, .gauge-disk span {
-  line-height: 1.6;
+.gauge-disk .gra-card-title {
+  color: white;
+}
+
+.gauge-disk .gra-card-title.gra-yellow-bg {
+  color: black;
+}
+
+.gauge-disk .gra-progress-bar {
+  margin-top: 1.6rem;
+  margin-bottom: 1.6rem;
+}
+
+.dark .gauge-disk .gra-progress-bar {
+  background-color: slategray;
+}
+
+.gauge-service button {
+  margin-right: 0.7rem;
+  margin-bottom: 0.7rem;
+  border-radius: 1.4rem;
 }
 
 pre {

@@ -24,5 +24,9 @@
       show_loading ]],
 
   [:div, {class: "row"},
-    [:div, {class: "col col-25"},
-      [:span, {class: "gra-alert green", role: "alert"}, "All services running (wip)"]]]]
+    
+    [:div, 
+      { class: "col",
+        "hx-get": Gauges.service, 
+        "hx-trigger": "load delay: 1.6s, every 10s" },
+      show_loading ]]]

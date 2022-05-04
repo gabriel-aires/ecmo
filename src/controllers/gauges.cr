@@ -123,4 +123,24 @@ class Gauges < Application
 		end
 	end
 
+  get "/service", :service do
+    services_up = Array(Service).new
+    services_dn = Array(Service).new
+    last_svc = ""
+
+    Service.order(name: :asc, seconds: :desc).select.each do |svc|
+      if svc.enabled && svc.name != last_svc
+        svc.running ? (services_up << svc) : (services_dn << svc)
+      end
+      last_svc = svc.name
+    end
+
+    services_up.sort_by! { |svc| svc.name.downcase }
+    services_dn.sort_by! { |svc| svc.name.downcase }
+
+    respond_with do
+      html template("gauge_service.cr")
+    end
+  end
+
 end
