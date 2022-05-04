@@ -1,6 +1,6 @@
 class Systemd < InitProvider
 
-  getter name = "systemd"
+  getter name : String = "systemd"
 
   def initialize
     console_out = `systemctl list-units -t service --all --no-pager -q`.chomp
@@ -11,7 +11,7 @@ class Systemd < InitProvider
     end
   end
     
-  def check_service(unit)
+  def check_service(unit) : Tuple(Bool, Bool)
     running = `systemctl is-active #{unit} 2> /dev/null`.chomp == "active"
     enabled = `systemctl is-enabled #{unit} 2> /dev/null`.chomp == "enabled"
     {running, enabled}

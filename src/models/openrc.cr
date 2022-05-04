@@ -1,6 +1,6 @@
 class Openrc < InitProvider
 
-  getter name = "OpenRC"
+  getter name : String = "OpenRC"
 
   def initialize
     console_out = `rc-update -v`.chomp
@@ -12,7 +12,7 @@ class Openrc < InitProvider
     end
   end
     
-  def check_service(unit)
+  def check_service(unit) : Tuple(Bool, Bool)
     running = `rc-service #{unit} status`.includes? "started"
     enabled = `rc-update`.chomp.split("\n").map { |l| l.split("|").first.strip }.includes? unit
     {running, enabled}
