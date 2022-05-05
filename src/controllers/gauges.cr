@@ -137,6 +137,7 @@ class Gauges < Application
 
     services_up.sort_by! { |svc| svc.name.downcase }
     services_dn.sort_by! { |svc| svc.name.downcase }
+    enabled_services = services_dn + services_up
 
     respond_with do
       html template("gauge_service.cr")

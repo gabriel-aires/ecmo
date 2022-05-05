@@ -55,10 +55,11 @@ header a.gra-navbar-logo-link, header a.gra-nav-link {
   background-color: slategray;
 }
 
-.gauge-service button {
+.gauge-service button.gra-btn.gra-btn-small {
   margin-right: 0.7rem;
   margin-bottom: 0.7rem;
   border-radius: 1.4rem;
+  font-size: 0.8rem;
 }
 
 pre {
