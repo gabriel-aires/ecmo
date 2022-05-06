@@ -94,6 +94,7 @@ class Gauges < Application
   		.each_with_index { |d,i| (i % 2 == 0) ? (even << d) : (odd << d) }
 
 		disks = (params["group"] == "even") ? even : odd
+    return unless disk.size > 0
 		disk = disks.shuffle.pop
 	
     accent = case disk.usage

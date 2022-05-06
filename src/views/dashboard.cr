@@ -20,8 +20,7 @@
     [:div,
       { class: "col col-25",
         "hx-get": Gauges.disk(group: "odd"),
-        "hx-trigger": "load delay:1.4s, every 10s" },
-      show_loading ]],
+        "hx-trigger": "load delay:1.4s, every 10s" }]],
 
   [:div, {class: "row"},
     
