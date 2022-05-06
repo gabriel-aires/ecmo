@@ -3,7 +3,7 @@ class Runit < InitProvider
   getter name : String = "Runit"
 
   def initialize
-    @units = Dir.children("/etc/sv").select { |i| File.directory? i }
+    @units = Dir.children("/etc/sv").select { |i| File.directory? "/etc/sv/#{i}" }
   end
     
   def check_service(unit) : Tuple(Bool, Bool)
