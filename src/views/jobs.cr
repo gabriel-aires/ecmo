@@ -72,7 +72,7 @@
                 	{ class:				"gra-btn",
                 		"hx-put":			Jobs.replace(id: job.id),
                 		"hx-target":	"body" },
-                	"Start!" ]]]]]],
+                	"Start!" ]]]]]]],
 
       [:br]]
 
