@@ -70,7 +70,7 @@ header.login.gra-navbar.gra-green-bg * {
 }
 
 pre {
-  color: black;
+  color: crimson;
   background: rgb(245, 242, 240) none repeat scroll 0% 0%;
   text-shadow: white 0px 1px;
   font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
@@ -89,7 +89,6 @@ pre {
 
 .dark pre {
   background : black;
-  color: rgb(245, 242, 240);
   text-shadow: black 0px 1px;
 }
 
