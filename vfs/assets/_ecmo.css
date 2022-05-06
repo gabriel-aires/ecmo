@@ -88,6 +88,7 @@ pre {
 }
 
 .dark pre {
+  color: lightcoral;
   background : black;
   text-shadow: black 0px 1px;
 }

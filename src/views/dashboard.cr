@@ -27,5 +27,5 @@
     [:div, 
       { class: "col",
         "hx-get": Gauges.service, 
-        "hx-trigger": "load delay: 1.6s, every 10s" },
+        "hx-trigger": "load delay:1.6s, every 10s" },
       show_loading ]]]
