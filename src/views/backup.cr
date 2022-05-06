@@ -14,7 +14,8 @@
             end ]
         end ]]],
 
-  [:h5, {class: "gra-subheading"}, "Perform backup?"],
+  [:br],
+  [:h4, {class: "gra-subheading"}, "Perform backup?"],
 
   [:form, {method: "post", action: Jobs.bkp_db},
     [:div, {class: "gra-form-actions"},

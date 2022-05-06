@@ -33,7 +33,7 @@
         [:div, {class: "row"},
           [:div, {class: "col gra-center-text"},
           if notice?
-            [:span, {class: "gra-alert", role: "alert"}, notice]
+            [:span, {class: "gra-alert yellow", role: "alert"}, notice]
           end ]],
 
         [:div, {class: "row"},
