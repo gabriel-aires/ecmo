@@ -2,6 +2,10 @@ header a.gra-navbar-logo-link, header a.gra-nav-link {
   color: white;
 }
 
+header.login a.gra-navbar-logo-link, header.login a.gra-nav-link {
+  color: white !important;
+}
+
 .dark header.login a.gra-navbar-logo-link, .dark header.login a.gra-nav-link {
   color: black;
 }
