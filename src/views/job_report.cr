@@ -7,8 +7,8 @@
         [:th, "Status"],
         [:td,
           [:a, {href: Jobs.show(id: job.id)},
-            log[:success]
-              ? [:btn, {class: "gra-btn gra-btn-clear gra-btn-green"}, "Job successful"]
+            log[:success] \
+              ? [:btn, {class: "gra-btn gra-btn-clear gra-btn-green"}, "Job successful"] \
               : [:btn, {class: "gra-btn gra-btn-clear gra-btn-red"}, "Job failed"]
           ]]],
       [:tr,
