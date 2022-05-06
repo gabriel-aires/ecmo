@@ -1,5 +1,5 @@
 [
-	[:h4, "Scheduled Jobs"],
+	[:h4, {class: "gra-subheading"}, "Scheduled Jobs"],
 	
   on_schedule.map do |job|
     
@@ -27,15 +27,16 @@
             [:tr,
               [:th, "Last Run"],
               [:td,
-              	[:a, {href: Jobs.show(id: job.id)},
-              		last_run(job.id)[:success] ? [:ins, "View Log"] : [:del, "View Log"]
-              	]]]]]],
+              	[:a, {href: Jobs.show(id: job.id)}, [:btn,
+                  {class: last_run(job.id)[:success] ? "gra-btn gra-btn-blue" : "gra-btn gra-btn-red"},
+                  "View Log"
+                ]]]]]]],
 
       [:br]]
 
 	end ,
 
-  [:h4, "On-Demand Jobs"],
+  [:h4, {class: "gra-subheading"}, "On-Demand Jobs"],
   
   on_demand.map do |job|
 
@@ -60,14 +61,15 @@
             [:tr,
               [:th, "Last Run"],
               [:td,
-                [:a, {href: Jobs.show(id: job.id)},
-            			last_run(job.id)[:success] ? [:ins, "View Log"] : [:del, "View Log"]
+                [:a, {href: Jobs.show(id: job.id)}, [:btn,
+            			{class: last_run(job.id)[:success] ? "gra-btn gra-btn-green" : "gra-btn gra-btn-red"},
+                  "View Log"
             		]]],
             [:tr,
               [:th, "Run job"],
               [:td,
                 [:a,
-                	{ class:				"btn solid black",
+                	{ class:				"gra-btn",
                 		"hx-put":			Jobs.replace(id: job.id),
                 		"hx-target":	"body" },
                 	"Start!" ]]]]]],
@@ -76,6 +78,6 @@
 
 	end ,
 
-  [:h4, "Ecmo Maintenance" ],
+  [:h4, {class: "gra-subheading"}, "Ecmo Maintenance" ],
 
   [:a, {class: "gra-btn gra-btn-yellow gra-btn-full-width", href: Jobs.bkp_info}, "Backup Data"]]

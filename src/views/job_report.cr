@@ -1,13 +1,15 @@
 [
-  [:h4, job.name + " v" + job.rev.to_s],
+  [:h4, {class: "gra-subheading"}, job.name + " v" + job.rev.to_s],
 
-  [:figure,
-    [:table,
+  [:div, {class: "gra-table-wrapper"},
+    [:table, {class: "gra-table"},
       [:tr,
         [:th, "Status"],
         [:td,
           [:a, {href: Jobs.show(id: job.id)},
-            log[:success] ? [:ins, "Job successful"] : [:del, "Job failed"]
+            log[:success]
+              ? [:btn, {class: "gra-btn gra-btn-clear gra-btn-green"}, "Job successful"]
+              : [:btn, {class: "gra-btn gra-btn-clear gra-btn-red"}, "Job failed"]
           ]]],
       [:tr,
         [:th, "Duration (ms)"],
