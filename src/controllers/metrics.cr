@@ -1,4 +1,11 @@
+require "csv"
+
 class Metrics < Application
+
+  @title = "Metrics Visualization"
+  @description = "System Resources Timeseries"
+  @data = [] of Hash(String, Int64|Float64|String|Nil)
+  @headers = ["Time"]
 
   def index
     @links = {
@@ -9,43 +16,112 @@ class Metrics < Application
       "Disk"    => ["gray", "assets/database.svg" ]
     }
 
-    respond_with { html template("metrics.cr") }
+    render template: "metrics.cr"
   end
 
   def show
+    resource = params["id"]
+    @title = resource.capitalize
+    @description = "Timeseries Visualization"
+    render template: "timeseries.cr"
+  end
 
-    timeseries = case params["id"]
+  get "/csv", :csv do
+    process(params["id"])
+    _, csv = serialize @data, @headers
+    render text: csv
+  end
+
+  get "/json", :json do
+    process(params["id"])
+    timeseries, _ = serialize @data, @headers
+    render json: timeseries
+  end
+
+  private def process(resource)
+    metric = {} of String => Int64|Float64|String|Nil
+
+    case resource
     when "uptime"
-      b = Boot.all
-      t = b.map &.seconds
-      { uptime: t , time: t }
+      @headers << "Uptime"
+      series = Boot.order(seconds: :asc).select.map &.to_h.reject("id")
+      series.each { |hash| @data << metric.merge hash }
     when "load"
-      l = Load.all
-      t = l.map &.seconds
-      { load_1m: l.map(&.load1), load_5m: l.map(&.load5), load_15m: l.map(&.load15), time: t }
+      @headers << "Load1" << "Load5" << "Load15"
+      series = Load.order(seconds: :asc).select.map &.to_h.reject("id")
+      series.each { |hash| @data << metric.merge hash }
     when "memory"
-      m = Memory.all
-      t = m.map &.seconds
-      { total_memory: m.map(&.ram_size_mb), used_memory: m.map(&.ram_used_mb), free_memory: m.map(&.ram_free_mb), time: t }
+      @headers << "RamSize" << "RamUsed" << "RamFree" << "SwapSize" << "SwapUsed" << "SwapFree"
+      series = Memory.order(seconds: :asc).select.map &.to_h.reject("id")
+      series.each { |hash| @data << metric.merge hash }
     when "network"
-      n = Net.all
-      t = n.map &.seconds
-      { download: n.map(&.received_mb), upload: n.map(&.sent_mb), time: t }
+      @headers << "Time" << "Download" << "Upload" << "PacketsIn" << "PacketsOut"
+      series = Net.order(seconds: :asc).select.map &.to_h.reject("id")
+      series.each { |hash| @data << metric.merge hash }
     when "disk"
-      usage = Hash(String, Array(Int64) | Array(Float64)).new
-      dk = Disk.all("JOIN partition p on p.id = disk.partition_id ORDER BY disk.seconds ASC")
+      usage = [] of Hash(String, Int64|Float64)
+      times = [] of Int64
+      mounts = [] of String
+      dk = Disk.all("JOIN partition p on p.id = disk.partition_id")
+
       Partition.all.each do |p|
+        mounts << p.mountpoint
         d = dk.select { |disk| disk.partition.mountpoint == p.mountpoint }
-        usage["#{p.mountpoint}_time" ] = d.map &.seconds
-        usage["#{p.mountpoint}_total"] = d.map &.size_mb
-        usage["#{p.mountpoint}_used" ] = d.map &.used_mb
-        usage["#{p.mountpoint}_free" ] = d.map &.free_mb
-        usage["#{p.mountpoint}_usage"] = d.map &.usage
+        d.each do |u|
+          times << u.seconds
+          usage << {
+            "#{p.mountpoint}:seconds" => u.seconds,
+            "#{p.mountpoint}:size_mb" => u.size_mb,
+            "#{p.mountpoint}:used_mb" => u.used_mb,
+            "#{p.mountpoint}:free_mb" => u.free_mb,
+            "#{p.mountpoint}:usage"   => u.usage
+          }
+        end
       end
-      usage
+
+      mounts.each { |m| @headers << "#{m}:Size" << "#{m}:Used" << "#{m}:Free" << "#{m}:Usage" }
+
+      series = times.sort.uniq.map do |t|
+        record = {} of String => Int64|Float64|String|Nil
+        record["seconds"] = t
+
+        mounts.each do |m|
+          begin
+            metrics = usage.select { |u| u["#{m}:seconds"] == t }.first.reject("#{m}:seconds")
+            record.merge! metrics
+          rescue
+            record.merge!({ "#{m}:size_mb" => nil, "#{m}:used_mb" => nil, "#{m}:free_mb" => nil, "#{m}:usage" => nil })
+          end
+        end
+
+        record
+      end
+
+      series.each { |hash| @data << metric.merge hash }
     end
 
-    render json: timeseries
+  end
+
+  private def serialize(data, headers)
+    csv = IO::Memory.new
+    csv.puts headers.join(",")
+
+    location = Time.local.location
+    timeseries = Array(Hash(String,Int64|Float64|String|Nil)).new
+
+    CSV.build(csv) do |txt|
+      data.each do |item|
+        timepoint = item # don't mutate the collection directly
+        timepoint.update("seconds") do |s|
+          time_unix = s.not_nil!.to_i64
+          Time::Format::ISO_8601_DATE_TIME.format(Time.new(seconds: time_unix, nanoseconds: 0, location: location))
+        end
+        timeseries << timepoint
+        txt.row timepoint.values
+      end
+    end
+
+    {timeseries, csv}
   end
 
 end

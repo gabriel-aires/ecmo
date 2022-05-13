@@ -12,13 +12,13 @@ Schedule.job :host_monitor, :cron, "8,28,48 * * * * *" do
       uptime: info.uptime.to_i64,
       arch: info.arch
 
-    Boot.create seconds: seconds - info.uptime if new_boot
+    Boot.create seconds: seconds, uptime: info.uptime.to_i64 if new_boot
   else
     Host.create name: info.hostname,
       os: info.os,
       uptime: info.uptime.to_i64,
       arch: info.arch
 
-    Boot.create seconds: seconds - info.uptime
+    Boot.create seconds: seconds, uptime: info.uptime.to_i64
   end
 end

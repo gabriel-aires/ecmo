@@ -4,4 +4,5 @@ class Boot < Granite::Base
 
   column id : Int64, primary: true
   column seconds : Int64
+  column uptime : Int64
 end
