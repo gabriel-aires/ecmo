@@ -10,7 +10,8 @@ create table host (
 
 create table boot (
 	id INTEGER PRIMARY KEY AUTOINCREMENT,
-  seconds integer
+  seconds integer,
+  uptime integer
 );
 
 create table load (

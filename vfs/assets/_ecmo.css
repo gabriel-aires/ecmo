@@ -69,6 +69,18 @@ header.login.gra-navbar.gra-green-bg * {
   font-size: 0.8rem;
 }
 
+#plot {
+  height: 320px;
+}
+
+#plot .dygraph-legend span {
+  display: none;
+}
+
+#plot .dygraph-legend .highlight {
+  display: inline;
+}
+
 pre {
   color: crimson;
   background: rgb(245, 242, 240) none repeat scroll 0% 0%;
