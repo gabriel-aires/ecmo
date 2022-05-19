@@ -13,4 +13,4 @@
         [:td, host.uptime]],
       [:tr,
         [:th, "Boot Time"],
-        [:td, Time.new(seconds: boot.seconds, nanoseconds: 0, location: Time.local.location).to_s]]]]]
+        [:td, Time.unix(boot.seconds).to_s]]]]]

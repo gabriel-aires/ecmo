@@ -73,7 +73,7 @@ header.login.gra-navbar.gra-green-bg * {
   height: 320px;
 }
 
-#plot .dygraph-legend span {
+#plot .dygraph-legend > span {
   display: none;
 }
 

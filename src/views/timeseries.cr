@@ -4,13 +4,14 @@
     <<-JAVASCRIPT
     new Dygraph(
       document.getElementById("plot"),
-      "#{Metrics.csv}?id=#{params["id"]}",
+      "#{Metrics.csv}?id=#{params["id"]}&type=simple",
       {
         connectSeparatedPoints: true,
         stackedGraph: true,
         highlightCircleSize: 2,
         strokeWidth: 1,
         strokeBorderWidth: null,
+        animatedZooms: true,
         highlightSeriesOpts: {
           strokeWidth: 3,
           strokeBorderWidth: 1,
