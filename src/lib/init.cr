@@ -13,15 +13,13 @@ class Init
                 		end
 		@provider = init_provider.new 
 	end
-	
+
 	def provider
   	@provider.name
 	end
-	
+
 	def services
   	@provider.services
 	end
 
 end
-
-

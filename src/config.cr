@@ -28,7 +28,6 @@ require "./controllers/application"
 require "./controllers/*"
 
 # Start jobs
-require "./tasks/schedule"
 require "./tasks/*"
 
 # Server required after application controllers

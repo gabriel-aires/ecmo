@@ -1,11 +1,3 @@
-enum Level
-  Debug
-  Info
-  Warn
-  Error
-  Fatal
-end
-
 class Job < Granite::Base
   connection embedded
   table job
