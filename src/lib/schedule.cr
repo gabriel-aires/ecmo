@@ -34,15 +34,24 @@ class Schedule
     call_msg id, dispatch, time
   end
 
-  def self.finish
-    store.each do |id, job|
+  def self.cancel(id : Symbol | String)
+    if store.has_key? id
       puts "Finishing job \"#{id}\""
+      job = store[id]
       job.cancel
+      store.delete id
+    else
+      puts "Failed to cancel job. Unknown task: #{id}"
     end
-    store.clear
-    puts "Schedule finished."
-  rescue error
-    puts "Failed to cancel running jobs\n#{error.inspect_with_backtrace}"
+
+    if store.empty?
+      puts "Schedule finished."
+    end
+  end
+
+  def self.finish
+    tasks = store.keys
+    tasks.each { |id| cancel id }
   end
 
   def self.usage

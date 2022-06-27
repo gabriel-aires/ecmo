@@ -16,6 +16,7 @@ dependencies:
     github: abidon/crikey
   action-controller:
     github: spider-gazelle/action-controller
+    version: ~> 4.0
   tasker:
     github: spider-gazelle/tasker
   ssh2:

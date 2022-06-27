@@ -2,7 +2,7 @@ version: 2.0
 shards:
   action-controller:
     git: https://github.com/spider-gazelle/action-controller.git
-    version: 4.10.0
+    version: 4.10.1
 
   ameba:
     git: https://github.com/veelenga/ameba.git
@@ -38,7 +38,7 @@ shards:
 
   granite:
     git: https://github.com/amberframework/granite.git
-    version: 0.23.0
+    version: 0.23.1
 
   habitat:
     git: https://github.com/luckyframework/habitat.git
