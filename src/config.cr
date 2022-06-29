@@ -26,6 +26,7 @@ end
 require "./models/*"
 require "./controllers/application"
 require "./controllers/*"
+require "./services/*"
 
 # Start jobs
 require "./tasks/*"

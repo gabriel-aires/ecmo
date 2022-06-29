@@ -32,34 +32,7 @@ class Jobs < Application
     job = Job.find(params["id"]).not_nil!
 
     if job.cron == "on-demand"
-      mitamae = App::ROOT + "/bin/mitamae"
-      run_at = Time.local.to_unix
-      start = Time.local.to_unix_ms
-      success = true
-      io = {:error => "", :output => ""}
-
-      begin
-        Process.run mitamae, args: ["local", "-l", job.log.to_s, job.path] do |process|
-          io[:output] = process.output.gets_to_end
-          io[:error] = process.error.gets_to_end
-        end
-
-        success = false if io[:error].size > 0
-      rescue ex : Exception
-        io[:error] = ex.message.not_nil!
-        success = false
-      end
-
-      finish = Time.local.to_unix_ms
-      duration = finish - start
-
-      Run.create seconds: run_at,
-        duration: duration,
-        output: io[:output],
-        error: io[:error],
-        success: success,
-        job_id: job.id
-
+      JobRunner.new job
       job_report job
     end
 
